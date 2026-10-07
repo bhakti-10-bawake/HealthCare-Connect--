@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile | Healthcare Connect</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- Header -->
+    <header class="page-header">
+
+        <div>
+            <span class="eyebrow">Account</span>
+            <h1>My Profile</h1>
+            <p class="text-muted">
+                Manage your personal information and account.
+            </p>
+        </div>
+
+        <div class="avatar avatar-md">
+            <i class="bi bi-person"></i>
+        </div>
+
+    </header>
+
+    <main class="page-content">
+
+        <!-- Profile overview -->
+        <section class="section">
+
+            <div class="profile-card">
+
+                <div class="profile-avatar">
+                    <span id="profileInitials">HC</span>
+                </div>
+
+                <div class="profile-info">
+
+                    <h2 id="profileName">
+                        Healthcare User
+                    </h2>
+
+                    <p id="profileEmail">
+                        user@example.com
+                    </p>
+
+                    <span
+                        class="badge badge-primary"
+                        id="profileRole"
+                    >
+                        Patient
+                    </span>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="icon-button"
+                    id="editProfileButton"
+                    aria-label="Edit profile"
+                >
+                    <i class="bi bi-pencil"></i>
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- Personal information -->
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="eyebrow">Personal Information</span>
+                    <h2>Account Details</h2>
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <form id="profileForm">
+
+                    <div class="form-group">
+
+                        <label for="profileFullName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="profileFullName"
+                            name="fullName"
+                            class="form-control"
+                            placeholder="Enter your full name"
+                            disabled
+                        >
+
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="profilePhone">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="profilePhone"
+                                name="phone"
+                                class="form-control"
+                                placeholder="Enter phone number"
+                                disabled
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="profileEmailInput">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="profileEmailInput"
+                                name="email"
+                                class="form-control"
+                                placeholder="Enter email address"
+                                disabled
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="profileAddress">
+                            Address
+                        </label>
+
+                        <textarea
+                            id="profileAddress"
+                            name="address"
+                            class="form-control"
+                            rows="3"
+                            placeholder="Enter your address"
+                            disabled
+                        ></textarea>
+
+                    </div>
+
+                    <div
+                        class="form-actions"
+                        id="profileActions"
+                        hidden
+                    >
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            id="cancelProfileButton"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            <i class="bi bi-check-lg"></i>
+                            Save Changes
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- Healthcare preferences -->
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="eyebrow">Preferences</span>
+                    <h2>Healthcare Settings</h2>
+                </div>
+
+            </div>
+
+            <div class="settings-list">
+
+                <button
+                    type="button"
+                    class="settings-item"
+                    id="notificationSettings"
+                >
+
+                    <div class="icon-box icon-box-primary">
+                        <i class="bi bi-bell"></i>
+                    </div>
+
+                    <div>
+                        <h3>Notifications</h3>
+                        <p>Manage appointment and medicine alerts</p>
+                    </div>
+
+                    <i class="bi bi-chevron-right"></i>
+
+                </button>
+
+                <button
+                    type="button"
+                    class="settings-item"
+                    id="privacySettings"
+                >
+
+                    <div class="icon-box icon-box-info">
+                        <i class="bi bi-shield-lock"></i>
+                    </div>
+
+                    <div>
+                        <h3>Privacy & Security</h3>
+                        <p>Manage your account security</p>
+                    </div>
+
+                    <i class="bi bi-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- Quick access -->
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="eyebrow">Quick Access</span>
+                    <h2>My Healthcare</h2>
+                </div>
+
+            </div>
+
+            <div class="quick-grid">
+
+                <a
+                    href="health-records.html"
+                    class="quick-action-card"
+                >
+
+                    <div class="icon-box icon-box-primary">
+                        <i class="bi bi-file-medical"></i>
+                    </div>
+
+                    <div>
+                        <h3>Health Records</h3>
+                        <p>View your medical information</p>
+                    </div>
+
+                    <i class="bi bi-chevron-right"></i>
+
+                </a>
+
+                <a
+                    href="reminders.html"
+                    class="quick-action-card"
+                >
+
+                    <div class="icon-box icon-box-warning">
+                        <i class="bi bi-alarm"></i>
+                    </div>
+
+                    <div>
+                        <h3>Medicine Reminders</h3>
+                        <p>Manage your medication schedule</p>
+                    </div>
+
+                    <i class="bi bi-chevron-right"></i>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- Logout -->
+        <section class="section">
+
+            <button
+                type="button"
+                class="btn btn-danger btn-full"
+                id="logoutButton"
+            >
+                <i class="bi bi-box-arrow-right"></i>
+                Log Out
+            </button>
+
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+
+        <a href="dashboard.html" class="bottom-nav-item">
+            <i class="bi bi-house"></i>
+            <span>Home</span>
+        </a>
+
+        <a href="doctors.html" class="bottom-nav-item">
+            <i class="bi bi-person-badge"></i>
+            <span>Doctors</span>
+        </a>
+
+        <a href="appointments.html" class="bottom-nav-item">
+            <i class="bi bi-calendar-check"></i>
+            <span>Appointments</span>
+        </a>
+
+        <a href="medicines.html" class="bottom-nav-item">
+            <i class="bi bi-capsule"></i>
+            <span>Medicines</span>
+        </a>
+
+        <a href="profile.html" class="bottom-nav-item active">
+            <i class="bi bi-person"></i>
+            <span>Profile</span>
+        </a>
+
+    </nav>
+
+</div>
+
+<script src="../js/app.js"></script>
+<script src="../js/profile.js"></script>
+
+</body>
+</html>
