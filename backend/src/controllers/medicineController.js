@@ -23,7 +23,6 @@ async function getMedicines(req, res) {
                 MIN(
                     CASE
                         WHEN mi.is_available = TRUE
-                        AND p.active = TRUE
                         THEN mi.price
                     END
                 ) AS price,
@@ -31,7 +30,6 @@ async function getMedicines(req, res) {
                 MIN(
                     CASE
                         WHEN mi.is_available = TRUE
-                        AND p.active = TRUE
                         THEN mi.pack_size
                     END
                 ) AS pack_size,
@@ -39,7 +37,6 @@ async function getMedicines(req, res) {
                 MAX(
                     CASE
                         WHEN mi.is_available = TRUE
-                        AND p.active = TRUE
                         THEN 1
                         ELSE 0
                     END
@@ -102,14 +99,12 @@ async function getMedicines(req, res) {
                 AND m.category = ?
             `;
 
-            params.push(
-                category.trim()
-            );
+            params.push(category.trim());
         }
 
 
         // ========================================================
-        // GROUP
+        // GROUP + SORT
         // ========================================================
 
         query += `
@@ -139,45 +134,38 @@ async function getMedicines(req, res) {
         // FORMAT RESPONSE
         // ========================================================
 
-        const medicines =
-            rows.map((medicine) => ({
-                id: medicine.id,
+        const medicines = rows.map((medicine) => ({
+            id: medicine.id,
 
-                name: medicine.name,
+            name: medicine.name,
 
-                generic:
-                    medicine.generic_name,
+            generic: medicine.generic_name,
 
-                category:
-                    medicine.category,
+            category: medicine.category,
 
-                form:
-                    medicine.dosage_form,
+            form: medicine.dosage_form,
 
-                strength:
-                    medicine.strength,
+            strength: medicine.strength,
 
-                description:
-                    medicine.description,
+            description: medicine.description,
 
-                prescription:
-                    Boolean(
-                        medicine.prescription_required
-                    ),
+            prescription:
+                Boolean(
+                    medicine.prescription_required
+                ),
 
-                price:
-                    medicine.price !== null
-                        ? Number(medicine.price)
-                        : null,
+            price:
+                medicine.price !== null
+                    ? Number(medicine.price)
+                    : null,
 
-                pack:
-                    medicine.pack_size,
+            pack: medicine.pack_size,
 
-                available:
-                    Boolean(
-                        medicine.is_available
-                    )
-            }));
+            available:
+                Boolean(
+                    medicine.is_available
+                )
+        }));
 
 
         res.json({
@@ -194,8 +182,7 @@ async function getMedicines(req, res) {
 
         res.status(500).json({
             success: false,
-            message:
-                "Unable to fetch medicines."
+            message: "Unable to fetch medicines."
         });
     }
 }
@@ -220,8 +207,7 @@ async function getMedicineById(req, res) {
 
             return res.status(400).json({
                 success: false,
-                message:
-                    "Invalid medicine ID."
+                message: "Invalid medicine ID."
             });
         }
 
@@ -242,7 +228,6 @@ async function getMedicineById(req, res) {
                     MIN(
                         CASE
                             WHEN mi.is_available = TRUE
-                            AND p.active = TRUE
                             THEN mi.price
                         END
                     ) AS price,
@@ -250,7 +235,6 @@ async function getMedicineById(req, res) {
                     MIN(
                         CASE
                             WHEN mi.is_available = TRUE
-                            AND p.active = TRUE
                             THEN mi.pack_size
                         END
                     ) AS pack_size,
@@ -258,7 +242,6 @@ async function getMedicineById(req, res) {
                     MAX(
                         CASE
                             WHEN mi.is_available = TRUE
-                            AND p.active = TRUE
                             THEN 1
                             ELSE 0
                         END
@@ -294,8 +277,7 @@ async function getMedicineById(req, res) {
 
             return res.status(404).json({
                 success: false,
-                message:
-                    "Medicine not found."
+                message: "Medicine not found."
             });
         }
 
@@ -310,20 +292,15 @@ async function getMedicineById(req, res) {
 
                 name: medicine.name,
 
-                generic:
-                    medicine.generic_name,
+                generic: medicine.generic_name,
 
-                category:
-                    medicine.category,
+                category: medicine.category,
 
-                form:
-                    medicine.dosage_form,
+                form: medicine.dosage_form,
 
-                strength:
-                    medicine.strength,
+                strength: medicine.strength,
 
-                description:
-                    medicine.description,
+                description: medicine.description,
 
                 prescription:
                     Boolean(
@@ -335,8 +312,7 @@ async function getMedicineById(req, res) {
                         ? Number(medicine.price)
                         : null,
 
-                pack:
-                    medicine.pack_size,
+                pack: medicine.pack_size,
 
                 available:
                     Boolean(
