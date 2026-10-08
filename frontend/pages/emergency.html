@@ -21,57 +21,72 @@
 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
-<div class="app-shell emergency-page">
+<div class="app-shell">
 
-    <!-- Header -->
-    <header class="page-header">
+    <main class="emergency-page">
 
-        <div>
-            <span class="eyebrow">Urgent Care</span>
-            <h1>Emergency Assistance</h1>
-            <p class="text-muted">
-                Get quick access to emergency support.
-            </p>
-        </div>
+        <!-- Header -->
 
-        <a
-            href="dashboard.html"
-            class="icon-button"
-            aria-label="Back to dashboard"
-        >
-            <i class="bi bi-arrow-left"></i>
-        </a>
+        <header class="emergency-header">
 
-    </header>
+            <a
+                href="dashboard.html"
+                class="emergency-back-link"
+            >
+                <i class="bi bi-arrow-left"></i>
+                Back to dashboard
+            </a>
 
-    <main class="page-content">
+            <div class="emergency-header-content">
 
-        <!-- Emergency alert -->
-        <section class="section">
-
-            <div class="emergency-hero">
-
-                <div class="emergency-icon">
-                    <i class="bi bi-heart-pulse"></i>
+                <div class="emergency-alert-icon">
+                    <i class="bi bi-plus-lg"></i>
                 </div>
 
-                <span class="eyebrow">
-                    Emergency Support
+                <div>
+                    <span class="emergency-eyebrow">
+                        EMERGENCY ASSISTANCE
+                    </span>
+
+                    <h1>Need urgent medical help?</h1>
+
+                    <p>
+                        Get immediate assistance or contact a nearby
+                        healthcare centre.
+                    </p>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- Emergency call -->
+
+        <section class="emergency-primary-card">
+
+            <div class="emergency-primary-content">
+
+                <span class="emergency-primary-label">
+                    <span class="emergency-live-dot"></span>
+                    EMERGENCY SERVICES
                 </span>
 
-                <h2>Need immediate help?</h2>
+                <h2>
+                    Call for immediate assistance
+                </h2>
 
                 <p>
-                    If you are experiencing a serious or
-                    life-threatening emergency, contact
-                    emergency services immediately.
+                    If you or someone around you is experiencing a
+                    life-threatening emergency, contact emergency
+                    services immediately.
                 </p>
 
                 <a
@@ -79,190 +94,198 @@
                     class="emergency-call-button"
                     id="emergencyCallButton"
                 >
-                    <i class="bi bi-telephone-fill"></i>
-
-                    <span>
-                        <small>Emergency Helpline</small>
-                        <strong>Call 112</strong>
+                    <span class="emergency-call-icon">
+                        <i class="bi bi-telephone-fill"></i>
                     </span>
 
+                    <span>
+                        <small>Call emergency services</small>
+                        <strong>112</strong>
+                    </span>
+
+                    <i class="bi bi-arrow-up-right"></i>
                 </a>
+
+            </div>
+
+
+            <div class="emergency-visual">
+
+                <div class="emergency-circle emergency-circle-one"></div>
+
+                <div class="emergency-circle emergency-circle-two"></div>
+
+                <div class="emergency-heart">
+                    <i class="bi bi-heart-pulse-fill"></i>
+                </div>
 
             </div>
 
         </section>
 
-        <!-- Emergency services -->
-        <section class="section">
 
-            <div class="section-heading">
+        <!-- Nearby help -->
+
+        <section class="emergency-section">
+
+            <div class="emergency-section-heading">
 
                 <div>
-                    <span class="eyebrow">Emergency Services</span>
-                    <h2>Quick Contacts</h2>
+                    <span class="section-eyebrow">
+                        GET HELP NEARBY
+                    </span>
+
+                    <h2>Healthcare support</h2>
                 </div>
 
             </div>
 
-            <div class="emergency-grid">
 
-                <a
-                    href="tel:112"
-                    class="emergency-service-card"
-                >
+            <div class="emergency-support-grid">
 
-                    <div class="icon-box icon-box-danger">
-                        <i class="bi bi-telephone-fill"></i>
-                    </div>
+                <article class="emergency-support-card">
 
-                    <div>
-                        <h3>Emergency Services</h3>
-                        <p>Police, ambulance and emergency assistance</p>
-                    </div>
-
-                    <i class="bi bi-arrow-up-right"></i>
-
-                </a>
-
-                <a
-                    href="tel:108"
-                    class="emergency-service-card"
-                >
-
-                    <div class="icon-box icon-box-danger">
-                        <i class="bi bi-truck"></i>
-                    </div>
-
-                    <div>
-                        <h3>Ambulance</h3>
-                        <p>Request emergency medical transport</p>
-                    </div>
-
-                    <i class="bi bi-arrow-up-right"></i>
-
-                </a>
-
-            </div>
-
-        </section>
-
-        <!-- Nearby healthcare -->
-        <section class="section">
-
-            <div class="section-heading">
-
-                <div>
-                    <span class="eyebrow">Healthcare Access</span>
-                    <h2>Find Immediate Care</h2>
-                </div>
-
-            </div>
-
-            <div class="quick-grid">
-
-                <a
-                    href="doctors.html"
-                    class="quick-action-card"
-                >
-
-                    <div class="icon-box icon-box-primary">
-                        <i class="bi bi-person-badge"></i>
-                    </div>
-
-                    <div>
-                        <h3>Find a Doctor</h3>
-                        <p>Search available healthcare professionals</p>
-                    </div>
-
-                    <i class="bi bi-chevron-right"></i>
-
-                </a>
-
-                <a
-                    href="#"
-                    class="quick-action-card"
-                    id="healthCentreButton"
-                >
-
-                    <div class="icon-box icon-box-info">
+                    <div class="emergency-support-icon centre-icon">
                         <i class="bi bi-hospital"></i>
                     </div>
 
-                    <div>
-                        <h3>Healthcare Centres</h3>
-                        <p>Find nearby hospitals and healthcare centres</p>
+                    <div class="emergency-support-content">
+
+                        <h3>Nearby healthcare centre</h3>
+
+                        <p>
+                            Find a healthcare centre where you can
+                            seek immediate medical attention.
+                        </p>
+
+                        <button
+                            type="button"
+                            class="emergency-support-button"
+                            id="healthCentreButton"
+                        >
+                            Find healthcare centre
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+
                     </div>
 
-                    <i class="bi bi-chevron-right"></i>
+                </article>
 
-                </a>
+
+                <article class="emergency-support-card">
+
+                    <div class="emergency-support-icon doctor-icon">
+                        <i class="bi bi-person-plus"></i>
+                    </div>
+
+                    <div class="emergency-support-content">
+
+                        <h3>Talk to a doctor</h3>
+
+                        <p>
+                            Browse available doctors and find
+                            appropriate medical support.
+                        </p>
+
+                        <a
+                            href="doctors.html"
+                            class="emergency-support-button"
+                        >
+                            Find a doctor
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </article>
 
             </div>
 
         </section>
+
 
         <!-- Emergency information -->
-        <section class="section">
 
-            <div class="card">
+        <section class="emergency-section">
 
-                <div class="section-heading">
+            <div class="emergency-section-heading">
+
+                <div>
+                    <span class="section-eyebrow">
+                        IMPORTANT
+                    </span>
+
+                    <h2>When to seek emergency help</h2>
+                </div>
+
+            </div>
+
+
+            <div class="emergency-warning-grid">
+
+                <div class="emergency-warning-item">
+
+                    <div class="emergency-warning-icon">
+                        <i class="bi bi-heart-pulse"></i>
+                    </div>
 
                     <div>
-                        <span class="eyebrow">Before You Call</span>
-                        <h2>Useful Information</h2>
+                        <strong>Severe chest pain</strong>
+                        <span>
+                            Especially with difficulty breathing,
+                            sweating or dizziness.
+                        </span>
                     </div>
 
                 </div>
 
-                <div class="info-list">
 
-                    <div class="info-list-item">
+                <div class="emergency-warning-item">
 
-                        <div class="icon-box icon-box-primary">
-                            <i class="bi bi-geo-alt"></i>
-                        </div>
-
-                        <div>
-                            <h3>Know Your Location</h3>
-                            <p>
-                                Be ready to provide your current
-                                location to emergency services.
-                            </p>
-                        </div>
-
+                    <div class="emergency-warning-icon">
+                        <i class="bi bi-lungs"></i>
                     </div>
 
-                    <div class="info-list-item">
-
-                        <div class="icon-box icon-box-info">
-                            <i class="bi bi-person-vcard"></i>
-                        </div>
-
-                        <div>
-                            <h3>Keep Medical Information Ready</h3>
-                            <p>
-                                Share important conditions,
-                                allergies or medicines if known.
-                            </p>
-                        </div>
-
+                    <div>
+                        <strong>Difficulty breathing</strong>
+                        <span>
+                            Severe or sudden breathing problems
+                            require immediate attention.
+                        </span>
                     </div>
 
-                    <div class="info-list-item">
+                </div>
 
-                        <div class="icon-box icon-box-warning">
-                            <i class="bi bi-people"></i>
-                        </div>
 
-                        <div>
-                            <h3>Ask Someone Nearby for Help</h3>
-                            <p>
-                                If possible, stay with a trusted
-                                person until help arrives.
-                            </p>
-                        </div>
+                <div class="emergency-warning-item">
 
+                    <div class="emergency-warning-icon">
+                        <i class="bi bi-person-exclamation"></i>
+                    </div>
+
+                    <div>
+                        <strong>Loss of consciousness</strong>
+                        <span>
+                            Seek urgent medical assistance if
+                            someone becomes unresponsive.
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="emergency-warning-item">
+
+                    <div class="emergency-warning-icon">
+                        <i class="bi bi-bandaid"></i>
+                    </div>
+
+                    <div>
+                        <strong>Severe injury or bleeding</strong>
+                        <span>
+                            Serious injuries or uncontrolled bleeding
+                            require emergency care.
+                        </span>
                     </div>
 
                 </div>
@@ -271,56 +294,71 @@
 
         </section>
 
-        <!-- Disclaimer -->
-        <section class="section">
 
-            <div class="alert alert-warning">
+        <!-- Safety note -->
 
-                <i class="bi bi-exclamation-triangle"></i>
+        <section class="emergency-safety-note">
 
-                <div>
+            <div class="emergency-safety-icon">
+                <i class="bi bi-shield-exclamation"></i>
+            </div>
 
-                    <strong>Important</strong>
+            <div>
+                <strong>Emergency information</strong>
 
-                    <p>
-                        Healthcare Connect is not a replacement
-                        for emergency medical services. In a
-                        life-threatening situation, contact the
-                        appropriate emergency service immediately.
-                    </p>
-
-                </div>
-
+                <p>
+                    Healthcare Connect provides quick access to
+                    emergency resources. It does not replace
+                    emergency medical services or professional
+                    medical care.
+                </p>
             </div>
 
         </section>
 
     </main>
 
-    <!-- Bottom Navigation -->
+
+    <!-- Bottom navigation -->
+
     <nav class="bottom-nav">
 
-        <a href="dashboard.html" class="bottom-nav-item active">
+        <a
+            href="dashboard.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-house"></i>
             <span>Home</span>
         </a>
 
-        <a href="doctors.html" class="bottom-nav-item">
+        <a
+            href="doctors.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-person-badge"></i>
             <span>Doctors</span>
         </a>
 
-        <a href="appointments.html" class="bottom-nav-item">
-            <i class="bi bi-calendar-check"></i>
+        <a
+            href="appointments.html"
+            class="bottom-nav-item"
+        >
+            <i class="bi bi-calendar2-check"></i>
             <span>Appointments</span>
         </a>
 
-        <a href="medicines.html" class="bottom-nav-item">
-            <i class="bi bi-capsule"></i>
-            <span>Medicines</span>
+        <a
+            href="health-records.html"
+            class="bottom-nav-item"
+        >
+            <i class="bi bi-folder2-open"></i>
+            <span>Records</span>
         </a>
 
-        <a href="profile.html" class="bottom-nav-item">
+        <a
+            href="profile.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-person"></i>
             <span>Profile</span>
         </a>
@@ -328,6 +366,7 @@
     </nav>
 
 </div>
+
 
 <script src="../js/app.js"></script>
 <script src="../js/emergency.js"></script>

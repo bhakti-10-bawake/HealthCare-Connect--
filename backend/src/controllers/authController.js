@@ -1,95 +1,439 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const pool = require("../config/database");
+const authService = require("../services/authService");
 
-const login = async (req, res) => {
+
+/* =========================================================
+   REGISTER
+   POST /api/auth/register
+========================================================= */
+
+async function register(req, res) {
+
     try {
-        const { email, password } = req.body;
 
-        if (!email || !password) {
+        const {
+            fullName,
+            email,
+            phone,
+            password
+        } = req.body;
+
+
+        /* -----------------------------------------
+           Validate required fields
+        ----------------------------------------- */
+
+        if (
+            !fullName ||
+            !email ||
+            !phone ||
+            !password
+        ) {
+
             return res.status(400).json({
+
                 success: false,
-                message: "Email and password are required."
+
+                message:
+                    "Full name, email, phone and password are required."
+
             });
         }
 
-        const [users] = await pool.execute(
-            `
-            SELECT
-                id,
-                full_name,
+
+        /* -----------------------------------------
+           Validate name
+        ----------------------------------------- */
+
+        if (
+            typeof fullName !== "string" ||
+            fullName.trim().length < 2
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Please enter a valid full name."
+
+            });
+        }
+
+
+        /* -----------------------------------------
+           Validate email
+        ----------------------------------------- */
+
+        const emailRegex =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+        if (
+            typeof email !== "string" ||
+            !emailRegex.test(email.trim())
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Please enter a valid email address."
+
+            });
+        }
+
+
+        /* -----------------------------------------
+           Validate phone
+        ----------------------------------------- */
+
+        const phoneRegex =
+            /^[0-9]{10}$/;
+
+
+        if (
+            typeof phone !== "string" ||
+            !phoneRegex.test(phone.trim())
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Please enter a valid 10-digit phone number."
+
+            });
+        }
+
+
+        /* -----------------------------------------
+           Validate password
+        ----------------------------------------- */
+
+        if (
+            typeof password !== "string" ||
+            password.length < 8
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Password must contain at least 8 characters."
+
+            });
+        }
+
+
+        /* -----------------------------------------
+           Register through service
+        ----------------------------------------- */
+
+        const result =
+            await authService.registerUser({
+
+                fullName,
+
                 email,
+
                 phone,
-                password_hash,
-                role,
-                address,
-                profile_image,
-                is_active
-            FROM users
-            WHERE email = ?
-            LIMIT 1
-            `,
-            [email]
-        );
 
-        if (users.length === 0) {
-            return res.status(401).json({
-                success: false,
-                message: "Invalid email or password."
+                password
+
             });
-        }
 
-        const user = users[0];
 
-        if (!user.is_active) {
-            return res.status(403).json({
-                success: false,
-                message: "This account is inactive."
-            });
-        }
+        /* -----------------------------------------
+           Success response
+        ----------------------------------------- */
 
-        const passwordMatches = await bcrypt.compare(
-            password,
-            user.password_hash
-        );
+        return res.status(201).json({
 
-        if (!passwordMatches) {
-            return res.status(401).json({
-                success: false,
-                message: "Invalid email or password."
-            });
-        }
-
-        const token = jwt.sign(
-            {
-                userId: user.id,
-                role: user.role
-            },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: "7d"
-            }
-        );
-
-        delete user.password_hash;
-
-        res.json({
             success: true,
-            message: "Login successful.",
-            token,
-            user
+
+            message:
+                "Account created successfully.",
+
+            token: result.token,
+
+            user: result.user
+
         });
 
-    } catch (error) {
-        console.error("Login error:", error);
+    }
 
-        res.status(500).json({
+    catch (error) {
+
+        console.error(
+            "Registration error:",
+            error
+        );
+
+
+        return res.status(
+            error.statusCode || 500
+        ).json({
+
             success: false,
-            message: "Server error during login."
+
+            message:
+                error.message ||
+                "Unable to create account. Please try again."
+
         });
     }
-};
+}
+
+
+/* =========================================================
+   LOGIN
+   POST /api/auth/login
+========================================================= */
+
+async function login(req, res) {
+
+    try {
+
+        const {
+            email,
+            password
+        } = req.body;
+
+
+        /* -----------------------------------------
+           Validate required fields
+        ----------------------------------------- */
+
+        if (
+            !email ||
+            !password
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Email and password are required."
+
+            });
+        }
+
+
+        /* -----------------------------------------
+           Validate email
+        ----------------------------------------- */
+
+        const emailRegex =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+        if (
+            typeof email !== "string" ||
+            !emailRegex.test(email.trim())
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Please enter a valid email address."
+
+            });
+        }
+
+
+        /* -----------------------------------------
+           Authenticate through service
+        ----------------------------------------- */
+
+        const result =
+            await authService.loginUser({
+
+                email,
+
+                password
+
+            });
+
+
+        /* -----------------------------------------
+           Success response
+        ----------------------------------------- */
+
+        return res.status(200).json({
+
+            success: true,
+
+            message:
+                "Login successful.",
+
+            token: result.token,
+
+            user: result.user
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Login error:",
+            error
+        );
+
+
+        return res.status(
+            error.statusCode || 500
+        ).json({
+
+            success: false,
+
+            message:
+                error.message ||
+                "Unable to login. Please try again."
+
+        });
+    }
+}
+
+
+/* =========================================================
+   GET CURRENT USER
+   GET /api/auth/me
+
+   Requires:
+   Authorization: Bearer <token>
+========================================================= */
+
+async function getCurrentUser(req, res) {
+
+    try {
+
+        /* -----------------------------------------
+           req.user is created by authMiddleware
+        ----------------------------------------- */
+
+        if (!req.user || !req.user.id) {
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "Authentication required."
+
+            });
+        }
+
+
+        /* -----------------------------------------
+           Find authenticated user
+        ----------------------------------------- */
+
+        const user =
+            authService.getUserById(
+                req.user.id
+            );
+
+
+        if (!user) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "User account not found."
+
+            });
+        }
+
+
+        /* -----------------------------------------
+           Check account status
+        ----------------------------------------- */
+
+        if (!user.isActive) {
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "Your account has been deactivated."
+
+            });
+        }
+
+
+        /* -----------------------------------------
+           Return safe user information
+           
+           Never return passwordHash.
+        ----------------------------------------- */
+
+        return res.status(200).json({
+
+            success: true,
+
+            user: {
+
+                id: user.id,
+
+                fullName: user.fullName,
+
+                email: user.email,
+
+                phone: user.phone,
+
+                role: user.role,
+
+                isActive: user.isActive,
+
+                createdAt: user.createdAt
+
+            }
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Get current user error:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "Unable to retrieve user information."
+
+        });
+    }
+}
+
+
+/* =========================================================
+   EXPORTS
+========================================================= */
 
 module.exports = {
-    login
+
+    register,
+
+    login,
+
+    getCurrentUser
+
 };

@@ -1,10 +1,12 @@
-/* =========================================
+/* =========================================================
    HEALTHCARE CONNECT
    UTILITY CLASSES
-   ========================================= */
+   ========================================================= */
 
 
-/* DISPLAY */
+/* =========================================================
+   DISPLAY
+   ========================================================= */
 
 .d-none {
     display: none !important;
@@ -14,55 +16,70 @@
     display: block !important;
 }
 
+.d-inline-block {
+    display: inline-block !important;
+}
+
 .d-flex {
     display: flex !important;
 }
 
 .d-grid {
     display: grid !important;
-}
 
 
-/* FLEX */
-
-.flex-column {
-    flex-direction: column;
-}
+/* =========================================================
+   FLEX
+   ========================================================= */
 
 .flex-row {
     flex-direction: row;
 }
 
-.align-center {
-    align-items: center;
-}
-
-.align-start {
-    align-items: flex-start;
-}
-
-.align-end {
-    align-items: flex-end;
-}
-
-.justify-center {
-    justify-content: center;
-}
-
-.justify-between {
-    justify-content: space-between;
-}
-
-.justify-end {
-    justify-content: flex-end;
+.flex-column {
+    flex-direction: column;
 }
 
 .flex-wrap {
     flex-wrap: wrap;
 }
 
+.flex-nowrap {
+    flex-wrap: nowrap;
+}
 
-/* GAP */
+.align-start {
+    align-items: flex-start;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.align-end {
+    align-items: flex-end;
+}
+
+.justify-start {
+    justify-content: flex-start;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+
+/* =========================================================
+   GAP
+   ========================================================= */
 
 .gap-1 {
     gap: var(--space-1);
@@ -92,8 +109,14 @@
     gap: var(--space-8);
 }
 
+.gap-10 {
+    gap: var(--space-10);
+}
 
-/* MARGIN */
+
+/* =========================================================
+   MARGIN
+   ========================================================= */
 
 .mt-2 {
     margin-top: var(--space-2);
@@ -109,6 +132,10 @@
 
 .mt-8 {
     margin-top: var(--space-8);
+}
+
+.mt-10 {
+    margin-top: var(--space-10);
 }
 
 .mb-2 {
@@ -127,8 +154,14 @@
     margin-bottom: var(--space-8);
 }
 
+.mb-10 {
+    margin-bottom: var(--space-10);
+}
 
-/* PADDING */
+
+/* =========================================================
+   PADDING
+   ========================================================= */
 
 .p-2 {
     padding: var(--space-2);
@@ -146,8 +179,14 @@
     padding: var(--space-8);
 }
 
+.p-10 {
+    padding: var(--space-10);
+}
 
-/* TEXT */
+
+/* =========================================================
+   TEXT
+   ========================================================= */
 
 .text-primary {
     color: var(--color-primary);
@@ -169,12 +208,24 @@
     color: var(--color-success);
 }
 
+.text-warning {
+    color: var(--color-warning);
+}
+
 .text-danger {
     color: var(--color-danger);
 }
 
+.text-info {
+    color: var(--color-info);
+}
+
 .text-center {
     text-align: center;
+}
+
+.text-left {
+    text-align: left;
 }
 
 .text-right {
@@ -182,7 +233,9 @@
 }
 
 
-/* FONT */
+/* =========================================================
+   FONT WEIGHT
+   ========================================================= */
 
 .fw-medium {
     font-weight: var(--font-weight-medium);
@@ -197,19 +250,31 @@
 }
 
 
-/* WIDTH */
+/* =========================================================
+   WIDTH
+   ========================================================= */
 
 .w-100 {
     width: 100%;
 }
 
+.w-auto {
+    width: auto;
+}
+
 .max-width {
-    max-width: var(--container-width);
+    width: min(100%, var(--container-width));
     margin-inline: auto;
 }
 
 
-/* VISUAL */
+/* =========================================================
+   RADIUS
+   ========================================================= */
+
+.rounded-sm {
+    border-radius: var(--radius-sm);
+}
 
 .rounded {
     border-radius: var(--radius-md);
@@ -223,8 +288,21 @@
     border-radius: var(--radius-xl);
 }
 
+.rounded-2xl {
+    border-radius: var(--radius-2xl);
+}
+
 .rounded-full {
     border-radius: var(--radius-full);
+}
+
+
+/* =========================================================
+   SHADOW
+   ========================================================= */
+
+.shadow-xs {
+    box-shadow: var(--shadow-xs);
 }
 
 .shadow-sm {
@@ -235,6 +313,83 @@
     box-shadow: var(--shadow-md);
 }
 
+.shadow-lg {
+    box-shadow: var(--shadow-lg);
+}
+
+
+/* =========================================================
+   OVERFLOW
+   ========================================================= */
+
 .overflow-hidden {
     overflow: hidden;
+}
+
+.overflow-auto {
+    overflow: auto;
+}
+
+.overflow-x-auto {
+    overflow-x: auto;
+}
+
+
+/* =========================================================
+   POSITION
+   ========================================================= */
+
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+.position-fixed {
+    position: fixed;
+}
+
+
+/* =========================================================
+   VISIBILITY
+   ========================================================= */
+
+.visible {
+    visibility: visible;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+
+/* =========================================================
+   CURSOR
+   ========================================================= */
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   MOBILE UTILITIES
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    .mobile-stack {
+        flex-direction: column !important;
+    }
+
+    .mobile-full {
+        width: 100% !important;
+    }
+
+    .mobile-center {
+        text-align: center !important;
+    }
+}
 }

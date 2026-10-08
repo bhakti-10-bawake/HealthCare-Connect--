@@ -1,122 +1,133 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
 
-// ========================================
-// ROUTES
-// ========================================
-
-const routes = require("./routes/index");
 const authRoutes = require("./routes/authRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 
-// ========================================
-// APP
-// ========================================
 
 const app = express();
 
-// ========================================
-// MIDDLEWARE
-// ========================================
 
-app.use(cors());
+/* =========================================================
+   GLOBAL MIDDLEWARE
+========================================================= */
+
+app.use(
+    cors({
+        origin: true,
+        credentials: true
+    })
+);
+
 app.use(express.json());
 
-// ========================================
-// ROUTE DIAGNOSTICS
-// ========================================
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
 
-console.log("========================================");
-console.log("Route diagnostics:");
-console.log("authRoutes:", typeof authRoutes);
-console.log("doctorRoutes:", typeof doctorRoutes);
-console.log("routes:", typeof routes);
-console.log("========================================");
 
-// ========================================
-// ROOT
-// ========================================
+/* =========================================================
+   ROOT
+========================================================= */
 
 app.get("/", (req, res) => {
-    res.json({
+
+    res.status(200).json({
+
         success: true,
-        message: "Healthcare Connect API is running"
+
+        message:
+            "Healthcare Connect API is running."
+
     });
+
 });
 
-// ========================================
-// DATABASE HEALTH CHECK
-// ========================================
 
-app.get("/api/health/database", async (req, res) => {
-    try {
-        const pool = require("./config/database");
+/* =========================================================
+   HEALTH CHECK
+========================================================= */
 
-        const connection = await pool.getConnection();
+app.get("/api/health", (req, res) => {
 
-        await connection.ping();
+    res.status(200).json({
 
-        connection.release();
+        success: true,
 
-        res.json({
-            success: true,
-            message: "Database connection successful"
-        });
+        message:
+            "Healthcare Connect API is healthy.",
 
-    } catch (error) {
+        timestamp:
+            new Date().toISOString()
+
+    });
+
+});
+
+
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
+
+app.use(
+    "/api/auth",
+    authRoutes
+);
+
+
+/* =========================================================
+   DOCTORS
+========================================================= */
+
+app.use(
+    "/api/doctors",
+    doctorRoutes
+);
+
+
+/* =========================================================
+   404
+========================================================= */
+
+app.use((req, res) => {
+
+    res.status(404).json({
+
+        success: false,
+
+        message:
+            "API endpoint not found."
+
+    });
+
+});
+
+
+/* =========================================================
+   GLOBAL ERROR HANDLER
+========================================================= */
+
+app.use(
+    (error, req, res, next) => {
+
         console.error(
-            "Database connection error:",
-            error.message
+            "Server error:",
+            error
         );
 
         res.status(500).json({
+
             success: false,
-            message: "Database connection failed"
+
+            message:
+                "Internal server error."
+
         });
+
     }
-});
+);
 
-// ========================================
-// AUTHENTICATION
-// ========================================
-
-app.use("/api/auth", authRoutes);
-
-// ========================================
-// DOCTORS
-// ========================================
-
-app.use("/api/doctors", doctorRoutes);
-
-// ========================================
-// GENERAL API
-// ========================================
-
-app.use("/api", routes);
-
-// ========================================
-// 404
-// ========================================
-
-app.use((req, res) => {
-    res.status(404).json({
-        success: false,
-        message: "API endpoint not found."
-    });
-});
-
-// ========================================
-// ERROR HANDLER
-// ========================================
-
-app.use((error, req, res, next) => {
-    console.error("Server error:", error);
-
-    res.status(500).json({
-        success: false,
-        message: "Internal server error."
-    });
-});
 
 module.exports = app;

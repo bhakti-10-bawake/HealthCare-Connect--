@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Profile | Healthcare Connect</title>
+    <title>My Profile | Healthcare Connect</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,8 +21,8 @@
 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
@@ -30,334 +30,416 @@
 
 <div class="app-shell">
 
-    <!-- Header -->
-    <header class="page-header">
+    <main class="profile-page">
 
-        <div>
-            <span class="eyebrow">Account</span>
-            <h1>My Profile</h1>
-            <p class="text-muted">
-                Manage your personal information and account.
-            </p>
-        </div>
+        <!-- Header -->
 
-        <div class="avatar avatar-md">
-            <i class="bi bi-person"></i>
-        </div>
+        <header class="profile-page-header">
 
-    </header>
+            <div>
+                <span class="profile-eyebrow">
+                    <i class="bi bi-person-circle"></i>
+                    MY ACCOUNT
+                </span>
 
-    <main class="page-content">
+                <h1>Profile</h1>
 
-        <!-- Profile overview -->
-        <section class="section">
-
-            <div class="profile-card">
-
-                <div class="profile-avatar">
-                    <span id="profileInitials">HC</span>
-                </div>
-
-                <div class="profile-info">
-
-                    <h2 id="profileName">
-                        Healthcare User
-                    </h2>
-
-                    <p id="profileEmail">
-                        user@example.com
-                    </p>
-
-                    <span
-                        class="badge badge-primary"
-                        id="profileRole"
-                    >
-                        Patient
-                    </span>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="icon-button"
-                    id="editProfileButton"
-                    aria-label="Edit profile"
-                >
-                    <i class="bi bi-pencil"></i>
-                </button>
-
+                <p>
+                    Manage your personal information and healthcare preferences.
+                </p>
             </div>
 
-        </section>
+        </header>
 
-        <!-- Personal information -->
-        <section class="section">
 
-            <div class="section-heading">
+        <!-- Profile Hero -->
 
-                <div>
-                    <span class="eyebrow">Personal Information</span>
-                    <h2>Account Details</h2>
-                </div>
+        <section class="profile-hero">
 
+            <div class="profile-avatar-large" id="profileInitials">
+                AK
             </div>
 
-            <div class="card">
+            <div class="profile-hero-content">
 
-                <form id="profileForm">
+                <span class="profile-role-badge" id="profileRole">
+                    Patient
+                </span>
 
-                    <div class="form-group">
+                <h2 id="profileName">
+                    Aarav Kulkarni
+                </h2>
 
-                        <label for="profileFullName">
-                            Full Name
-                        </label>
-
-                        <input
-                            type="text"
-                            id="profileFullName"
-                            name="fullName"
-                            class="form-control"
-                            placeholder="Enter your full name"
-                            disabled
-                        >
-
-                    </div>
-
-                    <div class="form-row">
-
-                        <div class="form-group">
-
-                            <label for="profilePhone">
-                                Phone Number
-                            </label>
-
-                            <input
-                                type="tel"
-                                id="profilePhone"
-                                name="phone"
-                                class="form-control"
-                                placeholder="Enter phone number"
-                                disabled
-                            >
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <label for="profileEmailInput">
-                                Email Address
-                            </label>
-
-                            <input
-                                type="email"
-                                id="profileEmailInput"
-                                name="email"
-                                class="form-control"
-                                placeholder="Enter email address"
-                                disabled
-                            >
-
-                        </div>
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label for="profileAddress">
-                            Address
-                        </label>
-
-                        <textarea
-                            id="profileAddress"
-                            name="address"
-                            class="form-control"
-                            rows="3"
-                            placeholder="Enter your address"
-                            disabled
-                        ></textarea>
-
-                    </div>
-
-                    <div
-                        class="form-actions"
-                        id="profileActions"
-                        hidden
-                    >
-
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            id="cancelProfileButton"
-                        >
-                            Cancel
-                        </button>
-
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                        >
-                            <i class="bi bi-check-lg"></i>
-                            Save Changes
-                        </button>
-
-                    </div>
-
-                </form>
+                <p id="profileEmail">
+                    aarav.kulkarni@example.com
+                </p>
 
             </div>
-
-        </section>
-
-        <!-- Healthcare preferences -->
-        <section class="section">
-
-            <div class="section-heading">
-
-                <div>
-                    <span class="eyebrow">Preferences</span>
-                    <h2>Healthcare Settings</h2>
-                </div>
-
-            </div>
-
-            <div class="settings-list">
-
-                <button
-                    type="button"
-                    class="settings-item"
-                    id="notificationSettings"
-                >
-
-                    <div class="icon-box icon-box-primary">
-                        <i class="bi bi-bell"></i>
-                    </div>
-
-                    <div>
-                        <h3>Notifications</h3>
-                        <p>Manage appointment and medicine alerts</p>
-                    </div>
-
-                    <i class="bi bi-chevron-right"></i>
-
-                </button>
-
-                <button
-                    type="button"
-                    class="settings-item"
-                    id="privacySettings"
-                >
-
-                    <div class="icon-box icon-box-info">
-                        <i class="bi bi-shield-lock"></i>
-                    </div>
-
-                    <div>
-                        <h3>Privacy & Security</h3>
-                        <p>Manage your account security</p>
-                    </div>
-
-                    <i class="bi bi-chevron-right"></i>
-
-                </button>
-
-            </div>
-
-        </section>
-
-        <!-- Quick access -->
-        <section class="section">
-
-            <div class="section-heading">
-
-                <div>
-                    <span class="eyebrow">Quick Access</span>
-                    <h2>My Healthcare</h2>
-                </div>
-
-            </div>
-
-            <div class="quick-grid">
-
-                <a
-                    href="health-records.html"
-                    class="quick-action-card"
-                >
-
-                    <div class="icon-box icon-box-primary">
-                        <i class="bi bi-file-medical"></i>
-                    </div>
-
-                    <div>
-                        <h3>Health Records</h3>
-                        <p>View your medical information</p>
-                    </div>
-
-                    <i class="bi bi-chevron-right"></i>
-
-                </a>
-
-                <a
-                    href="reminders.html"
-                    class="quick-action-card"
-                >
-
-                    <div class="icon-box icon-box-warning">
-                        <i class="bi bi-alarm"></i>
-                    </div>
-
-                    <div>
-                        <h3>Medicine Reminders</h3>
-                        <p>Manage your medication schedule</p>
-                    </div>
-
-                    <i class="bi bi-chevron-right"></i>
-
-                </a>
-
-            </div>
-
-        </section>
-
-        <!-- Logout -->
-        <section class="section">
 
             <button
                 type="button"
-                class="btn btn-danger btn-full"
-                id="logoutButton"
+                class="profile-edit-button"
+                id="editProfileButton"
             >
-                <i class="bi bi-box-arrow-right"></i>
-                Log Out
+                <i class="bi bi-pencil"></i>
+                Edit profile
             </button>
 
         </section>
 
+
+        <!-- Profile form -->
+
+        <section
+            class="profile-card profile-form-card"
+            id="profileForm"
+        >
+
+            <div class="profile-card-heading">
+
+                <div>
+                    <span class="profile-section-eyebrow">
+                        PERSONAL INFORMATION
+                    </span>
+
+                    <h2>Your details</h2>
+                </div>
+
+            </div>
+
+
+            <div class="profile-form-grid">
+
+                <div class="profile-field">
+
+                    <label for="profileFullName">
+                        Full name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileFullName"
+                        value="Aarav Kulkarni"
+                    >
+
+                </div>
+
+
+                <div class="profile-field">
+
+                    <label for="profilePhone">
+                        Phone number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="profilePhone"
+                        value="+91 98765 43210"
+                    >
+
+                </div>
+
+
+                <div class="profile-field">
+
+                    <label for="profileEmailInput">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="profileEmailInput"
+                        value="aarav.kulkarni@example.com"
+                    >
+
+                </div>
+
+
+                <div class="profile-field">
+
+                    <label for="profileAddress">
+                        Address
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileAddress"
+                        value="Kopargaon, Maharashtra"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-actions" id="profileActions">
+
+                <button
+                    type="button"
+                    class="profile-cancel-button"
+                    id="cancelProfileButton"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    class="profile-save-button"
+                    id="saveProfileButton"
+                >
+                    <i class="bi bi-check2"></i>
+                    Save changes
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- Health preferences -->
+
+        <section class="profile-card">
+
+            <div class="profile-card-heading">
+
+                <div>
+                    <span class="profile-section-eyebrow">
+                        PREFERENCES
+                    </span>
+
+                    <h2>Healthcare preferences</h2>
+                </div>
+
+            </div>
+
+
+            <div class="profile-settings-list">
+
+                <div class="profile-setting-row">
+
+                    <div class="profile-setting-icon notification-icon">
+                        <i class="bi bi-bell"></i>
+                    </div>
+
+                    <div class="profile-setting-content">
+
+                        <strong>Medicine reminders</strong>
+
+                        <span>
+                            Receive reminders for your scheduled medicines.
+                        </span>
+
+                    </div>
+
+                    <label class="profile-toggle">
+
+                        <input
+                            type="checkbox"
+                            id="notificationSettings"
+                            checked
+                        >
+
+                        <span></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="profile-setting-row">
+
+                    <div class="profile-setting-icon privacy-icon">
+                        <i class="bi bi-shield-lock"></i>
+                    </div>
+
+                    <div class="profile-setting-content">
+
+                        <strong>Health information privacy</strong>
+
+                        <span>
+                            Keep your medical information protected.
+                        </span>
+
+                    </div>
+
+                    <label class="profile-toggle">
+
+                        <input
+                            type="checkbox"
+                            id="privacySettings"
+                            checked
+                        >
+
+                        <span></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="profile-setting-row">
+
+                    <div class="profile-setting-icon appointment-icon">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+
+                    <div class="profile-setting-content">
+
+                        <strong>Appointment updates</strong>
+
+                        <span>
+                            Receive updates about your upcoming appointments.
+                        </span>
+
+                    </div>
+
+                    <label class="profile-toggle">
+
+                        <input
+                            type="checkbox"
+                            id="appointmentSettings"
+                            checked
+                        >
+
+                        <span></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Account -->
+
+        <section class="profile-card profile-account-card">
+
+            <div class="profile-card-heading">
+
+                <div>
+                    <span class="profile-section-eyebrow">
+                        ACCOUNT
+                    </span>
+
+                    <h2>Account settings</h2>
+                </div>
+
+            </div>
+
+
+            <div class="profile-account-actions">
+
+                <button
+                    type="button"
+                    class="profile-account-row"
+                >
+
+                    <span class="profile-account-icon">
+                        <i class="bi bi-question-circle"></i>
+                    </span>
+
+                    <span class="profile-account-text">
+
+                        <strong>Help & support</strong>
+
+                        <small>
+                            Get help using Healthcare Connect
+                        </small>
+
+                    </span>
+
+                    <i class="bi bi-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="profile-account-row"
+                    id="logoutButton"
+                >
+
+                    <span class="profile-account-icon logout-icon">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </span>
+
+                    <span class="profile-account-text">
+
+                        <strong>Log out</strong>
+
+                        <small>
+                            Sign out of this account
+                        </small>
+
+                    </span>
+
+                    <i class="bi bi-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- Privacy note -->
+
+        <div class="profile-privacy-note">
+
+            <i class="bi bi-shield-check"></i>
+
+            <span>
+                Your personal and healthcare information is kept private
+                and protected.
+            </span>
+
+        </div>
+
     </main>
 
-    <!-- Bottom Navigation -->
+
+    <!-- Bottom navigation -->
+
     <nav class="bottom-nav">
 
-        <a href="dashboard.html" class="bottom-nav-item">
+        <a
+            href="dashboard.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-house"></i>
             <span>Home</span>
         </a>
 
-        <a href="doctors.html" class="bottom-nav-item">
+        <a
+            href="doctors.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-person-badge"></i>
             <span>Doctors</span>
         </a>
 
-        <a href="appointments.html" class="bottom-nav-item">
-            <i class="bi bi-calendar-check"></i>
+        <a
+            href="appointments.html"
+            class="bottom-nav-item"
+        >
+            <i class="bi bi-calendar2-check"></i>
             <span>Appointments</span>
         </a>
 
-        <a href="medicines.html" class="bottom-nav-item">
-            <i class="bi bi-capsule"></i>
-            <span>Medicines</span>
+        <a
+            href="health-records.html"
+            class="bottom-nav-item"
+        >
+            <i class="bi bi-folder2-open"></i>
+            <span>Records</span>
         </a>
 
-        <a href="profile.html" class="bottom-nav-item active">
+        <a
+            href="profile.html"
+            class="bottom-nav-item active"
+        >
             <i class="bi bi-person"></i>
             <span>Profile</span>
         </a>
@@ -365,6 +447,7 @@
     </nav>
 
 </div>
+
 
 <script src="../js/app.js"></script>
 <script src="../js/profile.js"></script>

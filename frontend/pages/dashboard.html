@@ -8,9 +8,16 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
@@ -23,150 +30,183 @@
 
 <div class="app">
 
-    <main class="page">
+    <main class="dashboard-page">
 
-        <!-- Header -->
-        <header class="page-header">
+        <!-- =================================================
+             HEADER
+             ================================================= -->
 
-            <div class="page-header-content">
-                <p>Good morning</p>
-                <h1 id="patientName">Welcome back</h1>
+        <header class="dashboard-header">
+
+            <div class="dashboard-heading">
+
+                <span class="dashboard-eyebrow">
+                    <span class="status-dot"></span>
+                    Healthcare Connect
+                </span>
+
+                <p class="dashboard-greeting">
+                    Good morning
+                </p>
+
+                <h1 id="patientName">
+                    Welcome back
+                </h1>
+
+                <p class="dashboard-intro">
+                    Here's a simple overview of your health today.
+                </p>
+
             </div>
 
-            <a href="profile.html" class="avatar avatar-lg">
+
+            <a
+                href="profile.html"
+                class="dashboard-profile"
+                aria-label="Open profile"
+            >
                 <img
                     src="../assets/images/default-avatar.png"
                     alt="Profile"
                     onerror="this.style.display='none'"
                 >
+
+                <span class="profile-status"></span>
             </a>
 
         </header>
 
 
-        <!-- Welcome -->
-        <section class="welcome-card section">
+        <!-- =================================================
+             MAIN FEATURE AREA
+             ================================================= -->
 
-            <h1>Your healthcare, connected.</h1>
+        <section class="dashboard-feature-grid">
 
-            <p>
-                Find healthcare professionals, manage appointments,
-                access your health records and stay on top of your medicines.
-            </p>
+            <!-- Health Hero -->
 
-            <div class="d-flex gap-3 flex-wrap mt-6">
+            <div class="dashboard-hero">
 
-                <a href="doctors.html" class="btn btn-primary">
-                    <i class="bi bi-search"></i>
-                    Find a doctor
-                </a>
+                <div class="hero-copy">
 
-                <a href="book-appointment.html" class="btn btn-secondary">
-                    <i class="bi bi-calendar-plus"></i>
-                    Book appointment
-                </a>
+                    <span class="hero-label">
+                        <i class="bi bi-heart-pulse"></i>
+                        Your health, connected
+                    </span>
 
-            </div>
-
-        </section>
-
-
-        <!-- Quick Stats -->
-        <section class="section">
-
-            <div class="section-header">
-                <h2 class="section-title">Your overview</h2>
-            </div>
-
-            <div class="grid grid-4">
-
-                <a href="appointments.html" class="stat-card">
-                    <div class="icon-box">
-                        <i class="bi bi-calendar2-check"></i>
-                    </div>
-
-                    <div class="stat-content">
-                        <div class="stat-value" id="appointmentCount">—</div>
-                        <div class="stat-label">Appointments</div>
-                    </div>
-                </a>
-
-
-                <a href="health-records.html" class="stat-card">
-                    <div class="icon-box">
-                        <i class="bi bi-file-medical"></i>
-                    </div>
-
-                    <div class="stat-content">
-                        <div class="stat-value" id="recordCount">—</div>
-                        <div class="stat-label">Health records</div>
-                    </div>
-                </a>
-
-
-                <a href="medicines.html" class="stat-card">
-                    <div class="icon-box">
-                        <i class="bi bi-capsule"></i>
-                    </div>
-
-                    <div class="stat-content">
-                        <div class="stat-value" id="medicineCount">—</div>
-                        <div class="stat-label">Medicines</div>
-                    </div>
-                </a>
-
-
-                <a href="reminders.html" class="stat-card">
-                    <div class="icon-box">
-                        <i class="bi bi-bell"></i>
-                    </div>
-
-                    <div class="stat-content">
-                        <div class="stat-value" id="reminderCount">—</div>
-                        <div class="stat-label">Reminders</div>
-                    </div>
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- Upcoming Appointment -->
-        <section class="section">
-
-            <div class="section-header">
-
-                <h2 class="section-title">
-                    Upcoming appointment
-                </h2>
-
-                <a href="appointments.html" class="section-link">
-                    View all
-                </a>
-
-            </div>
-
-
-            <div id="upcomingAppointment">
-
-                <div class="card empty-state">
-
-                    <div class="icon-box icon-box-lg">
-                        <i class="bi bi-calendar-event"></i>
-                    </div>
-
-                    <h3>No upcoming appointments</h3>
+                    <h2>
+                        Take care of your health,
+                        <span>one step at a time.</span>
+                    </h2>
 
                     <p>
-                        Your upcoming appointments will appear here.
+                        Find doctors, manage appointments, keep your
+                        health records organised and stay on track
+                        with your medicines.
                     </p>
+
+                    <div class="hero-actions">
+
+                        <a
+                            href="doctors.html"
+                            class="btn btn-primary"
+                        >
+                            <i class="bi bi-search"></i>
+                            Find a doctor
+                        </a>
+
+                        <a
+                            href="book-appointment.html"
+                            class="btn btn-white"
+                        >
+                            <i class="bi bi-calendar-plus"></i>
+                            Book appointment
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Decorative health visual -->
+
+                <div class="hero-visual">
+
+                    <div class="hero-orbit hero-orbit-one"></div>
+                    <div class="hero-orbit hero-orbit-two"></div>
+
+                    <div class="hero-health-icon">
+                        <i class="bi bi-heart-pulse"></i>
+                    </div>
+
+                    <div class="hero-floating-card hero-card-top">
+                        <i class="bi bi-shield-check"></i>
+                        <span>Health records</span>
+                    </div>
+
+                    <div class="hero-floating-card hero-card-bottom">
+                        <i class="bi bi-calendar-check"></i>
+                        <span>Appointments</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Upcoming Appointment -->
+
+            <div class="dashboard-appointment-panel">
+
+                <div class="panel-heading">
+
+                    <div>
+                        <span class="panel-eyebrow">
+                            NEXT VISIT
+                        </span>
+
+                        <h2>
+                            Upcoming appointment
+                        </h2>
+                    </div>
+
+                    <a
+                        href="appointments.html"
+                        class="panel-link"
+                    >
+                        View all
+                        <i class="bi bi-arrow-up-right"></i>
+                    </a>
+
+                </div>
+
+
+                <div id="upcomingAppointment">
+
+                    <div class="appointment-empty">
+
+                        <div class="appointment-empty-icon">
+                            <i class="bi bi-calendar-heart"></i>
+                        </div>
+
+                        <div>
+                            <h3>
+                                No upcoming appointment
+                            </h3>
+
+                            <p>
+                                Schedule your next visit when you need care.
+                            </p>
+                        </div>
+
+                    </div>
 
                     <a
                         href="book-appointment.html"
-                        class="btn btn-primary mt-4"
+                        class="appointment-book-link"
                     >
-                        Book appointment
+                        Book an appointment
+                        <i class="bi bi-arrow-right"></i>
                     </a>
 
                 </div>
@@ -176,111 +216,129 @@
         </section>
 
 
-        <!-- Quick Access -->
-        <section class="section">
+        <!-- =================================================
+             HEALTH SNAPSHOT
+             ================================================= -->
 
-            <div class="section-header">
-                <h2 class="section-title">Quick access</h2>
+        <section class="dashboard-section">
+
+            <div class="dashboard-section-heading">
+
+                <div>
+                    <span class="section-eyebrow">
+                        AT A GLANCE
+                    </span>
+
+                    <h2>
+                        Your health snapshot
+                    </h2>
+                </div>
+
             </div>
 
-            <div class="grid grid-2">
 
-                <a href="health-records.html" class="card">
+            <div class="health-snapshot-grid">
 
-                    <div class="card-body d-flex align-center gap-4">
+                <a
+                    href="appointments.html"
+                    class="snapshot-item"
+                >
 
-                        <div class="icon-box">
-                            <i class="bi bi-folder2-open"></i>
-                        </div>
+                    <div class="snapshot-icon">
+                        <i class="bi bi-calendar2-check"></i>
+                    </div>
 
-                        <div>
-                            <h3 class="card-title">
-                                Health records
-                            </h3>
+                    <div class="snapshot-info">
 
-                            <p class="card-subtitle">
-                                Access your medical history and documents.
-                            </p>
-                        </div>
+                        <span>
+                            Appointments
+                        </span>
 
-                        <i class="bi bi-chevron-right text-muted"></i>
+                        <strong id="appointmentCount">
+                            —
+                        </strong>
 
                     </div>
+
+                    <i class="bi bi-arrow-up-right snapshot-arrow"></i>
 
                 </a>
 
 
-                <a href="medicines.html" class="card">
+                <a
+                    href="health-records.html"
+                    class="snapshot-item"
+                >
 
-                    <div class="card-body d-flex align-center gap-4">
+                    <div class="snapshot-icon">
+                        <i class="bi bi-file-medical"></i>
+                    </div>
 
-                        <div class="icon-box">
-                            <i class="bi bi-capsule"></i>
-                        </div>
+                    <div class="snapshot-info">
 
-                        <div>
-                            <h3 class="card-title">
-                                Medicines
-                            </h3>
+                        <span>
+                            Health records
+                        </span>
 
-                            <p class="card-subtitle">
-                                Check medicines and availability.
-                            </p>
-                        </div>
-
-                        <i class="bi bi-chevron-right text-muted"></i>
+                        <strong id="recordCount">
+                            —
+                        </strong>
 
                     </div>
+
+                    <i class="bi bi-arrow-up-right snapshot-arrow"></i>
 
                 </a>
 
 
-                <a href="reminders.html" class="card">
+                <a
+                    href="medicines.html"
+                    class="snapshot-item"
+                >
 
-                    <div class="card-body d-flex align-center gap-4">
+                    <div class="snapshot-icon">
+                        <i class="bi bi-capsule"></i>
+                    </div>
 
-                        <div class="icon-box">
-                            <i class="bi bi-alarm"></i>
-                        </div>
+                    <div class="snapshot-info">
 
-                        <div>
-                            <h3 class="card-title">
-                                Medicine reminders
-                            </h3>
+                        <span>
+                            Medicines
+                        </span>
 
-                            <p class="card-subtitle">
-                                Stay consistent with your medicines.
-                            </p>
-                        </div>
-
-                        <i class="bi bi-chevron-right text-muted"></i>
+                        <strong id="medicineCount">
+                            —
+                        </strong>
 
                     </div>
+
+                    <i class="bi bi-arrow-up-right snapshot-arrow"></i>
 
                 </a>
 
 
-                <a href="emergency.html" class="card">
+                <a
+                    href="reminders.html"
+                    class="snapshot-item"
+                >
 
-                    <div class="card-body d-flex align-center gap-4">
+                    <div class="snapshot-icon">
+                        <i class="bi bi-bell"></i>
+                    </div>
 
-                        <div class="icon-box">
-                            <i class="bi bi-telephone"></i>
-                        </div>
+                    <div class="snapshot-info">
 
-                        <div>
-                            <h3 class="card-title">
-                                Emergency assistance
-                            </h3>
+                        <span>
+                            Active reminders
+                        </span>
 
-                            <p class="card-subtitle">
-                                Get quick access to emergency support.
-                            </p>
-                        </div>
-
-                        <i class="bi bi-chevron-right text-muted"></i>
+                        <strong id="reminderCount">
+                            —
+                        </strong>
 
                     </div>
+
+                    <i class="bi bi-arrow-up-right snapshot-arrow"></i>
 
                 </a>
 
@@ -288,34 +346,246 @@
 
         </section>
 
+
+        <!-- =================================================
+             QUICK SERVICES
+             ================================================= -->
+
+        <section class="dashboard-section">
+
+            <div class="dashboard-section-heading">
+
+                <div>
+                    <span class="section-eyebrow">
+                        SERVICES
+                    </span>
+
+                    <h2>
+                        What do you need today?
+                    </h2>
+
+                    <p>
+                        Quickly access the healthcare services you use most.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="service-grid">
+
+                <a
+                    href="doctors.html"
+                    class="service-tile service-primary"
+                >
+
+                    <div class="service-tile-icon">
+                        <i class="bi bi-person-badge"></i>
+                    </div>
+
+                    <div class="service-tile-content">
+                        <h3>Find a doctor</h3>
+
+                        <p>
+                            Discover doctors and healthcare professionals
+                            by speciality.
+                        </p>
+                    </div>
+
+                    <span class="service-tile-arrow">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="health-records.html"
+                    class="service-tile"
+                >
+
+                    <div class="service-tile-icon">
+                        <i class="bi bi-folder2-open"></i>
+                    </div>
+
+                    <div class="service-tile-content">
+                        <h3>Health records</h3>
+
+                        <p>
+                            Keep your medical history and reports together.
+                        </p>
+                    </div>
+
+                    <span class="service-tile-arrow">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="medicines.html"
+                    class="service-tile"
+                >
+
+                    <div class="service-tile-icon">
+                        <i class="bi bi-capsule"></i>
+                    </div>
+
+                    <div class="service-tile-content">
+                        <h3>Medicines</h3>
+
+                        <p>
+                            Search medicines and explore medicine information.
+                        </p>
+                    </div>
+
+                    <span class="service-tile-arrow">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="reminders.html"
+                    class="service-tile"
+                >
+
+                    <div class="service-tile-icon">
+                        <i class="bi bi-alarm"></i>
+                    </div>
+
+                    <div class="service-tile-content">
+                        <h3>Medicine reminders</h3>
+
+                        <p>
+                            Stay consistent with your daily medicine schedule.
+                        </p>
+                    </div>
+
+                    <span class="service-tile-arrow">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="emergency.html"
+                    class="service-tile service-emergency"
+                >
+
+                    <div class="service-tile-icon">
+                        <i class="bi bi-telephone"></i>
+                    </div>
+
+                    <div class="service-tile-content">
+                        <h3>Emergency assistance</h3>
+
+                        <p>
+                            Quickly reach emergency support when every
+                            second matters.
+                        </p>
+                    </div>
+
+                    <span class="service-tile-arrow">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             HEALTH NOTE
+             ================================================= -->
+
+        <section class="dashboard-health-note">
+
+            <div class="health-note-icon">
+                <i class="bi bi-shield-check"></i>
+            </div>
+
+            <div class="health-note-content">
+
+                <span>
+                    HEALTH TIP
+                </span>
+
+                <h3>
+                    Keep your health information up to date.
+                </h3>
+
+                <p>
+                    Accurate medical information helps healthcare
+                    professionals understand your history and provide
+                    better care.
+                </p>
+
+            </div>
+
+            <a
+                href="profile.html"
+                class="health-note-action"
+            >
+                Update profile
+                <i class="bi bi-arrow-right"></i>
+            </a>
+
+        </section>
+
     </main>
 
 
-    <!-- Bottom Navigation -->
+    <!-- =====================================================
+         BOTTOM NAVIGATION
+         ===================================================== -->
 
-    <nav class="bottom-nav">
+    <nav
+        class="bottom-nav"
+        aria-label="Main navigation"
+    >
 
-        <a href="dashboard.html" class="bottom-nav-item active">
+        <a
+            href="dashboard.html"
+            class="bottom-nav-item active"
+        >
             <i class="bi bi-house"></i>
             <span>Home</span>
         </a>
 
-        <a href="doctors.html" class="bottom-nav-item">
+        <a
+            href="doctors.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-person-badge"></i>
             <span>Doctors</span>
         </a>
 
-        <a href="appointments.html" class="bottom-nav-item">
+        <a
+            href="appointments.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-calendar2"></i>
             <span>Appointments</span>
         </a>
 
-        <a href="medicines.html" class="bottom-nav-item">
+        <a
+            href="medicines.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-capsule"></i>
             <span>Medicines</span>
         </a>
 
-        <a href="profile.html" class="bottom-nav-item">
+        <a
+            href="profile.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-person"></i>
             <span>Profile</span>
         </a>
@@ -323,6 +593,7 @@
     </nav>
 
 </div>
+
 
 <script src="../js/app.js"></script>
 <script src="../js/dashboard.js"></script>

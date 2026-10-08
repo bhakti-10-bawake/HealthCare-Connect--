@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,263 +21,316 @@
 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body>
+<body class="auth-page-body">
 
-<main class="auth-page">
+<div class="auth-page">
 
-    <div class="auth-container">
+    <!-- Left visual panel -->
+
+    <section class="auth-visual">
 
         <div class="auth-brand">
-            <h1>Healthcare Connect</h1>
+            <div class="auth-brand-mark">
+                <i class="bi bi-heart-pulse-fill"></i>
+            </div>
 
-            <p>
-                Your digital connection to better healthcare.
-            </p>
+            <span>Healthcare Connect</span>
         </div>
 
 
-        <section class="auth-card">
+        <div class="auth-visual-content">
 
-            <h2>Create your account</h2>
+            <span class="auth-visual-eyebrow">
+                YOUR HEALTHCARE COMPANION
+            </span>
+
+            <h1>
+                One place for
+                <span>your health.</span>
+            </h1>
 
             <p>
-                Join Healthcare Connect and manage your healthcare in one place.
+                Find doctors, manage appointments, access health
+                records and stay connected with your healthcare journey.
             </p>
 
+        </div>
 
-            <form class="auth-form" id="registerForm">
 
-                <!-- Full Name -->
+        <div class="auth-visual-card">
 
-                <div class="form-group">
+            <div class="auth-visual-card-icon">
+                <i class="bi bi-heart-pulse"></i>
+            </div>
 
-                    <label
-                        class="form-label"
-                        for="fullName"
-                    >
+            <div>
+                <strong>Healthcare, made simpler.</strong>
+
+                <span>
+                    Everything you need for your everyday healthcare.
+                </span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Register panel -->
+
+    <main class="auth-content">
+
+        <div class="auth-form-wrapper register-form-wrapper">
+
+            <div class="auth-mobile-brand">
+
+                <div class="auth-brand-mark">
+                    <i class="bi bi-heart-pulse-fill"></i>
+                </div>
+
+                <span>Healthcare Connect</span>
+
+            </div>
+
+
+            <div class="auth-heading">
+
+                <span class="auth-eyebrow">
+                    GET STARTED
+                </span>
+
+                <h2>Create your account</h2>
+
+                <p>
+                    Join Healthcare Connect and manage your healthcare
+                    in one place.
+                </p>
+
+            </div>
+
+
+            <form id="registerForm" class="auth-form">
+
+                <!-- Name -->
+
+                <div class="auth-field">
+
+                    <label for="fullName">
                         Full name
                     </label>
 
-                    <input
-                        class="form-input"
-                        type="text"
-                        id="fullName"
-                        name="fullName"
-                        placeholder="Enter your full name"
-                        autocomplete="name"
-                        required
-                    >
+                    <div class="auth-input-wrapper">
+
+                        <i class="bi bi-person"></i>
+
+                        <input
+                            type="text"
+                            id="fullName"
+                            name="fullName"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
 
                 </div>
 
 
                 <!-- Email -->
 
-                <div class="form-group">
+                <div class="auth-field">
 
-                    <label
-                        class="form-label"
-                        for="registerEmail"
-                    >
+                    <label for="registerEmail">
                         Email address
                     </label>
 
-                    <input
-                        class="form-input"
-                        type="email"
-                        id="registerEmail"
-                        name="email"
-                        placeholder="Enter your email"
-                        autocomplete="email"
-                        required
-                    >
+                    <div class="auth-input-wrapper">
+
+                        <i class="bi bi-envelope"></i>
+
+                        <input
+                            type="email"
+                            id="registerEmail"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
 
                 </div>
 
 
                 <!-- Phone -->
 
-                <div class="form-group">
+                <div class="auth-field">
 
-                    <label
-                        class="form-label"
-                        for="phone"
-                    >
+                    <label for="phone">
                         Phone number
                     </label>
 
-                    <input
-                        class="form-input"
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        placeholder="Enter your phone number"
-                        autocomplete="tel"
-                        required
-                    >
+                    <div class="auth-input-wrapper">
 
-                </div>
+                        <i class="bi bi-telephone"></i>
 
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder="+91 98765 43210"
+                            autocomplete="tel"
+                            required
+                        >
 
-                <!-- Role -->
-
-                <div class="form-group">
-
-                    <label
-                        class="form-label"
-                        for="role"
-                    >
-                        Account type
-                    </label>
-
-                    <select
-                        class="form-select"
-                        id="role"
-                        name="role"
-                        required
-                    >
-
-                        <option value="">
-                            Select account type
-                        </option>
-
-                        <option value="PATIENT">
-                            Patient
-                        </option>
-
-                        <option value="DOCTOR">
-                            Doctor
-                        </option>
-
-                        <option value="PHARMACY">
-                            Pharmacy
-                        </option>
-
-                    </select>
+                    </div>
 
                 </div>
 
 
                 <!-- Password -->
 
-                <div class="form-group">
+                <div class="auth-field">
 
-                    <label
-                        class="form-label"
-                        for="registerPassword"
-                    >
+                    <label for="registerPassword">
                         Password
                     </label>
 
-                    <input
-                        class="form-input"
-                        type="password"
-                        id="registerPassword"
-                        name="password"
-                        placeholder="Create a password"
-                        autocomplete="new-password"
-                        minlength="8"
-                        required
-                    >
+                    <div class="auth-input-wrapper">
+
+                        <i class="bi bi-lock"></i>
+
+                        <input
+                            type="password"
+                            id="registerPassword"
+                            name="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="auth-password-toggle"
+                            id="toggleRegisterPassword"
+                            aria-label="Show password"
+                        >
+                            <i class="bi bi-eye"></i>
+                        </button>
+
+                    </div>
+
+                    <span class="auth-field-hint">
+                        Use at least 8 characters.
+                    </span>
 
                 </div>
 
 
-                <!-- Confirm Password -->
+                <!-- Confirm password -->
 
-                <div class="form-group">
+                <div class="auth-field">
 
-                    <label
-                        class="form-label"
-                        for="confirmPassword"
-                    >
+                    <label for="confirmPassword">
                         Confirm password
                     </label>
 
-                    <input
-                        class="form-input"
-                        type="password"
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        placeholder="Confirm your password"
-                        autocomplete="new-password"
-                        minlength="8"
-                        required
-                    >
+                    <div class="auth-input-wrapper">
+
+                        <i class="bi bi-lock-fill"></i>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Re-enter your password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
 
                 </div>
 
 
+                <!-- Terms -->
+
+                <label class="auth-terms">
+
+                    <input
+                        type="checkbox"
+                        id="terms"
+                        required
+                    >
+
+                    <span></span>
+
+                    <p>
+                        I agree to the
+                        <a href="#" id="termsLink">terms of service</a>
+                        and acknowledge the healthcare information
+                        privacy guidelines.
+                    </p>
+
+                </label>
+
+
+                <!-- Submit -->
+
                 <button
                     type="submit"
-                    class="btn btn-primary btn-lg w-100"
+                    class="auth-submit-button"
+                    id="registerButton"
                 >
-
-                    <i class="bi bi-person-plus"></i>
-
-                    Create account
-
+                    <span>Create account</span>
+                    <i class="bi bi-arrow-right"></i>
                 </button>
 
             </form>
 
 
-            <div class="auth-footer">
+            <div class="auth-divider">
+                <span>already registered?</span>
+            </div>
+
+
+            <div class="auth-register">
 
                 <span>Already have an account?</span>
 
                 <a href="login.html">
                     Sign in
+                    <i class="bi bi-arrow-up-right"></i>
                 </a>
 
             </div>
 
-        </section>
 
-    </div>
+            <div class="auth-security-note">
 
-</main>
+                <i class="bi bi-shield-lock"></i>
+
+                <span>
+                    Your personal information is protected.
+                </span>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
 
 
 <script src="../js/app.js"></script>
-
-<script>
-
-document
-    .getElementById("registerForm")
-    .addEventListener("submit", function(event) {
-
-        event.preventDefault();
-
-        const password =
-            document.getElementById("registerPassword").value;
-
-        const confirmPassword =
-            document.getElementById("confirmPassword").value;
-
-        if (password !== confirmPassword) {
-
-            showMessage(
-                "Passwords do not match.",
-                "danger"
-            );
-
-            return;
-        }
-
-        showMessage(
-            "Registration form is ready for backend integration.",
-            "info"
-        );
-
-    });
-
-</script>
+<script src="../js/auth.js"></script>
 
 </body>
 </html>

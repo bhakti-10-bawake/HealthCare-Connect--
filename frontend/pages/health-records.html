@@ -8,21 +8,16 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+>
 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
@@ -30,212 +25,131 @@
 
 <div class="app-shell">
 
-    <!-- Header -->
-    <header class="page-header">
+    <main class="health-records-page">
 
-        <div>
-            <span class="eyebrow">My Health</span>
-            <h1>Health Records</h1>
-            <p class="text-muted">
-                Keep your medical information organized in one place.
-            </p>
-        </div>
+        <!-- Header -->
+        <header class="health-records-header">
 
-        <div class="avatar avatar-md">
-            <i class="bi bi-file-medical"></i>
-        </div>
+            <div class="health-records-header-copy">
+                <span class="health-records-eyebrow">
+                    <i class="bi bi-folder2-open"></i>
+                    MY HEALTH
+                </span>
 
-    </header>
+                <h1>Health Records</h1>
 
-    <main class="page-content">
+                <p>
+                    Keep your medical information organized and accessible in one place.
+                </p>
+            </div>
 
-        <!-- Health summary -->
-        <section class="section">
+            <div class="health-records-summary">
+                <div class="records-summary-icon">
+                    <i class="bi bi-file-earmark-medical"></i>
+                </div>
 
-            <div class="health-summary-card">
+                <div>
+                    <span id="recordCount">0</span>
+                    <small>records stored</small>
+                </div>
+            </div>
 
-                <div class="health-summary-icon">
+        </header>
+
+
+        <!-- Quick Overview -->
+        <section class="records-overview">
+
+            <div class="records-overview-card">
+                <div class="records-overview-icon records-icon-teal">
                     <i class="bi bi-heart-pulse"></i>
                 </div>
 
-                <div class="health-summary-content">
+                <div>
+                    <span class="records-overview-label">Health history</span>
+                    <strong>Organized</strong>
+                </div>
+            </div>
 
-                    <span class="eyebrow">Health Information</span>
-
-                    <h2>Your Health Records</h2>
-
-                    <p>
-                        Access your medical history, prescriptions,
-                        reports and other important health information.
-                    </p>
-
+            <div class="records-overview-card">
+                <div class="records-overview-icon records-icon-blue">
+                    <i class="bi bi-calendar-check"></i>
                 </div>
 
+                <div>
+                    <span class="records-overview-label">Latest update</span>
+                    <strong id="latestRecordDate">—</strong>
+                </div>
+            </div>
+
+            <div class="records-overview-card">
+                <div class="records-overview-icon records-icon-green">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+
+                <div>
+                    <span class="records-overview-label">Your records</span>
+                    <strong>Private & secure</strong>
+                </div>
             </div>
 
         </section>
 
-        <!-- Record categories -->
-        <section class="section">
 
-            <div class="section-heading">
+        <!-- Records -->
+        <section class="records-section">
 
+            <div class="records-section-heading">
                 <div>
-                    <span class="eyebrow">Medical Information</span>
-                    <h2>Record Categories</h2>
+                    <span class="section-eyebrow">MEDICAL HISTORY</span>
+                    <h2>Your records</h2>
                 </div>
 
+                <div class="records-filter" id="recordFilters">
+                    <button class="record-filter active" data-filter="all">
+                        All
+                    </button>
+
+                    <button class="record-filter" data-filter="Consultation">
+                        Consultations
+                    </button>
+
+                    <button class="record-filter" data-filter="Lab Report">
+                        Lab reports
+                    </button>
+
+                    <button class="record-filter" data-filter="Prescription">
+                        Prescriptions
+                    </button>
+                </div>
             </div>
 
-            <div class="record-grid">
 
-                <a
-                    href="#"
-                    class="record-card"
-                    data-record-type="medical-history"
-                >
-
-                    <div class="icon-box icon-box-primary">
-                        <i class="bi bi-clock-history"></i>
-                    </div>
-
-                    <div>
-                        <h3>Medical History</h3>
-                        <p>Previous diagnoses and medical conditions</p>
-                    </div>
-
-                    <i class="bi bi-chevron-right"></i>
-
-                </a>
-
-                <a
-                    href="#"
-                    class="record-card"
-                    data-record-type="prescriptions"
-                >
-
-                    <div class="icon-box icon-box-info">
-                        <i class="bi bi-prescription2"></i>
-                    </div>
-
-                    <div>
-                        <h3>Prescriptions</h3>
-                        <p>Medicines prescribed by doctors</p>
-                    </div>
-
-                    <i class="bi bi-chevron-right"></i>
-
-                </a>
-
-                <a
-                    href="#"
-                    class="record-card"
-                    data-record-type="lab-reports"
-                >
-
-                    <div class="icon-box icon-box-warning">
-                        <i class="bi bi-clipboard2-pulse"></i>
-                    </div>
-
-                    <div>
-                        <h3>Lab Reports</h3>
-                        <p>Blood tests and diagnostic reports</p>
-                    </div>
-
-                    <i class="bi bi-chevron-right"></i>
-
-                </a>
-
-                <a
-                    href="#"
-                    class="record-card"
-                    data-record-type="documents"
-                >
-
-                    <div class="icon-box icon-box-success">
-                        <i class="bi bi-folder2-open"></i>
-                    </div>
-
-                    <div>
-                        <h3>Medical Documents</h3>
-                        <p>Important healthcare documents</p>
-                    </div>
-
-                    <i class="bi bi-chevron-right"></i>
-
-                </a>
-
-            </div>
+            <div id="recordList" class="record-list"></div>
 
         </section>
 
-        <!-- Recent records -->
-        <section class="section">
 
-            <div class="section-heading">
+        <!-- Privacy Note -->
+        <section class="records-privacy-note">
 
-                <div>
-                    <span class="eyebrow">Latest</span>
-                    <h2>Recent Records</h2>
-                </div>
-
-                <span
-                    class="text-muted"
-                    id="recordCount"
-                >
-                    0 records
-                </span>
-
+            <div class="privacy-note-icon">
+                <i class="bi bi-lock"></i>
             </div>
 
-            <div
-                class="card-list"
-                id="recordList"
-            >
+            <div>
+                <strong>Your health information stays private.</strong>
 
-                <div class="empty-state">
-
-                    <div class="empty-state-icon">
-                        <i class="bi bi-file-earmark-medical"></i>
-                    </div>
-
-                    <h3>No health records yet</h3>
-
-                    <p>
-                        Your medical records will appear here
-                        once they are added to your account.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- Privacy -->
-        <section class="section">
-
-            <div class="alert alert-info">
-
-                <i class="bi bi-shield-check"></i>
-
-                <div>
-
-                    <strong>Your health information matters</strong>
-
-                    <p>
-                        Healthcare Connect is designed to keep
-                        your medical information organized and
-                        accessible only to authorized users.
-                    </p>
-
-                </div>
-
+                <p>
+                    Healthcare Connect keeps your medical information organized
+                    so you can easily access it when needed.
+                </p>
             </div>
 
         </section>
 
     </main>
+
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
@@ -251,13 +165,13 @@
         </a>
 
         <a href="appointments.html" class="bottom-nav-item">
-            <i class="bi bi-calendar-check"></i>
+            <i class="bi bi-calendar2-check"></i>
             <span>Appointments</span>
         </a>
 
-        <a href="medicines.html" class="bottom-nav-item">
-            <i class="bi bi-capsule"></i>
-            <span>Medicines</span>
+        <a href="health-records.html" class="bottom-nav-item active">
+            <i class="bi bi-folder2-open"></i>
+            <span>Records</span>
         </a>
 
         <a href="profile.html" class="bottom-nav-item">
@@ -268,6 +182,7 @@
     </nav>
 
 </div>
+
 
 <script src="../js/app.js"></script>
 <script src="../js/health-records.js"></script>

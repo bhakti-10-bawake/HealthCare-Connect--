@@ -2,30 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Medicine Reminders | Healthcare Connect</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
@@ -33,335 +21,296 @@
 
 <div class="app-shell">
 
-    <!-- Header -->
-    <header class="page-header">
+    <main class="reminders-page">
 
-        <div>
+        <!-- Header -->
+        <header class="reminders-header">
 
-            <span class="eyebrow">Medication</span>
+            <div class="reminders-header-copy">
+                <span class="reminders-eyebrow">
+                    <i class="bi bi-bell"></i>
+                    MEDICINE SUPPORT
+                </span>
 
-            <h1>Medicine Reminders</h1>
+                <h1>Medicine Reminders</h1>
 
-            <p class="text-muted">
-                Never miss an important dose.
-            </p>
+                <p>
+                    Stay on track with your medicines and never miss an important dose.
+                </p>
+            </div>
 
-        </div>
+            <button class="reminder-add-button" id="addReminderButton">
+                <i class="bi bi-plus-lg"></i>
+                Add reminder
+            </button>
 
-        <a
-            href="medicines.html"
-            class="icon-button"
-            aria-label="Medicines"
-        >
-            <i class="bi bi-capsule"></i>
-        </a>
+        </header>
 
-    </header>
 
-    <main class="page-content">
+        <!-- Today's overview -->
+        <section class="reminders-overview">
 
-        <!-- Today's reminder summary -->
-        <section class="section">
+            <div class="reminder-overview-card reminder-overview-primary">
 
-            <div class="reminder-summary-card">
+                <div class="reminder-overview-icon">
+                    <i class="bi bi-alarm"></i>
+                </div>
 
-                <div class="reminder-summary-main">
+                <div>
+                    <span>Today's reminders</span>
+                    <strong id="todayReminderCount">0</strong>
+                </div>
 
-                    <div class="reminder-summary-icon">
-                        <i class="bi bi-alarm"></i>
-                    </div>
+            </div>
 
-                    <div>
 
-                        <span class="eyebrow">
-                            Today's Medication
-                        </span>
+            <div class="reminder-overview-card">
 
-                        <h2 id="todayReminderCount">
-                            0 reminders
-                        </h2>
+                <div class="reminder-overview-icon reminder-overview-green">
+                    <i class="bi bi-check2-circle"></i>
+                </div>
 
-                        <p>
-                            Stay consistent with your medication schedule.
-                        </p>
+                <div>
+                    <span>Medication routine</span>
+                    <strong>On track</strong>
+                </div>
 
-                    </div>
+            </div>
 
+
+            <div class="reminder-overview-card">
+
+                <div class="reminder-overview-icon reminder-overview-blue">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+
+                <div>
+                    <span>Reminder status</span>
+                    <strong>Active</strong>
                 </div>
 
             </div>
 
         </section>
 
-        <!-- Add reminder -->
-        <section class="section">
 
-            <div class="section-heading">
+        <!-- Add reminder form -->
+        <section class="reminder-form-section" id="reminderFormSection">
+
+            <div class="reminder-form-header">
 
                 <div>
-                    <span class="eyebrow">Medication Schedule</span>
-                    <h2>Your Reminders</h2>
+                    <span class="section-eyebrow">NEW REMINDER</span>
+                    <h2>Create a medicine reminder</h2>
                 </div>
 
                 <button
                     type="button"
-                    class="btn btn-primary"
-                    id="addReminderButton"
+                    class="reminder-close-button"
+                    id="closeReminderForm"
+                    aria-label="Close reminder form"
                 >
-                    <i class="bi bi-plus-lg"></i>
-                    Add Reminder
+                    <i class="bi bi-x-lg"></i>
                 </button>
 
             </div>
 
-            <div
-                class="card-list"
-                id="reminderList"
-            >
 
-                <!-- Reminder cards will be loaded by JavaScript -->
+            <form id="reminderForm">
 
-                <div class="empty-state">
+                <div class="reminder-form-grid">
 
-                    <div class="empty-state-icon">
-                        <i class="bi bi-alarm"></i>
-                    </div>
-
-                    <h3>No reminders yet</h3>
-
-                    <p>
-                        Add a medicine reminder to keep track
-                        of your medication schedule.
-                    </p>
-
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        id="emptyAddReminderButton"
-                    >
-                        <i class="bi bi-plus-lg"></i>
-                        Add First Reminder
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- Reminder form -->
-        <section
-            class="section"
-            id="reminderFormSection"
-            hidden
-        >
-
-            <div class="card">
-
-                <div class="section-heading">
-
-                    <div>
-
-                        <span class="eyebrow">
-                            New Reminder
-                        </span>
-
-                        <h2>Add Medicine Reminder</h2>
-
-                    </div>
-
-                    <button
-                        type="button"
-                        class="icon-button"
-                        id="closeReminderForm"
-                        aria-label="Close"
-                    >
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-
-                </div>
-
-                <form id="reminderForm">
-
-                    <div class="form-group">
+                    <div class="form-field">
 
                         <label for="reminderMedicine">
-                            Medicine Name
+                            Medicine name
                         </label>
 
                         <input
                             type="text"
                             id="reminderMedicine"
-                            name="medicine"
-                            class="form-control"
-                            placeholder="e.g. Paracetamol"
+                            placeholder="e.g. Paracetamol 500 mg"
                             required
                         >
 
                     </div>
 
-                    <div class="form-row">
 
-                        <div class="form-group">
+                    <div class="form-field">
 
-                            <label for="reminderDosage">
-                                Dosage
-                            </label>
-
-                            <input
-                                type="text"
-                                id="reminderDosage"
-                                name="dosage"
-                                class="form-control"
-                                placeholder="e.g. 500 mg"
-                                required
-                            >
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <label for="reminderFrequency">
-                                Frequency
-                            </label>
-
-                            <select
-                                id="reminderFrequency"
-                                name="frequency"
-                                class="form-control"
-                                required
-                            >
-
-                                <option value="">
-                                    Select frequency
-                                </option>
-
-                                <option value="once_daily">
-                                    Once daily
-                                </option>
-
-                                <option value="twice_daily">
-                                    Twice daily
-                                </option>
-
-                                <option value="three_times_daily">
-                                    Three times daily
-                                </option>
-
-                                <option value="as_needed">
-                                    As needed
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                    <div class="form-row">
-
-                        <div class="form-group">
-
-                            <label for="reminderTime">
-                                Reminder Time
-                            </label>
-
-                            <input
-                                type="time"
-                                id="reminderTime"
-                                name="time"
-                                class="form-control"
-                                required
-                            >
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <label for="reminderStartDate">
-                                Start Date
-                            </label>
-
-                            <input
-                                type="date"
-                                id="reminderStartDate"
-                                name="startDate"
-                                class="form-control"
-                                required
-                            >
-
-                        </div>
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label for="reminderNotes">
-                            Notes
+                        <label for="reminderDosage">
+                            Dosage
                         </label>
 
-                        <textarea
+                        <input
+                            type="text"
+                            id="reminderDosage"
+                            placeholder="e.g. 1 tablet"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="reminderFrequency">
+                            Frequency
+                        </label>
+
+                        <select id="reminderFrequency" required>
+                            <option value="">Select frequency</option>
+                            <option value="Once daily">Once daily</option>
+                            <option value="Twice daily">Twice daily</option>
+                            <option value="Three times daily">Three times daily</option>
+                            <option value="As needed">As needed</option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="reminderTime">
+                            Reminder time
+                        </label>
+
+                        <input
+                            type="time"
+                            id="reminderTime"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="reminderStartDate">
+                            Start date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="reminderStartDate"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="reminderNotes">
+                            Notes <span>Optional</span>
+                        </label>
+
+                        <input
+                            type="text"
                             id="reminderNotes"
-                            name="notes"
-                            class="form-control"
-                            rows="3"
-                            placeholder="Optional instructions..."
-                        ></textarea>
+                            placeholder="e.g. Take after breakfast"
+                        >
 
                     </div>
-
-                    <div class="form-actions">
-
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            id="cancelReminderButton"
-                        >
-                            Cancel
-                        </button>
-
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                        >
-                            <i class="bi bi-check-lg"></i>
-                            Save Reminder
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </section>
-
-        <!-- Safety -->
-        <section class="section">
-
-            <div class="alert alert-warning">
-
-                <i class="bi bi-exclamation-triangle"></i>
-
-                <div>
-
-                    <strong>Medication safety</strong>
-
-                    <p>
-                        Reminders help you follow your schedule,
-                        but they do not replace medical advice.
-                        Follow your healthcare professional's instructions.
-                    </p>
 
                 </div>
 
+
+                <div class="reminder-form-actions">
+
+                    <button
+                        type="button"
+                        class="reminder-cancel-button"
+                        id="cancelReminderButton"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="reminder-save-button"
+                    >
+                        <i class="bi bi-check2"></i>
+                        Save reminder
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- Reminder list -->
+        <section class="reminders-section">
+
+            <div class="reminders-section-heading">
+
+                <div>
+                    <span class="section-eyebrow">YOUR ROUTINE</span>
+                    <h2>Active reminders</h2>
+                </div>
+
+                <span class="reminder-count-label" id="reminderCountLabel">
+                    0 reminders
+                </span>
+
+            </div>
+
+
+            <div id="reminderList" class="reminder-list"></div>
+
+        </section>
+
+
+        <!-- Empty state -->
+        <section class="reminders-empty" id="remindersEmpty">
+
+            <div class="reminders-empty-icon">
+                <i class="bi bi-bell"></i>
+            </div>
+
+            <h3>No medicine reminders yet</h3>
+
+            <p>
+                Add your first reminder to keep your medication routine organized.
+            </p>
+
+            <button
+                type="button"
+                class="reminders-empty-button"
+                id="emptyAddReminderButton"
+            >
+                <i class="bi bi-plus-lg"></i>
+                Add your first reminder
+            </button>
+
+        </section>
+
+
+        <!-- Safety note -->
+        <section class="reminders-safety-note">
+
+            <div class="reminders-safety-icon">
+                <i class="bi bi-info-circle"></i>
+            </div>
+
+            <div>
+                <strong>Medication safety</strong>
+
+                <p>
+                    Reminders help you remember your medicines but do not replace
+                    medical advice. Always follow the dosage and instructions
+                    provided by your healthcare professional.
+                </p>
             </div>
 
         </section>
 
     </main>
 
-    <!-- Bottom Navigation -->
+
+    <!-- Bottom navigation -->
     <nav class="bottom-nav">
 
         <a href="dashboard.html" class="bottom-nav-item">
@@ -375,11 +324,11 @@
         </a>
 
         <a href="appointments.html" class="bottom-nav-item">
-            <i class="bi bi-calendar-check"></i>
+            <i class="bi bi-calendar2-check"></i>
             <span>Appointments</span>
         </a>
 
-        <a href="medicines.html" class="bottom-nav-item active">
+        <a href="medicines.html" class="bottom-nav-item">
             <i class="bi bi-capsule"></i>
             <span>Medicines</span>
         </a>
@@ -392,6 +341,7 @@
     </nav>
 
 </div>
+
 
 <script src="../js/app.js"></script>
 <script src="../js/reminders.js"></script>

@@ -1,7 +1,7 @@
-/* =========================================
+/* =========================================================
    HEALTHCARE CONNECT
    GLOBAL RESET
-   ========================================= */
+   ========================================================= */
 
 *,
 *::before,
@@ -14,22 +14,42 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
     min-height: 100vh;
+
     font-family: var(--font-family);
-    background: var(--color-background);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-normal);
+
     color: var(--color-text-primary);
-    line-height: 1.6;
+    background: var(--color-background);
+
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
 }
+
+body,
+button,
+input,
+textarea,
+select {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================
+   MEDIA
+   ========================================================= */
 
 img,
 picture,
 svg,
-video {
+video,
+canvas {
     display: block;
     max-width: 100%;
 }
@@ -38,38 +58,150 @@ img {
     height: auto;
 }
 
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
 button,
 input,
 textarea,
 select {
     font: inherit;
+    color: inherit;
 }
 
 button {
-    cursor: pointer;
     border: 0;
+    background: none;
+    cursor: pointer;
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
+button:disabled {
+    cursor: not-allowed;
 }
 
-ul,
-ol {
-    list-style: none;
-}
-
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
+input,
+textarea,
+select {
+    border: 0;
+    outline: 0;
 }
 
 textarea {
     resize: vertical;
 }
 
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 3px solid rgba(32, 184, 166, 0.22);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   LISTS
+   ========================================================= */
+
+ul,
+ol {
+    list-style: none;
+}
+
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+}
+
+
+/* =========================================================
+   PARAGRAPHS
+   ========================================================= */
+
+p {
+    margin: 0;
+}
+
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
+
 ::selection {
     background: var(--color-primary-light);
-    color: var(--color-primary-dark);
+    color: var(--color-primary-deep);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-muted);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    html {
+        font-size: 15px;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
 }

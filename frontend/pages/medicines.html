@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Medicines | Healthcare Connect</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
 
     <link
         rel="stylesheet"
@@ -20,241 +18,307 @@
 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
+
 <body>
 
-<div class="app-shell">
+<main class="medicines-page">
 
-    <!-- Header -->
-    <header class="page-header">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="medicines-header">
+
         <div>
-            <span class="eyebrow">Healthcare</span>
-            <h1>Medicines</h1>
-            <p class="text-muted">Find medicines and check their availability.</p>
+
+            <span class="medicines-eyebrow">
+                MEDICINE SUPPORT
+            </span>
+
+            <h1>
+                Medicines
+            </h1>
+
+            <p>
+                Find medicine information and check availability.
+            </p>
+
         </div>
 
-        <a href="reminders.html" class="icon-button" aria-label="Medicine reminders">
-            <i class="bi bi-bell"></i>
-        </a>
     </header>
 
-    <main class="page-content">
 
-        <!-- Search -->
-        <section class="section">
-            <div class="search-box">
-                <i class="bi bi-search"></i>
-                <input
-                    type="search"
-                    id="medicineSearch"
-                    placeholder="Search medicines..."
-                    autocomplete="off"
-                >
-            </div>
-        </section>
+    <!-- =====================================================
+         SEARCH
+         ===================================================== -->
 
-        <!-- Categories -->
-        <section class="section">
+    <section class="medicine-search-panel">
 
-            <div class="section-heading">
-                <div>
-                    <span class="eyebrow">Browse</span>
-                    <h2>Categories</h2>
-                </div>
-            </div>
+        <div class="medicine-search-box">
 
-            <div class="chip-list" id="medicineCategories">
+            <i class="bi bi-search"></i>
 
-                <button
-                    type="button"
-                    class="filter-chip active"
-                    data-category="all"
-                >
-                    All
-                </button>
-
-                <button
-                    type="button"
-                    class="filter-chip"
-                    data-category="pain-relief"
-                >
-                    Pain Relief
-                </button>
-
-                <button
-                    type="button"
-                    class="filter-chip"
-                    data-category="cold-flu"
-                >
-                    Cold & Flu
-                </button>
-
-                <button
-                    type="button"
-                    class="filter-chip"
-                    data-category="vitamins"
-                >
-                    Vitamins
-                </button>
-
-                <button
-                    type="button"
-                    class="filter-chip"
-                    data-category="digestive"
-                >
-                    Digestive
-                </button>
-
-                <button
-                    type="button"
-                    class="filter-chip"
-                    data-category="other"
-                >
-                    Other
-                </button>
-
-            </div>
-
-        </section>
-
-        <!-- Quick actions -->
-        <section class="section">
-
-            <div class="quick-grid">
-
-                <a href="reminders.html" class="quick-action-card">
-                    <div class="icon-box icon-box-primary">
-                        <i class="bi bi-alarm"></i>
-                    </div>
-
-                    <div>
-                        <h3>Medicine Reminders</h3>
-                        <p>Manage your medication schedule</p>
-                    </div>
-
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-
-                <a href="health-records.html" class="quick-action-card">
-                    <div class="icon-box icon-box-info">
-                        <i class="bi bi-file-medical"></i>
-                    </div>
-
-                    <div>
-                        <h3>Prescriptions</h3>
-                        <p>View your prescribed medicines</p>
-                    </div>
-
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-
-            </div>
-
-        </section>
-
-        <!-- Medicine list -->
-        <section class="section">
-
-            <div class="section-heading">
-                <div>
-                    <span class="eyebrow">Medicine Directory</span>
-                    <h2>Available Medicines</h2>
-                </div>
-
-                <span
-                    class="text-muted"
-                    id="medicineResultCount"
-                >
-                    0 medicines
-                </span>
-            </div>
-
-            <div
-                class="card-list"
-                id="medicineList"
+            <input
+                type="search"
+                id="medicineSearch"
+                placeholder="Search medicines..."
+                autocomplete="off"
             >
 
-                <!-- JavaScript will populate medicines here -->
+        </div>
 
-                <div class="empty-state">
+        <span class="medicine-search-note">
+            Search by medicine name, category or form
+        </span>
 
-                    <div class="empty-state-icon">
-                        <i class="bi bi-capsule"></i>
-                    </div>
+    </section>
 
-                    <h3>Loading medicines...</h3>
 
-                    <p>
-                        Medicine information will appear here.
-                    </p>
+    <!-- =====================================================
+         CATEGORIES
+         ===================================================== -->
 
-                </div>
+    <section class="medicine-category-section">
 
-            </div>
+        <div class="medicine-section-heading">
 
-        </section>
+            <div>
 
-        <!-- Safety notice -->
-        <section class="section">
+                <span>
+                    BROWSE
+                </span>
 
-            <div class="alert alert-warning">
-
-                <i class="bi bi-exclamation-triangle"></i>
-
-                <div>
-                    <strong>Important</strong>
-
-                    <p>
-                        Always take medicines according to your
-                        doctor's prescription. Do not self-medicate
-                        without professional advice.
-                    </p>
-                </div>
+                <h2>
+                    Medicine categories
+                </h2>
 
             </div>
 
-        </section>
+        </div>
 
-    </main>
 
-    <!-- Bottom Navigation -->
+        <div
+            class="medicine-category-list"
+            id="medicineCategories"
+        >
+
+            <button
+                type="button"
+                class="medicine-category active"
+                data-category="all"
+            >
+                <span>
+                    <i class="bi bi-grid"></i>
+                </span>
+
+                All
+            </button>
+
+
+            <button
+                type="button"
+                class="medicine-category"
+                data-category="Pain Relief"
+            >
+                <span>
+                    <i class="bi bi-bandaid"></i>
+                </span>
+
+                Pain Relief
+            </button>
+
+
+            <button
+                type="button"
+                class="medicine-category"
+                data-category="Cold & Allergy"
+            >
+                <span>
+                    <i class="bi bi-wind"></i>
+                </span>
+
+                Cold & Allergy
+            </button>
+
+
+            <button
+                type="button"
+                class="medicine-category"
+                data-category="Digestive Health"
+            >
+                <span>
+                    <i class="bi bi-heart-pulse"></i>
+                </span>
+
+                Digestive Health
+            </button>
+
+
+            <button
+                type="button"
+                class="medicine-category"
+                data-category="Vitamins"
+            >
+                <span>
+                    <i class="bi bi-capsule"></i>
+                </span>
+
+                Vitamins
+            </button>
+
+
+            <button
+                type="button"
+                class="medicine-category"
+                data-category="Chronic Care"
+            >
+                <span>
+                    <i class="bi bi-activity"></i>
+                </span>
+
+                Chronic Care
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         RESULTS
+         ===================================================== -->
+
+    <section class="medicines-results">
+
+        <div class="medicines-results-header">
+
+            <div>
+
+                <span>
+                    MEDICINE DIRECTORY
+                </span>
+
+                <h2>
+                    Available medicines
+                </h2>
+
+            </div>
+
+
+            <div class="medicine-result-count">
+
+                <strong id="medicineResultCount">
+                    0
+                </strong>
+
+                <span>
+                    medicines
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="medicine-list"
+            id="medicineList"
+        ></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         INFORMATION NOTE
+         ===================================================== -->
+
+    <section class="medicine-safety-note">
+
+        <div class="medicine-safety-icon">
+            <i class="bi bi-shield-check"></i>
+        </div>
+
+        <div>
+
+            <span>
+                HEALTH INFORMATION
+            </span>
+
+            <h3>
+                Use medicines responsibly.
+            </h3>
+
+            <p>
+                Medicine information shown here is for
+                educational purposes. Always follow the
+                advice of a qualified healthcare professional.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MOBILE NAV
+         ===================================================== -->
+
     <nav class="bottom-nav">
 
-        <a href="dashboard.html" class="bottom-nav-item">
+        <a
+            href="dashboard.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-house"></i>
             <span>Home</span>
         </a>
 
-        <a href="doctors.html" class="bottom-nav-item">
+        <a
+            href="doctors.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-person-badge"></i>
             <span>Doctors</span>
         </a>
 
-        <a href="appointments.html" class="bottom-nav-item">
-            <i class="bi bi-calendar-check"></i>
+        <a
+            href="appointments.html"
+            class="bottom-nav-item"
+        >
+            <i class="bi bi-calendar2"></i>
             <span>Appointments</span>
         </a>
 
-        <a href="medicines.html" class="bottom-nav-item active">
+        <a
+            href="medicines.html"
+            class="bottom-nav-item active"
+        >
             <i class="bi bi-capsule"></i>
             <span>Medicines</span>
         </a>
 
-        <a href="profile.html" class="bottom-nav-item">
+        <a
+            href="profile.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-person"></i>
             <span>Profile</span>
         </a>
 
     </nav>
 
-</div>
+</main>
+
 
 <script src="../js/app.js"></script>
 <script src="../js/medicines.js"></script>
 
 </body>
+
 </html>

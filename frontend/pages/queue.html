@@ -1,23 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Queue | Healthcare Connect</title>
+    <title>Queue Status | Healthcare Connect</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
@@ -31,280 +21,206 @@
 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
-
-    <style>
-
-        .queue-hero {
-            padding: var(--space-7);
-
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--color-primary-light),
-                    var(--color-surface)
-                );
-
-            border: 1px solid var(--color-border-light);
-            border-radius: var(--radius-2xl);
-        }
-
-        .queue-status {
-            display: flex;
-            align-items: center;
-            gap: var(--space-4);
-        }
-
-        .queue-number {
-            width: 76px;
-            height: 76px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            flex-shrink: 0;
-
-            border-radius: var(--radius-xl);
-
-            background: var(--color-primary);
-            color: white;
-
-            font-size: var(--font-size-2xl);
-            font-weight: var(--font-weight-bold);
-        }
-
-        .queue-status h2 {
-            font-size: var(--font-size-xl);
-        }
-
-        .queue-status p {
-            margin-top: 2px;
-
-            color: var(--color-text-secondary);
-            font-size: var(--font-size-sm);
-        }
-
-        .queue-progress {
-            height: 8px;
-
-            margin-top: var(--space-6);
-
-            overflow: hidden;
-
-            background: var(--color-border-light);
-
-            border-radius: var(--radius-full);
-        }
-
-        .queue-progress-bar {
-            width: 40%;
-            height: 100%;
-
-            background: var(--color-primary);
-
-            border-radius: inherit;
-        }
-
-        .queue-info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--space-4);
-        }
-
-        .queue-info {
-            padding: var(--space-5);
-
-            text-align: center;
-
-            background: var(--color-surface-soft);
-
-            border-radius: var(--radius-lg);
-        }
-
-        .queue-info strong {
-            display: block;
-
-            font-size: var(--font-size-xl);
-            font-weight: var(--font-weight-bold);
-        }
-
-        .queue-info span {
-            display: block;
-
-            margin-top: 2px;
-
-            color: var(--color-text-secondary);
-            font-size: var(--font-size-xs);
-        }
-
-        .queue-step {
-            display: flex;
-            gap: var(--space-4);
-
-            padding: var(--space-4) 0;
-        }
-
-        .queue-step-icon {
-            width: 36px;
-            height: 36px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            flex-shrink: 0;
-
-            border-radius: var(--radius-full);
-
-            background: var(--color-primary-light);
-            color: var(--color-primary-dark);
-        }
-
-        .queue-step-content strong {
-            display: block;
-            font-size: var(--font-size-sm);
-        }
-
-        .queue-step-content span {
-            display: block;
-
-            margin-top: 2px;
-
-            color: var(--color-text-secondary);
-            font-size: var(--font-size-xs);
-        }
-
-        @media (max-width: 600px) {
-
-            .queue-hero {
-                padding: var(--space-5);
-            }
-
-            .queue-status {
-                align-items: flex-start;
-            }
-
-            .queue-number {
-                width: 60px;
-                height: 60px;
-            }
-
-            .queue-info-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-    </style>
-
 </head>
 
 <body>
 
-<div class="app">
+<div class="app-shell">
 
-    <main class="page">
+    <main class="queue-page">
 
-        <header class="page-header">
+        <!-- Header -->
 
-            <div class="page-header-content">
+        <header class="queue-header">
 
-                <p>Live appointment status</p>
+            <a
+                href="dashboard.html"
+                class="queue-back-link"
+            >
+                <i class="bi bi-arrow-left"></i>
+                Back to dashboard
+            </a>
 
-                <h1>Queue status</h1>
+            <div class="queue-header-copy">
+
+                <span class="queue-eyebrow">
+                    LIVE QUEUE
+                </span>
+
+                <h1>Your place in line</h1>
+
+                <p>
+                    Track your position and estimated waiting time
+                    while you wait for your consultation.
+                </p>
+
+            </div>
+
+            <div class="queue-live-status">
+
+                <span></span>
+                Live status
 
             </div>
 
         </header>
 
 
-        <!-- Current Queue -->
+        <!-- Main queue card -->
 
-        <section class="queue-hero section">
+        <section class="queue-main-card">
 
-            <div class="queue-status">
-
-                <div
-                    id="queueNumber"
-                    class="queue-number"
-                >
-                    —
-                </div>
+            <div class="queue-main-top">
 
                 <div>
 
-                    <span class="badge badge-success">
-                        <i class="bi bi-circle-fill"></i>
-                        Active
+                    <span class="queue-card-label">
+                        CURRENT TOKEN
                     </span>
 
-                    <h2 id="queueDoctor">
-                        Your appointment
-                    </h2>
+                    <div
+                        class="queue-number"
+                        id="queueNumber"
+                    >
+                        A-24
+                    </div>
 
-                    <p id="queueCentre">
-                        Queue information will appear here.
+                    <p class="queue-position-text">
+                        Your token number
                     </p>
 
                 </div>
 
-            </div>
 
-
-            <div class="queue-progress">
-
-                <div
-                    id="queueProgress"
-                    class="queue-progress-bar"
-                ></div>
+                <div class="queue-token-icon">
+                    <i class="bi bi-ticket-perforated"></i>
+                </div>
 
             </div>
 
-        </section>
 
+            <div class="queue-progress-section">
 
-        <!-- Queue Information -->
-
-        <section class="section">
-
-            <div class="queue-info-grid">
-
-                <div class="queue-info">
-
-                    <strong id="peopleAhead">
-                        —
-                    </strong>
+                <div class="queue-progress-heading">
 
                     <span>
-                        People ahead
+                        Queue progress
                     </span>
+
+                    <strong>
+                        <span id="peopleAhead">4</span>
+                        people ahead
+                    </strong>
 
                 </div>
 
 
-                <div class="queue-info">
+                <div class="queue-progress-track">
+
+                    <div
+                        class="queue-progress-bar"
+                        id="queueProgress"
+                    ></div>
+
+                </div>
+
+
+                <div class="queue-progress-labels">
+
+                    <span>
+                        You joined
+                    </span>
+
+                    <span>
+                        Your turn
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="queue-estimate">
+
+                <div class="queue-estimate-icon">
+                    <i class="bi bi-clock"></i>
+                </div>
+
+                <div>
+
+                    <span>
+                        Estimated waiting time
+                    </span>
 
                     <strong id="estimatedWait">
-                        —
+                        ~20 minutes
                     </strong>
 
-                    <span>
-                        Estimated wait
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Appointment information -->
+
+        <section class="queue-section">
+
+            <div class="queue-section-heading">
+
+                <span class="section-eyebrow">
+                    CONSULTATION
+                </span>
+
+                <h2>Your appointment</h2>
+
+            </div>
+
+
+            <div class="queue-appointment-card">
+
+                <div class="queue-doctor-avatar">
+                    AS
+                </div>
+
+
+                <div class="queue-doctor-info">
+
+                    <span class="queue-doctor-label">
+                        DOCTOR
                     </span>
+
+                    <h3 id="queueDoctor">
+                        Dr. Ananya Sharma
+                    </h3>
+
+                    <p>
+                        General Physician
+                    </p>
 
                 </div>
 
 
-                <div class="queue-info">
+                <div class="queue-appointment-divider"></div>
 
-                    <strong id="currentToken">
-                        —
+
+                <div class="queue-centre-info">
+
+                    <span class="queue-doctor-label">
+                        HEALTHCARE CENTRE
+                    </span>
+
+                    <strong id="queueCentre">
+                        Sahyadri Community Health Centre
                     </strong>
 
                     <span>
-                        Current token
+                        <i class="bi bi-geo-alt"></i>
+                        Consultation queue
                     </span>
 
                 </div>
@@ -314,147 +230,121 @@
         </section>
 
 
-        <!-- Queue Timeline -->
+        <!-- Current token -->
 
-        <section class="card section">
+        <section class="queue-section">
 
-            <div class="card-header">
+            <div class="queue-section-heading">
 
-                <div>
+                <span class="section-eyebrow">
+                    QUEUE STATUS
+                </span>
 
-                    <h2 class="card-title">
-                        What happens next?
-                    </h2>
+                <h2>Currently serving</h2>
 
-                    <p class="card-subtitle">
-                        Your appointment journey
+            </div>
+
+
+            <div class="queue-current-card">
+
+                <div class="queue-current-token">
+
+                    <span>
+                        CURRENT TOKEN
+                    </span>
+
+                    <strong id="currentToken">
+                        A-20
+                    </strong>
+
+                </div>
+
+
+                <div class="queue-current-info">
+
+                    <div class="queue-current-status">
+                        <span></span>
+                        In consultation
+                    </div>
+
+                    <p>
+                        Please stay nearby. Your token will be called
+                        when it is your turn.
                     </p>
 
                 </div>
 
             </div>
 
-
-            <div class="card-body">
-
-                <div class="queue-step">
-
-                    <div class="queue-step-icon">
-                        <i class="bi bi-check-lg"></i>
-                    </div>
-
-                    <div class="queue-step-content">
-
-                        <strong>
-                            Appointment confirmed
-                        </strong>
-
-                        <span>
-                            Your appointment has been confirmed.
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="queue-step">
-
-                    <div class="queue-step-icon">
-                        <i class="bi bi-person-check"></i>
-                    </div>
-
-                    <div class="queue-step-content">
-
-                        <strong>
-                            Wait for your turn
-                        </strong>
-
-                        <span>
-                            Track your position in the queue.
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="queue-step">
-
-                    <div class="queue-step-icon">
-                        <i class="bi bi-hospital"></i>
-                    </div>
-
-                    <div class="queue-step-content">
-
-                        <strong>
-                            Consultation
-                        </strong>
-
-                        <span>
-                            You'll be notified when you're called.
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
         </section>
 
 
-        <!-- Actions -->
+        <!-- Helpful note -->
 
-        <section class="d-flex gap-3 flex-wrap">
+        <section class="queue-note">
 
-            <a
-                href="appointments.html"
-                class="btn btn-outline"
-            >
-                <i class="bi bi-calendar2"></i>
-                My appointments
-            </a>
+            <div class="queue-note-icon">
+                <i class="bi bi-info-circle"></i>
+            </div>
 
-            <a
-                href="emergency.html"
-                class="btn btn-danger"
-            >
-                <i class="bi bi-telephone"></i>
-                Emergency assistance
-            </a>
+            <div>
+
+                <strong>
+                    Please stay available
+                </strong>
+
+                <p>
+                    Queue times are estimates and may change depending
+                    on consultation duration and emergency cases.
+                </p>
+
+            </div>
 
         </section>
 
     </main>
 
 
+    <!-- Bottom navigation -->
+
     <nav class="bottom-nav">
 
-        <a href="dashboard.html" class="bottom-nav-item">
+        <a
+            href="dashboard.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-house"></i>
             <span>Home</span>
         </a>
 
-        <a href="doctors.html" class="bottom-nav-item">
+        <a
+            href="doctors.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-person-badge"></i>
             <span>Doctors</span>
         </a>
 
         <a
             href="appointments.html"
-            class="bottom-nav-item active"
+            class="bottom-nav-item"
         >
-            <i class="bi bi-calendar2"></i>
+            <i class="bi bi-calendar2-check"></i>
             <span>Appointments</span>
         </a>
 
-        <a href="medicines.html" class="bottom-nav-item">
-            <i class="bi bi-capsule"></i>
-            <span>Medicines</span>
+        <a
+            href="health-records.html"
+            class="bottom-nav-item"
+        >
+            <i class="bi bi-folder2-open"></i>
+            <span>Records</span>
         </a>
 
-        <a href="profile.html" class="bottom-nav-item">
+        <a
+            href="profile.html"
+            class="bottom-nav-item"
+        >
             <i class="bi bi-person"></i>
             <span>Profile</span>
         </a>
@@ -463,8 +353,9 @@
 
 </div>
 
+
 <script src="../js/app.js"></script>
-<script src="../js/appointments.js"></script>
+<script src="../js/queue.js"></script>
 
 </body>
 </html>

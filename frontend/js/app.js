@@ -1,13 +1,34 @@
 const API_BASE_URL = "http://localhost:5000/api";
 
+
+/* =========================================
+   API REQUEST
+========================================= */
+
 async function apiRequest(endpoint, options = {}) {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-        headers: {
-            "Content-Type": "application/json",
-            ...(options.headers || {})
-        },
-        ...options
-    });
+
+    const token =
+        localStorage.getItem("healthcareToken");
+
+    const headers = {
+        "Content-Type": "application/json",
+        ...(options.headers || {})
+    };
+
+
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+
+
+    const response = await fetch(
+        `${API_BASE_URL}${endpoint}`,
+        {
+            ...options,
+            headers
+        }
+    );
+
 
     let data = {};
 
@@ -17,120 +38,230 @@ async function apiRequest(endpoint, options = {}) {
         data = {};
     }
 
+
     if (!response.ok) {
-        throw new Error(data.message || "Something went wrong.");
+
+        if (response.status === 401) {
+
+            localStorage.removeItem(
+                "healthcareToken"
+            );
+
+            localStorage.removeItem(
+                "healthcareUser"
+            );
+        }
+
+
+        throw new Error(
+            data.message ||
+            "Something went wrong. Please try again."
+        );
     }
+
 
     return data;
 }
 
-function showMessage(message, type = "info") {
-    const existing = document.querySelector(".app-message");
+
+/* =========================================
+   SHOW MESSAGE
+========================================= */
+
+function showMessage(
+    message,
+    type = "info"
+) {
+
+    const existing =
+        document.querySelector(".app-message");
 
     if (existing) {
         existing.remove();
     }
 
-    const messageElement = document.createElement("div");
 
-    messageElement.className = `alert alert-${type} app-message`;
+    const messageElement =
+        document.createElement("div");
 
-    messageElement.style.position = "fixed";
-    messageElement.style.top = "20px";
-    messageElement.style.right = "20px";
-    messageElement.style.zIndex = "1000";
-    messageElement.style.maxWidth = "350px";
+    messageElement.className =
+        `alert alert-${type} app-message`;
+
+
+    Object.assign(
+        messageElement.style,
+        {
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: "1000",
+            maxWidth: "350px",
+            boxShadow:
+                "0 8px 24px rgba(23, 53, 52, 0.12)"
+        }
+    );
+
 
     messageElement.textContent = message;
 
-    document.body.appendChild(messageElement);
+    document.body.appendChild(
+        messageElement
+    );
+
 
     setTimeout(() => {
-        messageElement.remove();
+
+        if (messageElement.parentNode) {
+            messageElement.remove();
+        }
+
     }, 4000);
 }
 
 
-// ===============================
-// LOGIN
-// ===============================
+/* =========================================
+   CURRENT USER
+========================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+function getCurrentUser() {
 
-    const loginForm = document.getElementById("loginForm");
+    const storedUser =
+        localStorage.getItem("healthcareUser");
 
-    if (!loginForm) {
-        return;
+    if (!storedUser) {
+        return null;
     }
 
-    loginForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
 
-        const emailInput = document.getElementById("email");
-        const passwordInput = document.getElementById("password");
+    try {
+        return JSON.parse(storedUser);
 
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
+    } catch (error) {
 
-        if (!email || !password) {
-            showMessage(
-                "Please enter your email and password.",
-                "warning"
-            );
+        console.error(
+            "Unable to read current user:",
+            error
+        );
 
-            return;
-        }
+        return null;
+    }
+}
 
-        try {
-            showMessage("Signing you in...", "info");
 
-            const data = await apiRequest("/auth/login", {
-                method: "POST",
-                body: JSON.stringify({
-                    email,
-                    password
-                })
+/* =========================================
+   AUTH CHECK
+========================================= */
+
+function isLoggedIn() {
+
+    return Boolean(
+        localStorage.getItem(
+            "healthcareToken"
+        )
+    );
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+function logoutUser() {
+
+    localStorage.removeItem(
+        "healthcareToken"
+    );
+
+    localStorage.removeItem(
+        "healthcareUser"
+    );
+
+    window.location.href =
+        "login.html";
+}
+
+
+/* =========================================
+   HTML ESCAPING
+========================================= */
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================
+   INITIALS
+========================================= */
+
+function getInitials(name) {
+
+    if (!name) {
+        return "HC";
+    }
+
+
+    return name
+        .trim()
+        .split(/\s+/)
+        .map(word => word.charAt(0))
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
+}
+
+
+/* =========================================
+   ACTIVE NAVIGATION
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const currentPage =
+            window.location.pathname
+                .split("/")
+                .pop();
+
+
+        document
+            .querySelectorAll(
+                "[data-nav-page]"
+            )
+            .forEach(link => {
+
+                const targetPage =
+                    link.dataset.navPage;
+
+                if (
+                    targetPage &&
+                    targetPage === currentPage
+                ) {
+                    link.classList.add("active");
+                }
             });
 
-            // Store authentication information
-            localStorage.setItem("healthcareToken", data.token);
 
-            localStorage.setItem(
-                "healthcareUser",
-                JSON.stringify(data.user)
-            );
+        /* Global logout buttons */
 
-            showMessage(
-                "Login successful. Redirecting...",
-                "success"
-            );
+        document
+            .querySelectorAll(
+                "[data-action='logout']"
+            )
+            .forEach(button => {
 
-            // Redirect based on user role
-            setTimeout(() => {
+                button.addEventListener(
+                    "click",
+                    logoutUser
+                );
+            });
 
-                const role = data.user.role;
-
-                if (role === "DOCTOR") {
-                    window.location.href = "doctor-dashboard.html";
-                } else if (role === "PHARMACY") {
-                    window.location.href = "pharmacy-dashboard.html";
-                } else if (role === "ADMIN") {
-                    window.location.href = "admin-dashboard.html";
-                } else {
-                    window.location.href = "dashboard.html";
-                }
-
-            }, 800);
-
-        } catch (error) {
-
-            console.error("Login error:", error);
-
-            showMessage(
-                error.message || "Login failed.",
-                "danger"
-            );
-        }
-    });
-
-});
+    }
+);

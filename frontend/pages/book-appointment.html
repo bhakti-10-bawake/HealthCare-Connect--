@@ -10,18 +10,6 @@
 
     <title>Book Appointment | Healthcare Connect</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
@@ -29,609 +17,515 @@
 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
-
-    <style>
-
-        .booking-layout {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 340px;
-            gap: var(--space-6);
-            align-items: start;
-        }
-
-        .booking-card {
-            padding: var(--space-7);
-        }
-
-        .booking-section {
-            margin-bottom: var(--space-7);
-        }
-
-        .booking-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .booking-section-title {
-            display: flex;
-            align-items: center;
-            gap: var(--space-3);
-
-            margin-bottom: var(--space-4);
-
-            font-size: var(--font-size-lg);
-            font-weight: var(--font-weight-semibold);
-        }
-
-        .booking-number {
-            width: 30px;
-            height: 30px;
-
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: var(--radius-full);
-
-            background: var(--color-primary-light);
-            color: var(--color-primary-dark);
-
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-weight-bold);
-        }
-
-        .doctor-selection {
-            display: flex;
-            align-items: center;
-            gap: var(--space-4);
-
-            padding: var(--space-4);
-
-            border: 1px solid var(--color-primary);
-            border-radius: var(--radius-lg);
-
-            background: var(--color-primary-soft);
-        }
-
-        .doctor-selection-icon {
-            width: 52px;
-            height: 52px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            flex-shrink: 0;
-
-            border-radius: var(--radius-md);
-
-            background: var(--color-primary-light);
-            color: var(--color-primary-dark);
-
-            font-size: 24px;
-        }
-
-        .doctor-selection-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .doctor-selection-info strong {
-            display: block;
-            font-size: var(--font-size-md);
-        }
-
-        .doctor-selection-info span {
-            display: block;
-            margin-top: 2px;
-            color: var(--color-text-secondary);
-            font-size: var(--font-size-xs);
-        }
-
-        .time-slots {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--space-3);
-        }
-
-        .time-slot {
-            min-height: 44px;
-
-            padding: 0 var(--space-3);
-
-            background: var(--color-surface);
-
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-
-            color: var(--color-text-primary);
-
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-weight-medium);
-
-            transition: all var(--transition-fast);
-        }
-
-        .time-slot:hover {
-            border-color: var(--color-primary);
-            color: var(--color-primary-dark);
-        }
-
-        .time-slot.selected {
-            background: var(--color-primary);
-            border-color: var(--color-primary);
-            color: white;
-        }
-
-        .time-slot:disabled {
-            background: var(--color-surface-soft);
-            color: var(--color-text-muted);
-            cursor: not-allowed;
-            text-decoration: line-through;
-        }
-
-        .booking-summary {
-            position: sticky;
-            top: var(--space-6);
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            gap: var(--space-4);
-
-            padding: var(--space-3) 0;
-
-            font-size: var(--font-size-sm);
-        }
-
-        .summary-row + .summary-row {
-            border-top: 1px solid var(--color-border-light);
-        }
-
-        .summary-label {
-            color: var(--color-text-secondary);
-        }
-
-        .summary-value {
-            text-align: right;
-            font-weight: var(--font-weight-semibold);
-        }
-
-        @media (max-width: 800px) {
-
-            .booking-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .booking-summary {
-                position: static;
-            }
-        }
-
-        @media (max-width: 500px) {
-
-            .booking-card {
-                padding: var(--space-5);
-            }
-
-            .time-slots {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-    </style>
 </head>
+
 
 <body>
 
-<div class="app">
+    <main class="booking-page">
 
-    <main class="page">
+        <!-- =================================================
+             HEADER
+             ================================================= -->
 
-        <div class="mb-6">
+        <header class="booking-header">
 
             <a
                 href="doctors.html"
-                class="btn btn-outline btn-sm"
+                class="booking-back-link"
             >
-                <i class="bi bi-arrow-left"></i>
-                Back
+                <span class="booking-back-icon">
+                    <i class="bi bi-arrow-left"></i>
+                </span>
+
+                <span>
+                    Back to doctors
+                </span>
             </a>
-
-        </div>
-
-
-        <header class="page-header">
-
-            <div class="page-header-content">
-
-                <p>Healthcare Connect</p>
-
-                <h1>Book an appointment</h1>
-
-            </div>
 
         </header>
 
 
-        <div class="booking-layout">
+        <!-- =================================================
+             PAGE INTRO
+             ================================================= -->
 
-            <!-- Main booking form -->
+        <section class="booking-intro">
 
-            <section class="card booking-card">
+            <span class="booking-eyebrow">
+                APPOINTMENT
+            </span>
 
-                <form id="appointmentForm">
+            <h1>
+                Book your consultation
+            </h1>
+
+            <p>
+                Choose a convenient date and time for your
+                healthcare consultation.
+            </p>
+
+        </section>
 
 
-                    <!-- Doctor -->
+        <!-- =================================================
+             BOOKING LAYOUT
+             ================================================= -->
 
-                    <div class="booking-section">
+        <section class="booking-layout">
 
-                        <h2 class="booking-section-title">
 
-                            <span class="booking-number">
-                                1
+            <!-- =================================================
+                 LEFT — FORM
+                 ================================================= -->
+
+            <div class="booking-main-card">
+
+                <!-- Doctor -->
+
+                <section class="booking-section">
+
+                    <div class="booking-section-heading">
+
+                        <span class="booking-step">
+                            01
+                        </span>
+
+                        <div>
+                            <span>
+                                HEALTHCARE PROFESSIONAL
                             </span>
 
-                            Select doctor
-
-                        </h2>
-
-
-                        <div
-                            id="selectedDoctor"
-                            class="doctor-selection"
-                        >
-
-                            <div class="doctor-selection-icon">
-                                <i class="bi bi-person"></i>
-                            </div>
-
-                            <div class="doctor-selection-info">
-
-                                <strong id="selectedDoctorName">
-                                    Choose a doctor
-                                </strong>
-
-                                <span id="selectedDoctorSpecialization">
-                                    Select a healthcare professional to continue.
-                                </span>
-
-                            </div>
-
-                            <a
-                                href="doctors.html"
-                                class="btn btn-outline btn-sm"
-                            >
-                                Change
-                            </a>
-
+                            <h2>
+                                Your doctor
+                            </h2>
                         </div>
-
-                        <input
-                            type="hidden"
-                            id="doctorId"
-                            name="doctorId"
-                        >
 
                     </div>
 
 
-                    <!-- Date -->
+                    <div
+                        class="booking-doctor-card"
+                        id="selectedDoctorCard"
+                    >
 
-                    <div class="booking-section">
+                        <div
+                            class="booking-doctor-avatar"
+                            id="doctorAvatar"
+                        >
+                            DR
+                        </div>
 
-                        <h2 class="booking-section-title">
+                        <div class="booking-doctor-info">
 
-                            <span class="booking-number">
-                                2
+                            <strong id="selectedDoctorName">
+                                Dr. Ananya Sharma
+                            </strong>
+
+                            <span id="selectedDoctorSpecialization">
+                                General Physician
                             </span>
 
-                            Choose date
+                            <small>
+                                <i class="bi bi-star-fill"></i>
 
-                        </h2>
+                                <span id="selectedDoctorRating">
+                                    4.7
+                                </span>
+
+                                &nbsp; • &nbsp;
+
+                                <span id="selectedDoctorLocation">
+                                    Sahyadri Community Health Centre
+                                </span>
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </section>
 
 
-                        <div class="form-group">
+                <!-- Date -->
 
-                            <label
-                                class="form-label"
-                                for="appointmentDate"
-                            >
-                                Appointment date
-                            </label>
+                <section class="booking-section">
+
+                    <div class="booking-section-heading">
+
+                        <span class="booking-step">
+                            02
+                        </span>
+
+                        <div>
+                            <span>
+                                DATE
+                            </span>
+
+                            <h2>
+                                Choose a date
+                            </h2>
+                        </div>
+
+                    </div>
+
+
+                    <div class="booking-date-wrapper">
+
+                        <label for="appointmentDate">
+                            Appointment date
+                        </label>
+
+                        <div class="booking-date-input">
+
+                            <i class="bi bi-calendar3"></i>
 
                             <input
                                 type="date"
                                 id="appointmentDate"
-                                name="appointmentDate"
-                                class="form-input"
                                 required
                             >
 
                         </div>
 
-                    </div>
-
-
-                    <!-- Time -->
-
-                    <div class="booking-section">
-
-                        <h2 class="booking-section-title">
-
-                            <span class="booking-number">
-                                3
-                            </span>
-
-                            Choose time
-
-                        </h2>
-
-
-                        <div
-                            id="timeSlots"
-                            class="time-slots"
-                        >
-
-                            <button
-                                type="button"
-                                class="time-slot"
-                                data-time="09:00"
-                            >
-                                09:00 AM
-                            </button>
-
-                            <button
-                                type="button"
-                                class="time-slot"
-                                data-time="10:00"
-                            >
-                                10:00 AM
-                            </button>
-
-                            <button
-                                type="button"
-                                class="time-slot"
-                                data-time="11:00"
-                            >
-                                11:00 AM
-                            </button>
-
-                            <button
-                                type="button"
-                                class="time-slot"
-                                data-time="12:00"
-                            >
-                                12:00 PM
-                            </button>
-
-                            <button
-                                type="button"
-                                class="time-slot"
-                                data-time="14:00"
-                            >
-                                02:00 PM
-                            </button>
-
-                            <button
-                                type="button"
-                                class="time-slot"
-                                data-time="15:00"
-                            >
-                                03:00 PM
-                            </button>
-
-                            <button
-                                type="button"
-                                class="time-slot"
-                                data-time="16:00"
-                            >
-                                04:00 PM
-                            </button>
-
-                            <button
-                                type="button"
-                                class="time-slot"
-                                data-time="17:00"
-                            >
-                                05:00 PM
-                            </button>
-
-                        </div>
-
-                        <input
-                            type="hidden"
-                            id="appointmentTime"
-                            name="appointmentTime"
-                            required
-                        >
-
-                    </div>
-
-
-                    <!-- Reason -->
-
-                    <div class="booking-section">
-
-                        <h2 class="booking-section-title">
-
-                            <span class="booking-number">
-                                4
-                            </span>
-
-                            Visit details
-
-                        </h2>
-
-
-                        <div class="form-group">
-
-                            <label
-                                class="form-label"
-                                for="reason"
-                            >
-                                Reason for visit
-                            </label>
-
-                            <textarea
-                                id="reason"
-                                name="reason"
-                                class="form-textarea"
-                                rows="4"
-                                placeholder="Briefly describe the reason for your appointment..."
-                            ></textarea>
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        type="submit"
-                        class="btn btn-primary btn-lg w-100"
-                    >
-                        <i class="bi bi-calendar-check"></i>
-                        Confirm appointment
-                    </button>
-
-                </form>
-
-            </section>
-
-
-            <!-- Summary -->
-
-            <aside class="card booking-summary">
-
-                <div class="card-header">
-
-                    <div>
-                        <h2 class="card-title">
-                            Appointment summary
-                        </h2>
-
-                        <p class="card-subtitle">
-                            Review before confirming
+                        <p class="booking-helper">
+                            Appointments can be scheduled for the
+                            next 30 days.
                         </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Time -->
+
+                <section class="booking-section">
+
+                    <div class="booking-section-heading">
+
+                        <span class="booking-step">
+                            03
+                        </span>
+
+                        <div>
+                            <span>
+                                TIME
+                            </span>
+
+                            <h2>
+                                Choose a time
+                            </h2>
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="booking-time-grid"
+                        id="timeSlots"
+                    >
+
+                        <!-- Filled by JavaScript -->
+
+                    </div>
+
+
+                    <input
+                        type="hidden"
+                        id="appointmentTime"
+                    >
+
+                </section>
+
+
+                <!-- Reason -->
+
+                <section class="booking-section">
+
+                    <div class="booking-section-heading">
+
+                        <span class="booking-step">
+                            04
+                        </span>
+
+                        <div>
+                            <span>
+                                CONSULTATION
+                            </span>
+
+                            <h2>
+                                Tell us what you need help with
+                            </h2>
+                        </div>
+
+                    </div>
+
+
+                    <div class="booking-reason">
+
+                        <label for="reason">
+                            Reason for visit
+                        </label>
+
+                        <textarea
+                            id="reason"
+                            rows="4"
+                            maxlength="500"
+                            placeholder="Briefly describe your symptoms or reason for consultation..."
+                        ></textarea>
+
+                        <div class="booking-textarea-note">
+                            <span>
+                                Optional
+                            </span>
+
+                            <span>
+                                <span id="reasonCount">0</span>/500
+                            </span>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Submit -->
+
+                <button
+                    type="button"
+                    class="booking-confirm-button"
+                    id="confirmAppointmentButton"
+                >
+
+                    <span>
+                        Confirm appointment
+                    </span>
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 RIGHT — SUMMARY
+                 ================================================= -->
+
+            <aside class="booking-summary-card">
+
+                <div class="booking-summary-top">
+
+                    <span>
+                        APPOINTMENT SUMMARY
+                    </span>
+
+                    <div class="booking-summary-icon">
+                        <i class="bi bi-calendar2-check"></i>
                     </div>
 
                 </div>
 
 
-                <div class="card-body">
+                <div class="booking-summary-doctor">
 
-                    <div class="summary-row">
+                    <span>
+                        Doctor
+                    </span>
 
-                        <span class="summary-label">
-                            Doctor
+                    <strong id="summaryDoctor">
+                        Dr. Ananya Sharma
+                    </strong>
+
+                </div>
+
+
+                <div class="booking-summary-divider"></div>
+
+
+                <div class="booking-summary-row">
+
+                    <div>
+                        <span class="summary-row-icon">
+                            <i class="bi bi-calendar3"></i>
                         </span>
 
-                        <span
-                            class="summary-value"
-                            id="summaryDoctor"
-                        >
-                            —
-                        </span>
-
-                    </div>
-
-
-                    <div class="summary-row">
-
-                        <span class="summary-label">
+                        <span>
                             Date
                         </span>
-
-                        <span
-                            class="summary-value"
-                            id="summaryDate"
-                        >
-                            —
-                        </span>
-
                     </div>
 
+                    <strong id="summaryDate">
+                        Select a date
+                    </strong>
 
-                    <div class="summary-row">
+                </div>
 
-                        <span class="summary-label">
+
+                <div class="booking-summary-row">
+
+                    <div>
+                        <span class="summary-row-icon">
+                            <i class="bi bi-clock"></i>
+                        </span>
+
+                        <span>
                             Time
                         </span>
-
-                        <span
-                            class="summary-value"
-                            id="summaryTime"
-                        >
-                            —
-                        </span>
-
                     </div>
 
+                    <strong id="summaryTime">
+                        Select a time
+                    </strong>
 
-                    <div class="summary-row">
+                </div>
 
-                        <span class="summary-label">
-                            Consultation
-                        </span>
 
-                        <span
-                            class="summary-value"
-                            id="summaryFee"
-                        >
-                            —
-                        </span>
+                <div class="booking-summary-divider"></div>
 
-                    </div>
+
+                <div class="booking-summary-fee">
+
+                    <span>
+                        Consultation fee
+                    </span>
+
+                    <strong id="summaryFee">
+                        ₹300
+                    </strong>
+
+                </div>
+
+
+                <div class="booking-summary-note">
+
+                    <i class="bi bi-shield-check"></i>
+
+                    <p>
+                        Your appointment details are kept
+                        private and secure.
+                    </p>
 
                 </div>
 
             </aside>
 
-        </div>
+        </section>
+
+
+        <!-- =================================================
+             SUCCESS STATE
+             ================================================= -->
+
+        <section
+            class="booking-success"
+            id="bookingSuccess"
+            hidden
+        >
+
+            <div class="booking-success-icon">
+                <i class="bi bi-check2"></i>
+            </div>
+
+            <span>
+                APPOINTMENT CONFIRMED
+            </span>
+
+            <h2>
+                Your consultation is booked.
+            </h2>
+
+            <p>
+                We've reserved your appointment with
+                <strong id="successDoctor">
+                    Dr. Ananya Sharma
+                </strong>.
+            </p>
+
+            <div class="booking-success-details">
+
+                <div>
+                    <span>Date</span>
+                    <strong id="successDate">—</strong>
+                </div>
+
+                <div>
+                    <span>Time</span>
+                    <strong id="successTime">—</strong>
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="booking-success-button"
+                id="viewAppointmentsButton"
+            >
+                View my appointments
+                <i class="bi bi-arrow-right"></i>
+            </button>
+
+        </section>
+
+
+        <!-- =================================================
+             MOBILE NAV
+             ================================================= -->
+
+        <nav class="bottom-nav">
+
+            <a
+                href="dashboard.html"
+                class="bottom-nav-item"
+            >
+                <i class="bi bi-house"></i>
+                <span>Home</span>
+            </a>
+
+            <a
+                href="doctors.html"
+                class="bottom-nav-item active"
+            >
+                <i class="bi bi-person-badge"></i>
+                <span>Doctors</span>
+            </a>
+
+            <a
+                href="appointments.html"
+                class="bottom-nav-item"
+            >
+                <i class="bi bi-calendar2"></i>
+                <span>Appointments</span>
+            </a>
+
+            <a
+                href="medicines.html"
+                class="bottom-nav-item"
+            >
+                <i class="bi bi-capsule"></i>
+                <span>Medicines</span>
+            </a>
+
+            <a
+                href="profile.html"
+                class="bottom-nav-item"
+            >
+                <i class="bi bi-person"></i>
+                <span>Profile</span>
+            </a>
+
+        </nav>
 
     </main>
 
 
-    <nav class="bottom-nav">
-
-        <a href="dashboard.html" class="bottom-nav-item">
-            <i class="bi bi-house"></i>
-            <span>Home</span>
-        </a>
-
-        <a href="doctors.html" class="bottom-nav-item">
-            <i class="bi bi-person-badge"></i>
-            <span>Doctors</span>
-        </a>
-
-        <a
-            href="appointments.html"
-            class="bottom-nav-item active"
-        >
-            <i class="bi bi-calendar2"></i>
-            <span>Appointments</span>
-        </a>
-
-        <a href="medicines.html" class="bottom-nav-item">
-            <i class="bi bi-capsule"></i>
-            <span>Medicines</span>
-        </a>
-
-        <a href="profile.html" class="bottom-nav-item">
-            <i class="bi bi-person"></i>
-            <span>Profile</span>
-        </a>
-
-    </nav>
-
-</div>
-
-<script src="../js/app.js"></script>
-<script src="../js/appointments.js"></script>
+    <script src="../js/app.js"></script>
+<script src="../js/book-appointment.js"></script>
 
 </body>
+
 </html>

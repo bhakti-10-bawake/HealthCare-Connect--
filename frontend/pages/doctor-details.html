@@ -1,401 +1,399 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>Doctor Details | Healthcare Connect</title>
+    <title>Doctor Profile | Healthcare Connect</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
+    <!-- Project CSS -->
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
-
-    <style>
-
-        .doctor-profile {
-            padding: var(--space-7);
-        }
-
-        .doctor-profile-header {
-            display: flex;
-            align-items: center;
-            gap: var(--space-5);
-        }
-
-        .doctor-profile-avatar {
-            width: 96px;
-            height: 96px;
-            flex-shrink: 0;
-
-            border-radius: var(--radius-xl);
-
-            background: var(--color-primary-light);
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            color: var(--color-primary-dark);
-            font-size: 38px;
-        }
-
-        .doctor-profile-info {
-            min-width: 0;
-        }
-
-        .doctor-profile-info h1 {
-            font-size: var(--font-size-xl);
-            font-weight: var(--font-weight-bold);
-        }
-
-        .doctor-profile-info p {
-            margin-top: 4px;
-            color: var(--color-text-secondary);
-            font-size: var(--font-size-sm);
-        }
-
-        .doctor-rating {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-
-            margin-top: var(--space-2);
-
-            font-size: var(--font-size-sm);
-        }
-
-        .doctor-rating i {
-            color: #E4A82D;
-        }
-
-        .doctor-detail-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--space-4);
-
-            margin-top: var(--space-6);
-        }
-
-        .doctor-detail-item {
-            padding: var(--space-4);
-
-            background: var(--color-surface-soft);
-
-            border-radius: var(--radius-md);
-        }
-
-        .doctor-detail-item span {
-            display: block;
-
-            color: var(--color-text-muted);
-            font-size: var(--font-size-xs);
-        }
-
-        .doctor-detail-item strong {
-            display: block;
-
-            margin-top: 4px;
-
-            font-size: var(--font-size-sm);
-        }
-
-        .doctor-about {
-            margin-top: var(--space-7);
-        }
-
-        .doctor-about h2 {
-            font-size: var(--font-size-lg);
-        }
-
-        .doctor-about p {
-            margin-top: var(--space-2);
-
-            color: var(--color-text-secondary);
-            font-size: var(--font-size-sm);
-        }
-
-        .availability-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            padding: var(--space-4) 0;
-
-            border-bottom: 1px solid var(--color-border-light);
-        }
-
-        .availability-row:last-child {
-            border-bottom: 0;
-        }
-
-        @media (max-width: 640px) {
-
-            .doctor-profile {
-                padding: var(--space-5);
-            }
-
-            .doctor-profile-header {
-                align-items: flex-start;
-            }
-
-            .doctor-profile-avatar {
-                width: 72px;
-                height: 72px;
-            }
-
-            .doctor-detail-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-    </style>
 </head>
+
 
 <body>
 
-<div class="app">
+    <main class="doctor-details-page">
 
-    <main class="page">
+        <!-- =================================================
+             TOP NAVIGATION
+             ================================================= -->
 
-        <!-- Back -->
-
-        <div class="mb-6">
+        <header class="doctor-details-header">
 
             <a
                 href="doctors.html"
-                class="btn btn-outline btn-sm"
+                class="doctor-back-link"
             >
-                <i class="bi bi-arrow-left"></i>
-                Back to doctors
+                <span class="doctor-back-icon">
+                    <i class="bi bi-arrow-left"></i>
+                </span>
+
+                <span>
+                    Back to doctors
+                </span>
             </a>
 
-        </div>
+        </header>
 
 
-        <!-- Doctor Profile -->
+        <!-- =================================================
+             MAIN CONTENT
+             ================================================= -->
 
-        <section
-            id="doctorProfile"
-            class="card doctor-profile"
-        >
+        <section class="doctor-details-content">
 
-            <div class="doctor-profile-header">
+            <!-- =================================================
+                 PROFILE HERO
+                 ================================================= -->
 
-                <div class="doctor-profile-avatar">
-                    <i class="bi bi-person"></i>
+            <section class="doctor-profile-hero">
+
+                <div class="doctor-profile-hero-top">
+
+                    <div
+                        class="doctor-details-avatar"
+                        id="doctorAvatar"
+                    >
+                        DR
+                    </div>
+
+                    <div
+                        class="doctor-details-status"
+                        id="doctorStatus"
+                    >
+                        <span class="doctor-status-dot"></span>
+                        Available
+                    </div>
+
                 </div>
 
-                <div class="doctor-profile-info">
 
-                    <span
-                        id="doctorStatus"
-                        class="badge badge-success"
-                    >
-                        Available
+                <div class="doctor-profile-hero-content">
+
+                    <span class="doctor-details-eyebrow">
+                        HEALTHCARE PROFESSIONAL
                     </span>
 
                     <h1 id="doctorName">
                         Doctor
                     </h1>
 
-                    <p id="doctorSpecialization">
+                    <p
+                        class="doctor-details-specialization"
+                        id="doctorSpecialization"
+                    >
                         Healthcare Professional
                     </p>
 
-                    <div class="doctor-rating">
+                    <div class="doctor-details-rating">
 
-                        <i class="bi bi-star-fill"></i>
+                        <span class="rating-star">
+                            <i class="bi bi-star-fill"></i>
+                        </span>
 
                         <strong id="doctorRating">
-                            —
+                            4.8
                         </strong>
 
-                        <span class="text-muted">
-                            rating
+                        <span>
+                            patient rating
                         </span>
 
                     </div>
 
                 </div>
 
-            </div>
+            </section>
 
 
-            <!-- Doctor Information -->
+            <!-- =================================================
+                 QUICK STATS
+                 ================================================= -->
 
-            <div class="doctor-detail-grid">
+            <section class="doctor-details-stats">
 
-                <div class="doctor-detail-item">
+                <div class="doctor-stat-card">
 
-                    <span>Experience</span>
+                    <span class="doctor-stat-icon">
+                        <i class="bi bi-briefcase"></i>
+                    </span>
 
-                    <strong id="doctorExperience">
-                        —
-                    </strong>
-
-                </div>
-
-                <div class="doctor-detail-item">
-
-                    <span>Consultation</span>
-
-                    <strong id="doctorFee">
-                        —
-                    </strong>
-
-                </div>
-
-                <div class="doctor-detail-item">
-
-                    <span>Location</span>
-
-                    <strong id="doctorLocation">
-                        —
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <!-- About -->
-
-            <div class="doctor-about">
-
-                <h2>About the doctor</h2>
-
-                <p id="doctorBio">
-                    Doctor information will appear here once
-                    the healthcare professional profile is loaded.
-                </p>
-
-            </div>
-
-
-            <!-- Availability -->
-
-            <div class="doctor-about">
-
-                <h2>Availability</h2>
-
-                <div id="doctorAvailability">
-
-                    <div class="availability-row">
-
-                        <span>Monday</span>
-
-                        <span class="badge badge-success">
-                            Available
+                    <div>
+                        <span>
+                            Experience
                         </span>
 
-                    </div>
-
-                    <div class="availability-row">
-
-                        <span>Tuesday</span>
-
-                        <span class="badge badge-success">
-                            Available
-                        </span>
-
-                    </div>
-
-                    <div class="availability-row">
-
-                        <span>Wednesday</span>
-
-                        <span class="badge badge-success">
-                            Available
-                        </span>
-
-                    </div>
-
-                    <div class="availability-row">
-
-                        <span>Thursday</span>
-
-                        <span class="badge badge-success">
-                            Available
-                        </span>
-
-                    </div>
-
-                    <div class="availability-row">
-
-                        <span>Friday</span>
-
-                        <span class="badge badge-success">
-                            Available
-                        </span>
-
+                        <strong id="doctorExperience">
+                            6 years
+                        </strong>
                     </div>
 
                 </div>
 
-            </div>
+
+                <div class="doctor-stat-card">
+
+                    <span class="doctor-stat-icon">
+                        <i class="bi bi-cash-coin"></i>
+                    </span>
+
+                    <div>
+                        <span>
+                            Consultation
+                        </span>
+
+                        <strong id="doctorFee">
+                            ₹300
+                        </strong>
+                    </div>
+
+                </div>
 
 
-            <!-- Action -->
+                <div class="doctor-stat-card">
 
-            <div class="d-flex gap-3 flex-wrap mt-8">
+                    <span class="doctor-stat-icon">
+                        <i class="bi bi-geo-alt"></i>
+                    </span>
 
-                <a
-                    id="bookDoctorButton"
-                    href="book-appointment.html"
-                    class="btn btn-primary btn-lg"
-                >
-                    <i class="bi bi-calendar-plus"></i>
-                    Book appointment
-                </a>
+                    <div>
+                        <span>
+                            Location
+                        </span>
 
-            </div>
+                        <strong id="doctorLocation">
+                            Healthcare Centre
+                        </strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 INFORMATION GRID
+                 ================================================= -->
+
+            <section class="doctor-details-grid">
+
+                <!-- About -->
+                <article class="doctor-information-card">
+
+                    <div class="doctor-information-heading">
+
+                        <div class="doctor-information-icon">
+                            <i class="bi bi-person-vcard"></i>
+                        </div>
+
+                        <div>
+                            <span>
+                                PROFILE
+                            </span>
+
+                            <h2>
+                                About the doctor
+                            </h2>
+                        </div>
+
+                    </div>
+
+                    <p
+                        class="doctor-bio"
+                        id="doctorBio"
+                    >
+                        A healthcare professional dedicated to
+                        providing accessible, patient-centred care.
+                    </p>
+
+                </article>
+
+
+                <!-- Availability -->
+                <article class="doctor-information-card">
+
+                    <div class="doctor-information-heading">
+
+                        <div class="doctor-information-icon">
+                            <i class="bi bi-calendar2-check"></i>
+                        </div>
+
+                        <div>
+                            <span>
+                                SCHEDULE
+                            </span>
+
+                            <h2>
+                                Availability
+                            </h2>
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="doctor-availability-content"
+                        id="doctorAvailability"
+                    >
+
+                        <div class="availability-placeholder">
+
+                            <span class="availability-placeholder-icon">
+                                <i class="bi bi-clock"></i>
+                            </span>
+
+                            <div>
+                                <strong>
+                                    Appointment slots
+                                </strong>
+
+                                <p>
+                                    Select a date while booking
+                                    to view available times.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- =================================================
+                 BOOKING CTA
+                 ================================================= -->
+
+            <section class="doctor-booking-card">
+
+                <div class="doctor-booking-copy">
+
+                    <span>
+                        READY TO GET STARTED?
+                    </span>
+
+                    <h2>
+                        Book a consultation
+                    </h2>
+
+                    <p>
+                        Choose a convenient date and time
+                        for your appointment.
+                    </p>
+
+                </div>
+
+
+                <div class="doctor-booking-action">
+
+                    <div class="doctor-booking-fee">
+
+                        <span>
+                            Consultation fee
+                        </span>
+
+                        <strong>
+                            <span id="bookingFee">
+                                ₹300
+                            </span>
+                        </strong>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="doctor-book-button"
+                        id="bookDoctorButton"
+                    >
+                        <span>
+                            Book appointment
+                        </span>
+
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+
+                </div>
+
+            </section>
 
         </section>
+
+
+        <!-- =================================================
+             MOBILE BOTTOM NAVIGATION
+             ================================================= -->
+
+        <nav class="bottom-nav">
+
+            <a
+                href="dashboard.html"
+                class="bottom-nav-item"
+            >
+                <i class="bi bi-house"></i>
+                <span>Home</span>
+            </a>
+
+            <a
+                href="doctors.html"
+                class="bottom-nav-item active"
+            >
+                <i class="bi bi-person-badge"></i>
+                <span>Doctors</span>
+            </a>
+
+            <a
+                href="appointments.html"
+                class="bottom-nav-item"
+            >
+                <i class="bi bi-calendar2"></i>
+                <span>Appointments</span>
+            </a>
+
+            <a
+                href="medicines.html"
+                class="bottom-nav-item"
+            >
+                <i class="bi bi-capsule"></i>
+                <span>Medicines</span>
+            </a>
+
+            <a
+                href="profile.html"
+                class="bottom-nav-item"
+            >
+                <i class="bi bi-person"></i>
+                <span>Profile</span>
+            </a>
+
+        </nav>
 
     </main>
 
 
-    <nav class="bottom-nav">
+    <!-- =================================================
+         JAVASCRIPT
+         ================================================= -->
 
-        <a href="dashboard.html" class="bottom-nav-item">
-            <i class="bi bi-house"></i>
-            <span>Home</span>
-        </a>
-
-        <a href="doctors.html" class="bottom-nav-item active">
-            <i class="bi bi-person-badge"></i>
-            <span>Doctors</span>
-        </a>
-
-        <a href="appointments.html" class="bottom-nav-item">
-            <i class="bi bi-calendar2"></i>
-            <span>Appointments</span>
-        </a>
-
-        <a href="medicines.html" class="bottom-nav-item">
-            <i class="bi bi-capsule"></i>
-            <span>Medicines</span>
-        </a>
-
-        <a href="profile.html" class="bottom-nav-item">
-            <i class="bi bi-person"></i>
-            <span>Profile</span>
-        </a>
-
-    </nav>
-
-</div>
-
-<script src="../js/app.js"></script>
+    <script src="../js/app.js"></script>
+<script src="../js/doctor-service.js"></script>
 <script src="../js/doctor-details.js"></script>
 
 </body>
+
 </html>
