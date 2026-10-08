@@ -1,7 +1,14 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
+    // ============================================================
+    // ELEMENTS
+    // ============================================================
 
     const medicineSearch =
         document.getElementById("medicineSearch");
+
+    const categoryFilters =
+        document.getElementById("medicineCategories");
 
     const medicineList =
         document.getElementById("medicineList");
@@ -9,482 +16,259 @@ document.addEventListener("DOMContentLoaded", () => {
     const medicineResultCount =
         document.getElementById("medicineResultCount");
 
-    const medicineCategories =
-        document.getElementById("medicineCategories");
+
+    // ============================================================
+    // STATE
+    // ============================================================
+
+    let currentCategory = "all";
+
+    let searchTimeout = null;
 
 
-    let selectedCategory = "all";
+    // ============================================================
+    // INITIAL LOAD
+    // ============================================================
+
+    await loadMedicines();
 
 
-    /*
-     * =========================================================
-     * SYNTHETIC MEDICINE DATA
-     * =========================================================
-     */
+    // ============================================================
+    // SEARCH
+    // ============================================================
 
-    const medicines = [
+    if (medicineSearch) {
 
-        {
-            id: 1,
-            name: "Paracetamol 500 mg",
-            generic: "Paracetamol",
-            category: "Pain Relief",
-            form: "Tablet",
-            strength: "500 mg",
-            price: 24,
-            pack: "10 tablets",
-            prescription: false,
-            available: true
-        },
+        medicineSearch.addEventListener(
+            "input",
+            () => {
 
-        {
-            id: 2,
-            name: "Paracetamol 650 mg",
-            generic: "Paracetamol",
-            category: "Pain Relief",
-            form: "Tablet",
-            strength: "650 mg",
-            price: 32,
-            pack: "10 tablets",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 3,
-            name: "Ibuprofen 400 mg",
-            generic: "Ibuprofen",
-            category: "Pain Relief",
-            form: "Tablet",
-            strength: "400 mg",
-            price: 46,
-            pack: "10 tablets",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 4,
-            name: "Diclofenac Gel",
-            generic: "Diclofenac",
-            category: "Pain Relief",
-            form: "Topical Gel",
-            strength: "1%",
-            price: 88,
-            pack: "30 g",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 5,
-            name: "Cetirizine 10 mg",
-            generic: "Cetirizine",
-            category: "Cold & Allergy",
-            form: "Tablet",
-            strength: "10 mg",
-            price: 28,
-            pack: "10 tablets",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 6,
-            name: "Levocetirizine 5 mg",
-            generic: "Levocetirizine",
-            category: "Cold & Allergy",
-            form: "Tablet",
-            strength: "5 mg",
-            price: 35,
-            pack: "10 tablets",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 7,
-            name: "Montelukast 10 mg",
-            generic: "Montelukast",
-            category: "Cold & Allergy",
-            form: "Tablet",
-            strength: "10 mg",
-            price: 96,
-            pack: "10 tablets",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 8,
-            name: "Saline Nasal Spray",
-            generic: "Sodium Chloride",
-            category: "Cold & Allergy",
-            form: "Nasal Spray",
-            strength: "0.65%",
-            price: 105,
-            pack: "20 ml",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 9,
-            name: "Antacid Suspension",
-            generic: "Aluminium Hydroxide + Magnesium Hydroxide",
-            category: "Digestive Health",
-            form: "Suspension",
-            strength: "Standard",
-            price: 72,
-            pack: "170 ml",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 10,
-            name: "Omeprazole 20 mg",
-            generic: "Omeprazole",
-            category: "Digestive Health",
-            form: "Capsule",
-            strength: "20 mg",
-            price: 54,
-            pack: "10 capsules",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 11,
-            name: "Pantoprazole 40 mg",
-            generic: "Pantoprazole",
-            category: "Digestive Health",
-            form: "Tablet",
-            strength: "40 mg",
-            price: 68,
-            pack: "10 tablets",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 12,
-            name: "ORS Electrolyte Powder",
-            generic: "Oral Rehydration Salts",
-            category: "Digestive Health",
-            form: "Powder",
-            strength: "Standard",
-            price: 22,
-            pack: "5 sachets",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 13,
-            name: "Vitamin C 500 mg",
-            generic: "Ascorbic Acid",
-            category: "Vitamins",
-            form: "Tablet",
-            strength: "500 mg",
-            price: 75,
-            pack: "20 tablets",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 14,
-            name: "Vitamin D3 1000 IU",
-            generic: "Cholecalciferol",
-            category: "Vitamins",
-            form: "Tablet",
-            strength: "1000 IU",
-            price: 110,
-            pack: "30 tablets",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 15,
-            name: "Calcium + Vitamin D3",
-            generic: "Calcium Carbonate + Vitamin D3",
-            category: "Vitamins",
-            form: "Tablet",
-            strength: "500 mg + 400 IU",
-            price: 125,
-            pack: "30 tablets",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 16,
-            name: "Multivitamin Daily",
-            generic: "Multivitamin & Minerals",
-            category: "Vitamins",
-            form: "Tablet",
-            strength: "Standard",
-            price: 145,
-            pack: "30 tablets",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 17,
-            name: "Metformin 500 mg",
-            generic: "Metformin",
-            category: "Chronic Care",
-            form: "Tablet",
-            strength: "500 mg",
-            price: 38,
-            pack: "20 tablets",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 18,
-            name: "Metformin 1000 mg",
-            generic: "Metformin",
-            category: "Chronic Care",
-            form: "Tablet",
-            strength: "1000 mg",
-            price: 62,
-            pack: "20 tablets",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 19,
-            name: "Amlodipine 5 mg",
-            generic: "Amlodipine",
-            category: "Chronic Care",
-            form: "Tablet",
-            strength: "5 mg",
-            price: 42,
-            pack: "20 tablets",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 20,
-            name: "Losartan 50 mg",
-            generic: "Losartan",
-            category: "Chronic Care",
-            form: "Tablet",
-            strength: "50 mg",
-            price: 58,
-            pack: "10 tablets",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 21,
-            name: "Atorvastatin 10 mg",
-            generic: "Atorvastatin",
-            category: "Chronic Care",
-            form: "Tablet",
-            strength: "10 mg",
-            price: 72,
-            pack: "10 tablets",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 22,
-            name: "Azithromycin 500 mg",
-            generic: "Azithromycin",
-            category: "Cold & Allergy",
-            form: "Tablet",
-            strength: "500 mg",
-            price: 84,
-            pack: "3 tablets",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 23,
-            name: "Amoxicillin 500 mg",
-            generic: "Amoxicillin",
-            category: "Cold & Allergy",
-            form: "Capsule",
-            strength: "500 mg",
-            price: 76,
-            pack: "10 capsules",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 24,
-            name: "Cough Relief Syrup",
-            generic: "Cough Preparation",
-            category: "Cold & Allergy",
-            form: "Syrup",
-            strength: "Standard",
-            price: 92,
-            pack: "100 ml",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 25,
-            name: "Antiseptic Solution",
-            generic: "Povidone Iodine",
-            category: "Pain Relief",
-            form: "Solution",
-            strength: "5%",
-            price: 68,
-            pack: "100 ml",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 26,
-            name: "Iron + Folic Acid",
-            generic: "Iron + Folic Acid",
-            category: "Vitamins",
-            form: "Tablet",
-            strength: "Standard",
-            price: 58,
-            pack: "30 tablets",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 27,
-            name: "Zinc 20 mg",
-            generic: "Zinc Sulphate",
-            category: "Vitamins",
-            form: "Tablet",
-            strength: "20 mg",
-            price: 48,
-            pack: "20 tablets",
-            prescription: false,
-            available: true
-        },
-
-        {
-            id: 28,
-            name: "Glimepiride 2 mg",
-            generic: "Glimepiride",
-            category: "Chronic Care",
-            form: "Tablet",
-            strength: "2 mg",
-            price: 64,
-            pack: "10 tablets",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 29,
-            name: "Telmisartan 40 mg",
-            generic: "Telmisartan",
-            category: "Chronic Care",
-            form: "Tablet",
-            strength: "40 mg",
-            price: 78,
-            pack: "10 tablets",
-            prescription: true,
-            available: true
-        },
-
-        {
-            id: 30,
-            name: "Probiotic Capsules",
-            generic: "Probiotic Blend",
-            category: "Digestive Health",
-            form: "Capsule",
-            strength: "Standard",
-            price: 135,
-            pack: "10 capsules",
-            prescription: false,
-            available: true
-        }
-
-    ];
-
-
-    // =========================================================
-    // FILTER
-    // =========================================================
-
-    function getFilteredMedicines() {
-
-        const searchValue =
-            medicineSearch
-                ? medicineSearch.value
-                    .trim()
-                    .toLowerCase()
-                : "";
-
-
-        return medicines.filter(
-            medicine => {
-
-                const matchesCategory =
-                    selectedCategory === "all" ||
-                    medicine.category ===
-                    selectedCategory;
-
-
-                const matchesSearch =
-                    !searchValue ||
-                    medicine.name
-                        .toLowerCase()
-                        .includes(searchValue) ||
-
-                    medicine.generic
-                        .toLowerCase()
-                        .includes(searchValue) ||
-
-                    medicine.category
-                        .toLowerCase()
-                        .includes(searchValue) ||
-
-                    medicine.form
-                        .toLowerCase()
-                        .includes(searchValue);
-
-
-                return (
-                    matchesCategory &&
-                    matchesSearch
+                clearTimeout(
+                    searchTimeout
                 );
 
+                searchTimeout =
+                    setTimeout(
+                        () => {
+                            loadMedicines();
+                        },
+                        250
+                    );
             }
         );
-
     }
 
 
-    // =========================================================
-    // RENDER
-    // =========================================================
+    // ============================================================
+    // CATEGORY FILTERS
+    // ============================================================
 
-    function renderMedicines() {
+    if (categoryFilters) {
 
-        const filtered =
-            getFilteredMedicines();
+        categoryFilters.addEventListener(
+            "click",
+            (event) => {
+
+                const button =
+                    event.target.closest(
+                        "[data-category]"
+                    );
+
+                if (!button) {
+                    return;
+                }
 
 
-        medicineResultCount.textContent =
-            filtered.length;
+                currentCategory =
+                    button.dataset.category ||
+                    "all";
 
 
-        if (filtered.length === 0) {
+                categoryFilters
+                    .querySelectorAll(
+                        "[data-category]"
+                    )
+                    .forEach(
+                        (item) => {
+                            item.classList.remove(
+                                "active"
+                            );
+                        }
+                    );
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                loadMedicines();
+            }
+        );
+    }
+
+
+    // ============================================================
+    // LOAD MEDICINES
+    // ============================================================
+
+    async function loadMedicines() {
+
+        showLoading();
+
+
+        try {
+
+            if (
+                typeof isLoggedIn ===
+                "function" &&
+                !isLoggedIn()
+            ) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+            }
+
+
+            const query =
+                medicineSearch
+                    ? medicineSearch.value.trim()
+                    : "";
+
+
+            const url =
+                new URL(
+                    "http://localhost:5000/api/medicines"
+                );
+
+
+            if (query) {
+
+                url.searchParams.set(
+                    "search",
+                    query
+                );
+            }
+
+
+            if (
+                currentCategory &&
+                currentCategory.toLowerCase() !==
+                    "all"
+            ) {
+
+                url.searchParams.set(
+                    "category",
+                    currentCategory
+                );
+            }
+
+
+            const token =
+                localStorage.getItem(
+                    "healthcareToken"
+                );
+
+
+            const response =
+                await fetch(
+                    url,
+                    {
+                        method: "GET",
+
+                        headers: {
+                            "Authorization":
+                                `Bearer ${token}`
+                        }
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (
+                response.status === 401
+            ) {
+
+                localStorage.removeItem(
+                    "healthcareToken"
+                );
+
+                localStorage.removeItem(
+                    "healthcareUser"
+                );
+
+                window.location.href =
+                    "login.html";
+
+                return;
+            }
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
+                throw new Error(
+                    result.message ||
+                    "Unable to load medicines."
+                );
+            }
+
+
+            const medicines =
+                Array.isArray(result.data)
+                    ? result.data
+                    : [];
+
+
+            renderMedicines(
+                medicines
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Medicine loading error:",
+                error
+            );
+
+
+            showError(
+                error.message ||
+                "Unable to load medicines."
+            );
+        }
+    }
+
+
+    // ============================================================
+    // RENDER MEDICINES
+    // ============================================================
+
+    function renderMedicines(
+        medicines
+    ) {
+
+        if (!medicineList) {
+            return;
+        }
+
+
+        updateResultCount(
+            medicines.length
+        );
+
+
+        if (
+            medicines.length === 0
+        ) {
 
             renderEmptyState();
 
@@ -493,21 +277,71 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         medicineList.innerHTML =
-            filtered
-                .map(createMedicineCard)
+            medicines
+                .map(
+                    createMedicineCard
+                )
                 .join("");
-
     }
 
 
-    // =========================================================
-    // CARD
-    // =========================================================
+    // ============================================================
+    // MEDICINE CARD
+    // ============================================================
 
-    function createMedicineCard(medicine) {
+    function createMedicineCard(
+        medicine
+    ) {
+
+        const availabilityClass =
+            medicine.available
+                ? "available"
+                : "unavailable";
+
+
+        const availabilityText =
+            medicine.available
+                ? "Available"
+                : "Currently unavailable";
+
+
+        const prescriptionBadge =
+            medicine.prescription
+                ? `
+                    <span class="medicine-prescription">
+                        <i class="bi bi-file-medical"></i>
+                        Prescription required
+                    </span>
+                `
+                : `
+                    <span class="medicine-otc">
+                        <i class="bi bi-check-circle"></i>
+                        General medicine
+                    </span>
+                `;
+
+
+        const price =
+            medicine.price !== null &&
+            medicine.price !== undefined
+                ? `₹${Number(
+                    medicine.price
+                ).toFixed(2)}`
+                : "Price unavailable";
+
+
+        const pack =
+            medicine.pack ||
+            "Pack information unavailable";
+
 
         return `
-            <article class="medicine-card">
+            <article
+                class="medicine-card"
+                data-medicine-id="${escapeHtml(
+                    medicine.id
+                )}"
+            >
 
                 <div class="medicine-card-top">
 
@@ -515,83 +349,66 @@ document.addEventListener("DOMContentLoaded", () => {
                         <i class="bi bi-capsule"></i>
                     </div>
 
-                    <span class="
-                        medicine-availability
-                        ${medicine.available
-                            ? "available"
-                            : "unavailable"}
-                    ">
-                        <span></span>
 
-                        ${medicine.available
-                            ? "Available"
-                            : "Unavailable"}
+                    <span
+                        class="medicine-availability ${availabilityClass}"
+                    >
+                        <span class="medicine-status-dot"></span>
+                        ${escapeHtml(
+                            availabilityText
+                        )}
                     </span>
 
                 </div>
 
 
-                <div class="medicine-card-title">
+                <div class="medicine-card-content">
 
-                    <span>
+                    <div class="medicine-category">
                         ${escapeHtml(
-                            medicine.category
+                            medicine.category ||
+                            "Medicine"
                         )}
-                    </span>
+                    </div>
 
-                    <h3>
+
+                    <h3 class="medicine-name">
                         ${escapeHtml(
-                            medicine.name
+                            medicine.name ||
+                            "Medicine"
                         )}
                     </h3>
 
-                    <p>
+
+                    <p class="medicine-generic">
                         ${escapeHtml(
-                            medicine.generic
+                            medicine.generic ||
+                            "Generic information unavailable"
                         )}
                     </p>
 
-                </div>
 
+                    <div class="medicine-strength">
 
-                <div class="medicine-details">
-
-                    <div>
                         <span>
-                            Form
+                            ${escapeHtml(
+                                medicine.form ||
+                                "Form unavailable"
+                            )}
                         </span>
 
-                        <strong>
+                        <span>
                             ${escapeHtml(
-                                medicine.form
+                                medicine.strength ||
+                                "Strength unavailable"
                             )}
-                        </strong>
+                        </span>
+
                     </div>
 
 
-                    <div>
-                        <span>
-                            Strength
-                        </span>
-
-                        <strong>
-                            ${escapeHtml(
-                                medicine.strength
-                            )}
-                        </strong>
-                    </div>
-
-
-                    <div>
-                        <span>
-                            Pack
-                        </span>
-
-                        <strong>
-                            ${escapeHtml(
-                                medicine.pack
-                            )}
-                        </strong>
+                    <div class="medicine-badge-row">
+                        ${prescriptionBadge}
                     </div>
 
                 </div>
@@ -602,42 +419,84 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="medicine-price">
 
                         <span>
-                            Approx. price
+                            Starting from
                         </span>
 
                         <strong>
-                            ₹${medicine.price}
+                            ${escapeHtml(price)}
                         </strong>
 
                     </div>
 
 
-                    ${
-                        medicine.prescription
-                            ? `
-                                <span class="medicine-prescription">
-                                    <i class="bi bi-file-medical"></i>
-                                    Prescription
-                                </span>
-                            `
-                            : `
-                                <span class="medicine-otc">
-                                    General use
-                                </span>
-                            `
-                    }
+                    <div class="medicine-pack">
+                        ${escapeHtml(pack)}
+                    </div>
 
                 </div>
 
             </article>
         `;
-
     }
 
 
-    // =========================================================
-    // EMPTY
-    // =========================================================
+    // ============================================================
+    // RESULT COUNT
+    // ============================================================
+
+    function updateResultCount(
+        count
+    ) {
+
+        if (!medicineResultCount) {
+            return;
+        }
+
+
+        medicineResultCount.textContent =
+            `${count} ${
+                count === 1
+                    ? "medicine"
+                    : "medicines"
+            }`;
+    }
+
+
+    // ============================================================
+    // LOADING
+    // ============================================================
+
+    function showLoading() {
+
+        if (!medicineList) {
+            return;
+        }
+
+
+        medicineList.innerHTML = `
+            <div class="medicine-loading">
+
+                <div class="medicine-loading-spinner"></div>
+
+                <p>
+                    Loading medicines...
+                </p>
+
+            </div>
+        `;
+
+
+        if (medicineResultCount) {
+
+            medicineResultCount.textContent =
+                "Loading...";
+        }
+    }
+
+
+    // ============================================================
+    // EMPTY STATE
+    // ============================================================
 
     function renderEmptyState() {
 
@@ -645,7 +504,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="medicine-empty">
 
                 <div class="medicine-empty-icon">
-                    <i class="bi bi-search"></i>
+                    <i class="bi bi-capsule"></i>
                 </div>
 
                 <h3>
@@ -653,149 +512,109 @@ document.addEventListener("DOMContentLoaded", () => {
                 </h3>
 
                 <p>
-                    Try searching for another medicine
-                    or choose a different category.
+                    Try a different medicine name
+                    or category.
+                </p>
+
+            </div>
+        `;
+    }
+
+
+    // ============================================================
+    // ERROR
+    // ============================================================
+
+    function showError(
+        message
+    ) {
+
+        if (!medicineList) {
+            return;
+        }
+
+
+        medicineList.innerHTML = `
+            <div class="medicine-empty medicine-error">
+
+                <div class="medicine-empty-icon">
+                    <i class="bi bi-exclamation-circle"></i>
+                </div>
+
+                <h3>
+                    Unable to load medicines
+                </h3>
+
+                <p>
+                    ${escapeHtml(message)}
                 </p>
 
                 <button
                     type="button"
-                    id="clearMedicineSearch"
+                    class="medicine-retry-button"
+                    id="retryMedicinesButton"
                 >
-                    Clear search
+                    Try again
                 </button>
 
             </div>
         `;
 
 
-        const clearButton =
-            document.getElementById(
-                "clearMedicineSearch"
-            );
+        if (medicineResultCount) {
 
-
-        if (clearButton) {
-
-            clearButton.addEventListener(
-                "click",
-                () => {
-
-                    medicineSearch.value = "";
-
-                    selectedCategory = "all";
-
-                    document
-                        .querySelectorAll(
-                            ".medicine-category"
-                        )
-                        .forEach(
-                            button =>
-                                button.classList
-                                    .remove(
-                                        "active"
-                                    )
-                        );
-
-
-                    document
-                        .querySelector(
-                            '[data-category="all"]'
-                        )
-                        .classList
-                        .add("active");
-
-
-                    renderMedicines();
-
-                }
-            );
-
+            medicineResultCount.textContent =
+                "0 medicines";
         }
 
-    }
 
-
-    // =========================================================
-    // SEARCH
-    // =========================================================
-
-    if (medicineSearch) {
-
-        medicineSearch.addEventListener(
-            "input",
-            renderMedicines
-        );
-
-    }
-
-
-    // =========================================================
-    // CATEGORY FILTERS
-    // =========================================================
-
-    if (medicineCategories) {
-
-        const buttons =
-            medicineCategories
-                .querySelectorAll(
-                    "[data-category]"
-                );
-
-
-        buttons.forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    buttons.forEach(
-                        item =>
-                            item.classList
-                                .remove(
-                                    "active"
-                                )
-                    );
-
-
-                    button.classList.add(
-                        "active"
-                    );
-
-
-                    selectedCategory =
-                        button.dataset.category;
-
-
-                    renderMedicines();
-
-                }
+        const retryButton =
+            document.getElementById(
+                "retryMedicinesButton"
             );
 
-        });
 
+        if (retryButton) {
+
+            retryButton.addEventListener(
+                "click",
+                loadMedicines
+            );
+        }
     }
 
 
-    // =========================================================
-    // HTML SAFETY
-    // =========================================================
+    // ============================================================
+    // SAFE HTML
+    // ============================================================
 
-    function escapeHtml(value) {
+    function escapeHtml(
+        value
+    ) {
 
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
+        return String(
+            value ?? ""
+        )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
     }
-
-
-    // =========================================================
-    // INITIAL
-    // =========================================================
-
-    renderMedicines();
 
 });

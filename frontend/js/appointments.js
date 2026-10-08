@@ -1,4 +1,8 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
+    // ============================================================
+    // ELEMENTS
+    // ============================================================
 
     const appointmentList =
         document.getElementById("appointmentList");
@@ -9,155 +13,206 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextAppointmentLabel =
         document.getElementById("nextAppointmentLabel");
 
-    const appointmentFilters =
-        document.getElementById("appointmentFilters");
-
-
-    let selectedFilter = "all";
-
-
-    /*
-     * =========================================================
-     * TEMPORARY SYNTHETIC APPOINTMENTS
-     * =========================================================
-     */
-
-    const defaultAppointments = [
-
-        {
-            id: 1001,
-            doctorId: 1,
-            doctorName: "Dr. Ananya Sharma",
-            specialization: "General Physician",
-            date: getFutureDate(2),
-            time: "10:30 AM",
-            fee: 300,
-            reason: "Routine health consultation",
-            status: "Upcoming"
-        },
-
-        {
-            id: 1002,
-            doctorId: 2,
-            doctorName: "Dr. Rahul Patil",
-            specialization: "Pediatrician",
-            date: getFutureDate(6),
-            time: "11:00 AM",
-            fee: 350,
-            reason: "General consultation",
-            status: "Upcoming"
-        },
-
-        {
-            id: 1003,
-            doctorId: 5,
-            doctorName: "Dr. Meera Joshi",
-            specialization: "Dermatologist",
-            date: getPastDate(12),
-            time: "2:30 PM",
-            fee: 500,
-            reason: "Skin consultation",
-            status: "Completed"
-        }
-
-    ];
-
-
-    /*
-     * =========================================================
-     * LOAD APPOINTMENTS
-     * =========================================================
-     */
-
-    function getAppointments() {
-
-        const stored =
-            localStorage.getItem(
-                "healthcareAppointments"
-            );
-
-
-        if (stored) {
-
-            try {
-
-                const parsed =
-                    JSON.parse(stored);
-
-                if (Array.isArray(parsed)) {
-                    return parsed;
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Unable to read appointments:",
-                    error
-                );
-
-            }
-
-        }
-
-
-        localStorage.setItem(
-            "healthcareAppointments",
-            JSON.stringify(defaultAppointments)
+    const filterButtons =
+        document.querySelectorAll(
+            "[data-appointment-filter]"
         );
 
 
-        return defaultAppointments;
+    // ============================================================
+    // STATE
+    // ============================================================
+
+    let appointments = [];
+
+    let currentFilter = "all";
+
+
+    // ============================================================
+    // LOAD APPOINTMENTS
+    // ============================================================
+
+    await loadAppointments();
+
+
+    // ============================================================
+    // FILTER BUTTONS
+    // ============================================================
+
+    filterButtons.forEach((button) => {
+
+        button.addEventListener("click", () => {
+
+            currentFilter =
+                button.dataset.appointmentFilter ||
+                "all";
+
+
+            filterButtons.forEach((item) => {
+                item.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            renderAppointments();
+        });
+
+    });
+
+
+    // ============================================================
+    // FETCH FROM API
+    // ============================================================
+
+    async function loadAppointments() {
+
+        showLoading();
+
+        try {
+
+            if (
+                typeof isLoggedIn === "function" &&
+                !isLoggedIn()
+            ) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+            }
+
+
+            const response =
+                await apiRequest(
+                    "/appointments/my",
+                    {
+                        method: "GET"
+                    }
+                );
+
+
+            appointments =
+                Array.isArray(response.data)
+                    ? response.data
+                    : [];
+
+
+            updateSummary();
+
+            renderAppointments();
+
+
+        } catch (error) {
+
+            console.error(
+                "Appointments loading error:",
+                error
+            );
+
+            showError(
+                error.message ||
+                "Unable to load your appointments."
+            );
+        }
     }
 
 
-    let appointments =
-        getAppointments();
+    // ============================================================
+    // SUMMARY
+    // ============================================================
 
+    function updateSummary() {
 
-    /*
-     * =========================================================
-     * RENDER
-     * =========================================================
-     */
+        if (appointmentCount) {
 
-    function renderAppointments() {
-
-        let filtered =
-            [...appointments];
-
-
-        if (selectedFilter !== "all") {
-
-            filtered =
-                filtered.filter(
-                    appointment =>
-                        appointment.status ===
-                        selectedFilter
-                );
-
+            appointmentCount.textContent =
+                appointments.length;
         }
 
 
-        filtered.sort(
-            (a, b) => {
+        const upcomingAppointments =
+            appointments
+                .filter(
+                    appointment =>
+                        isUpcoming(appointment)
+                )
+                .sort(
+                    compareAppointments
+                );
 
-                const dateA =
-                    new Date(
-                        `${a.date}T00:00:00`
-                    );
 
-                const dateB =
-                    new Date(
-                        `${b.date}T00:00:00`
-                    );
+        if (
+            nextAppointmentLabel
+        ) {
 
-                return dateA - dateB;
+            if (
+                upcomingAppointments.length === 0
+            ) {
 
+                nextAppointmentLabel.textContent =
+                    "No upcoming appointments";
+
+            } else {
+
+                const next =
+                    upcomingAppointments[0];
+
+                nextAppointmentLabel.textContent =
+                    `Next: ${formatDate(
+                        next.date
+                    )} · ${formatTime(
+                        next.time
+                    )}`;
             }
+        }
+    }
+
+
+    // ============================================================
+    // RENDER
+    // ============================================================
+
+    function renderAppointments() {
+
+        if (!appointmentList) {
+            return;
+        }
+
+
+        let filteredAppointments =
+            [...appointments];
+
+
+        if (currentFilter === "upcoming") {
+
+            filteredAppointments =
+                filteredAppointments.filter(
+                    appointment =>
+                        isUpcoming(appointment)
+                );
+
+        } else if (
+            currentFilter === "completed"
+        ) {
+
+            filteredAppointments =
+                filteredAppointments.filter(
+                    appointment =>
+                        normalizeStatus(
+                            appointment.status
+                        ) === "COMPLETED"
+                );
+        }
+
+
+        filteredAppointments.sort(
+            compareAppointments
         );
 
 
-        if (filtered.length === 0) {
+        if (
+            filteredAppointments.length === 0
+        ) {
 
             renderEmptyState();
 
@@ -166,37 +221,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         appointmentList.innerHTML =
-            filtered
-                .map(createAppointmentCard)
+            filteredAppointments
+                .map(
+                    createAppointmentCard
+                )
                 .join("");
-
-
-        attachCancelButtons();
-
-        updateSummary();
-
     }
 
 
-    /*
-     * =========================================================
-     * APPOINTMENT CARD
-     * =========================================================
-     */
+    // ============================================================
+    // APPOINTMENT CARD
+    // ============================================================
 
     function createAppointmentCard(
         appointment
     ) {
 
-        const date =
-            formatDate(
-                appointment.date
+        const status =
+            normalizeStatus(
+                appointment.status
             );
 
 
+        const statusLabel =
+            formatStatus(status);
+
+
         const statusClass =
-            appointment.status
-                .toLowerCase();
+            getStatusClass(status);
 
 
         const initials =
@@ -205,76 +257,85 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        const isUpcoming =
-            appointment.status ===
-            "Upcoming";
+        const fee =
+            Number.isFinite(
+                Number(appointment.fee)
+            )
+                ? `₹${Number(
+                    appointment.fee
+                )}`
+                : "—";
+
+
+        const location =
+            appointment.healthcareCentre ||
+            "Healthcare centre";
+
+
+        const reason =
+            appointment.reason ||
+            "General consultation";
 
 
         return `
             <article
-                class="appointment-card ${statusClass}"
+                class="appointment-card"
+                data-appointment-id="${escapeHtml(
+                    appointment.id
+                )}"
             >
 
-                <div class="appointment-card-main">
+                <div class="appointment-card-top">
 
-                    <div class="appointment-doctor-avatar">
-                        ${escapeHtml(initials)}
-                    </div>
+                    <div class="appointment-doctor">
 
-                    <div class="appointment-doctor-info">
-
-                        <span class="appointment-status ${statusClass}">
-                            ${escapeHtml(
-                                appointment.status
-                            )}
-                        </span>
-
-                        <h3>
-                            ${escapeHtml(
-                                appointment.doctorName
-                            )}
-                        </h3>
-
-                        <p>
-                            ${escapeHtml(
-                                appointment.specialization
-                            )}
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="appointment-details">
-
-                    <div class="appointment-detail">
-
-                        <span>
-                            <i class="bi bi-calendar3"></i>
-                        </span>
+                        <div class="appointment-avatar">
+                            ${escapeHtml(initials)}
+                        </div>
 
                         <div>
-                            <small>Date</small>
-                            <strong>
-                                ${date}
-                            </strong>
+
+                            <h3>
+                                ${escapeHtml(
+                                    appointment.doctorName ||
+                                    "Doctor"
+                                )}
+                            </h3>
+
+                            <p>
+                                ${escapeHtml(
+                                    appointment.specialization ||
+                                    "Healthcare Professional"
+                                )}
+                            </p>
+
                         </div>
 
                     </div>
 
 
+                    <span
+                        class="appointment-status ${statusClass}"
+                    >
+                        ${escapeHtml(statusLabel)}
+                    </span>
+
+                </div>
+
+
+                <div class="appointment-card-details">
+
                     <div class="appointment-detail">
 
-                        <span>
-                            <i class="bi bi-clock"></i>
-                        </span>
+                        <i class="bi bi-calendar3"></i>
 
                         <div>
-                            <small>Time</small>
+                            <span>Date</span>
                             <strong>
                                 ${escapeHtml(
-                                    appointment.time
+                                    formatDate(
+                                        appointment.date
+                                    )
                                 )}
                             </strong>
                         </div>
@@ -284,16 +345,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     <div class="appointment-detail">
 
-                        <span>
-                            <i class="bi bi-cash-coin"></i>
-                        </span>
+                        <i class="bi bi-clock"></i>
 
                         <div>
-                            <small>Fee</small>
+                            <span>Time</span>
                             <strong>
-                                ₹${Number(
-                                    appointment.fee || 0
+                                ${escapeHtml(
+                                    formatTime(
+                                        appointment.time
+                                    )
                                 )}
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="appointment-detail">
+
+                        <i class="bi bi-hospital"></i>
+
+                        <div>
+                            <span>Healthcare centre</span>
+                            <strong>
+                                ${escapeHtml(location)}
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="appointment-detail">
+
+                        <i class="bi bi-cash"></i>
+
+                        <div>
+                            <span>Consultation fee</span>
+                            <strong>
+                                ${escapeHtml(fee)}
                             </strong>
                         </div>
 
@@ -302,233 +391,91 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
 
 
-                <div class="appointment-card-footer">
+                <div class="appointment-card-reason">
 
-                    <div class="appointment-reason">
+                    <span>Reason for visit</span>
 
-                        <span>
-                            Reason
-                        </span>
-
-                        <p>
-                            ${escapeHtml(
-                                appointment.reason ||
-                                "General consultation"
-                            )}
-                        </p>
-
-                    </div>
-
-
-                    ${
-                        isUpcoming
-                            ? `
-                                <button
-                                    type="button"
-                                    class="appointment-cancel-button"
-                                    data-id="${appointment.id}"
-                                >
-                                    Cancel
-                                </button>
-                            `
-                            : `
-                                <span class="appointment-completed-label">
-                                    <i class="bi bi-check2-circle"></i>
-                                    Consultation completed
-                                </span>
-                            `
-                    }
+                    <p>
+                        ${escapeHtml(reason)}
+                    </p>
 
                 </div>
+
+
+                ${
+                    appointment.queueNumber
+                        ? `
+                            <div class="appointment-queue">
+                                <i class="bi bi-people"></i>
+                                <span>
+                                    Queue number
+                                </span>
+                                <strong>
+                                    ${escapeHtml(
+                                        appointment.queueNumber
+                                    )}
+                                </strong>
+                            </div>
+                        `
+                        : ""
+                }
 
             </article>
         `;
     }
 
 
-    /*
-     * =========================================================
-     * SUMMARY
-     * =========================================================
-     */
-
-    function updateSummary() {
-
-        const upcoming =
-            appointments.filter(
-                appointment =>
-                    appointment.status ===
-                    "Upcoming"
-            );
-
-
-        appointmentCount.textContent =
-            upcoming.length;
-
-
-        if (upcoming.length === 0) {
-
-            nextAppointmentLabel.textContent =
-                "No appointment";
-
-            return;
-        }
-
-
-        const sorted =
-            [...upcoming].sort(
-                (a, b) =>
-                    new Date(a.date) -
-                    new Date(b.date)
-            );
-
-
-        const next =
-            sorted[0];
-
-
-        nextAppointmentLabel.textContent =
-            formatShortDate(next.date);
-
-    }
-
-
-    /*
-     * =========================================================
-     * CANCEL APPOINTMENT
-     * =========================================================
-     */
-
-    function attachCancelButtons() {
-
-        const buttons =
-            document.querySelectorAll(
-                ".appointment-cancel-button"
-            );
-
-
-        buttons.forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    const id =
-                        Number(
-                            button.dataset.id
-                        );
-
-
-                    const confirmed =
-                        window.confirm(
-                            "Are you sure you want to cancel this appointment?"
-                        );
-
-
-                    if (!confirmed) {
-                        return;
-                    }
-
-
-                    appointments =
-                        appointments.filter(
-                            appointment =>
-                                appointment.id !== id
-                        );
-
-
-                    localStorage.setItem(
-                        "healthcareAppointments",
-                        JSON.stringify(
-                            appointments
-                        )
-                    );
-
-
-                    renderAppointments();
-
-                }
-            );
-
-        });
-
-    }
-
-
-    /*
-     * =========================================================
-     * FILTERS
-     * =========================================================
-     */
-
-    if (appointmentFilters) {
-
-        const buttons =
-            appointmentFilters.querySelectorAll(
-                "[data-filter]"
-            );
-
-
-        buttons.forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    buttons.forEach(
-                        item =>
-                            item.classList.remove(
-                                "active"
-                            )
-                    );
-
-
-                    button.classList.add(
-                        "active"
-                    );
-
-
-                    selectedFilter =
-                        button.dataset.filter;
-
-
-                    renderAppointments();
-
-                }
-            );
-
-        });
-
-    }
-
-
-    /*
-     * =========================================================
-     * EMPTY STATE
-     * =========================================================
-     */
+    // ============================================================
+    // EMPTY STATE
+    // ============================================================
 
     function renderEmptyState() {
 
-        appointmentList.innerHTML = `
-            <div class="appointments-empty">
+        let title =
+            "No appointments yet";
 
-                <div class="appointments-empty-icon">
-                    <i class="bi bi-calendar-x"></i>
+        let description =
+            "Your booked appointments will appear here.";
+
+
+        if (currentFilter === "upcoming") {
+
+            title =
+                "No upcoming appointments";
+
+            description =
+                "You don't have any upcoming appointments.";
+
+        } else if (
+            currentFilter === "completed"
+        ) {
+
+            title =
+                "No completed appointments";
+
+            description =
+                "Your completed appointments will appear here.";
+        }
+
+
+        appointmentList.innerHTML = `
+            <div class="appointment-empty">
+
+                <div class="appointment-empty-icon">
+                    <i class="bi bi-calendar2-check"></i>
                 </div>
 
                 <h3>
-                    No appointments here
+                    ${escapeHtml(title)}
                 </h3>
 
                 <p>
-                    When you book a consultation,
-                    it will appear here.
+                    ${escapeHtml(description)}
                 </p>
 
                 <a
                     href="doctors.html"
-                    class="appointments-empty-button"
+                    class="appointment-book-link"
                 >
                     Find a doctor
                     <i class="bi bi-arrow-right"></i>
@@ -536,163 +483,390 @@ document.addEventListener("DOMContentLoaded", () => {
 
             </div>
         `;
-
     }
 
 
-    /*
-     * =========================================================
-     * DATE HELPERS
-     * =========================================================
-     */
+    // ============================================================
+    // LOADING
+    // ============================================================
 
-    function getFutureDate(days) {
+    function showLoading() {
 
-        const date =
-            new Date();
+        if (!appointmentList) {
+            return;
+        }
 
-        date.setDate(
-            date.getDate() + days
+
+        appointmentList.innerHTML = `
+            <div class="appointment-loading">
+
+                <div class="appointment-loading-spinner"></div>
+
+                <p>
+                    Loading your appointments...
+                </p>
+
+            </div>
+        `;
+    }
+
+
+    // ============================================================
+    // ERROR
+    // ============================================================
+
+    function showError(message) {
+
+        if (!appointmentList) {
+            return;
+        }
+
+
+        appointmentList.innerHTML = `
+            <div class="appointment-empty appointment-error">
+
+                <div class="appointment-empty-icon">
+                    <i class="bi bi-exclamation-circle"></i>
+                </div>
+
+                <h3>
+                    Unable to load appointments
+                </h3>
+
+                <p>
+                    ${escapeHtml(message)}
+                </p>
+
+                <button
+                    type="button"
+                    class="appointment-book-link"
+                    id="retryAppointmentsButton"
+                >
+                    Try again
+                </button>
+
+            </div>
+        `;
+
+
+        const retryButton =
+            document.getElementById(
+                "retryAppointmentsButton"
+            );
+
+
+        if (retryButton) {
+
+            retryButton.addEventListener(
+                "click",
+                loadAppointments
+            );
+        }
+    }
+
+
+    // ============================================================
+    // UPCOMING CHECK
+    // ============================================================
+
+    function isUpcoming(appointment) {
+
+        const status =
+            normalizeStatus(
+                appointment.status
+            );
+
+
+        if (
+            status === "CANCELLED" ||
+            status === "COMPLETED" ||
+            status === "NO_SHOW"
+        ) {
+            return false;
+        }
+
+
+        if (!appointment.date) {
+            return false;
+        }
+
+
+        const appointmentDate =
+            new Date(
+                `${appointment.date}T${
+                    appointment.time || "00:00:00"
+                }`
+            );
+
+
+        return (
+            !Number.isNaN(
+                appointmentDate.getTime()
+            ) &&
+            appointmentDate >= new Date()
         );
-
-        return formatInputDate(date);
-
     }
 
 
-    function getPastDate(days) {
+    // ============================================================
+    // SORT
+    // ============================================================
 
-        const date =
-            new Date();
+    function compareAppointments(
+        first,
+        second
+    ) {
 
-        date.setDate(
-            date.getDate() - days
+        const firstDate =
+            getAppointmentTimestamp(
+                first
+            );
+
+        const secondDate =
+            getAppointmentTimestamp(
+                second
+            );
+
+
+        return (
+            secondDate - firstDate
         );
-
-        return formatInputDate(date);
-
     }
 
 
-    function formatInputDate(date) {
+    function getAppointmentTimestamp(
+        appointment
+    ) {
 
-        const year =
-            date.getFullYear();
+        const value =
+            new Date(
+                `${appointment.date}T${
+                    appointment.time || "00:00:00"
+                }`
+            );
 
-        const month =
-            String(
-                date.getMonth() + 1
-            ).padStart(2, "0");
 
-        const day =
-            String(
-                date.getDate()
-            ).padStart(2, "0");
+        const timestamp =
+            value.getTime();
 
-        return `${year}-${month}-${day}`;
 
+        return Number.isNaN(timestamp)
+            ? 0
+            : timestamp;
     }
 
 
-    function formatDate(dateString) {
+    // ============================================================
+    // STATUS
+    // ============================================================
+
+    function normalizeStatus(status) {
+
+        return String(
+            status || ""
+        )
+            .trim()
+            .toUpperCase();
+    }
+
+
+    function formatStatus(status) {
+
+        const labels = {
+            UPCOMING: "Upcoming",
+            CONFIRMED: "Confirmed",
+            COMPLETED: "Completed",
+            CANCELLED: "Cancelled",
+            NO_SHOW: "No show"
+        };
+
+
+        return (
+            labels[status] ||
+            "Appointment"
+        );
+    }
+
+
+    function getStatusClass(status) {
+
+        const classes = {
+            UPCOMING: "status-upcoming",
+            CONFIRMED: "status-confirmed",
+            COMPLETED: "status-completed",
+            CANCELLED: "status-cancelled",
+            NO_SHOW: "status-cancelled"
+        };
+
+
+        return (
+            classes[status] ||
+            "status-upcoming"
+        );
+    }
+
+
+    // ============================================================
+    // DATE FORMAT
+    // ============================================================
+
+    function formatDate(dateValue) {
+
+        if (!dateValue) {
+            return "—";
+        }
+
 
         const date =
             new Date(
-                `${dateString}T00:00:00`
+                `${dateValue}T00:00:00`
             );
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return String(dateValue);
+        }
 
 
         return date.toLocaleDateString(
             "en-IN",
             {
-                weekday: "short",
                 day: "numeric",
                 month: "short",
                 year: "numeric"
             }
         );
-
     }
 
 
-    function formatShortDate(dateString) {
+    // ============================================================
+    // TIME FORMAT
+    // ============================================================
 
-        const date =
-            new Date(
-                `${dateString}T00:00:00`
-            );
+    function formatTime(timeValue) {
+
+        if (!timeValue) {
+            return "—";
+        }
 
 
-        return date.toLocaleDateString(
-            "en-IN",
-            {
-                day: "numeric",
-                month: "short"
-            }
-        );
+        const parts =
+            String(timeValue)
+                .split(":");
 
+
+        if (parts.length < 2) {
+            return String(timeValue);
+        }
+
+
+        let hour =
+            Number(parts[0]);
+
+
+        const minute =
+            parts[1];
+
+
+        if (
+            Number.isNaN(hour)
+        ) {
+            return String(timeValue);
+        }
+
+
+        const period =
+            hour >= 12
+                ? "PM"
+                : "AM";
+
+
+        hour =
+            hour % 12 || 12;
+
+
+        return `${hour}:${minute} ${period}`;
     }
 
 
-    /*
-     * =========================================================
-     * INITIALS
-     * =========================================================
-     */
+    // ============================================================
+    // INITIALS
+    // ============================================================
 
     function getInitials(name) {
 
-        if (!name) return "DR";
+        if (!name) {
+            return "DR";
+        }
+
+
+        const cleanName =
+            String(name)
+                .replace(
+                    /^Dr\.?\s*/i,
+                    ""
+                )
+                .trim();
 
 
         const words =
-            name
-                .trim()
-                .split(/\s+/)
-                .filter(Boolean);
+            cleanName.split(
+                /\s+/
+            );
 
 
-        if (words.length === 1) {
+        if (
+            words.length === 1
+        ) {
 
             return words[0]
                 .substring(0, 2)
                 .toUpperCase();
-
         }
 
 
         return (
-            words[0][0] +
-            words[words.length - 1][0]
+            words[0].charAt(0) +
+            words[
+                words.length - 1
+            ].charAt(0)
         ).toUpperCase();
-
     }
 
 
-    /*
-     * =========================================================
-     * HTML SAFETY
-     * =========================================================
-     */
+    // ============================================================
+    // SAFE HTML
+    // ============================================================
 
     function escapeHtml(value) {
 
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
+        return String(
+            value ?? ""
+        )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
     }
-
-
-    /*
-     * =========================================================
-     * INITIAL RENDER
-     * =========================================================
-     */
-
-    renderAppointments();
 
 });

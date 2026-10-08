@@ -1,257 +1,126 @@
-document.addEventListener("DOMContentLoaded", () => {
+const doctorService = (() => {
+    const API_URL = "http://localhost:5000/api/doctors";
 
-    const params = new URLSearchParams(window.location.search);
-    const doctorId = params.get("id");
+    async function getAll() {
+        const response = await fetch(API_URL);
 
-    const doctor = doctorService.getById(doctorId);
+        const result = await response.json();
 
-    const doctorAvatar = document.getElementById("doctorAvatar");
-    const doctorStatus = document.getElementById("doctorStatus");
-    const doctorName = document.getElementById("doctorName");
-    const doctorSpecialization =
-        document.getElementById("doctorSpecialization");
-    const doctorRating = document.getElementById("doctorRating");
+        if (!response.ok || !result.success) {
+            throw new Error(
+                result.message || "Unable to fetch doctors."
+            );
+        }
 
-    const doctorExperience =
-        document.getElementById("doctorExperience");
-    const doctorFee =
-        document.getElementById("doctorFee");
-    const doctorLocation =
-        document.getElementById("doctorLocation");
-
-    const doctorBio =
-        document.getElementById("doctorBio");
-    const doctorAvailability =
-        document.getElementById("doctorAvailability");
-
-    const bookingFee =
-        document.getElementById("bookingFee");
-    const bookDoctorButton =
-        document.getElementById("bookDoctorButton");
-
-
-    if (!doctor) {
-        showDoctorNotFound();
-        return;
+        return result.data;
     }
 
-
-    /* -----------------------------
-       Basic profile information
-    ----------------------------- */
-
-    const initials = doctor.name
-        .replace("Dr. ", "")
-        .split(" ")
-        .map(name => name.charAt(0))
-        .slice(0, 2)
-        .join("");
-
-
-    if (doctorAvatar) {
-        doctorAvatar.textContent = initials;
-    }
-
-
-    if (doctorName) {
-        doctorName.textContent = doctor.name;
-    }
-
-
-    if (doctorSpecialization) {
-        doctorSpecialization.textContent =
-            doctor.specialization;
-    }
-
-
-    if (doctorRating) {
-        doctorRating.innerHTML = `
-            <i class="bi bi-star-fill"></i>
-            ${doctor.rating}
-        `;
-    }
-
-
-    if (doctorExperience) {
-        doctorExperience.textContent =
-            `${doctor.experience} years`;
-    }
-
-
-    if (doctorFee) {
-        doctorFee.textContent =
-            `₹${doctor.fee}`;
-    }
-
-
-    if (doctorLocation) {
-        doctorLocation.textContent =
-            doctor.centre;
-    }
-
-
-    if (doctorBio) {
-        doctorBio.textContent =
-            doctor.bio;
-    }
-
-
-    if (bookingFee) {
-        bookingFee.textContent =
-            `₹${doctor.fee}`;
-    }
-
-
-    /* -----------------------------
-       Availability
-    ----------------------------- */
-
-    if (doctorStatus) {
-
-        doctorStatus.classList.toggle(
-            "unavailable",
-            !doctor.available
+    async function getById(id) {
+        const response = await fetch(
+            `${API_URL}/${encodeURIComponent(id)}`
         );
 
-        doctorStatus.innerHTML = `
-            <span class="doctor-status-dot"></span>
-            ${doctor.available
-                ? "Available for consultation"
-                : "Currently unavailable"}
-        `;
-    }
+        const result = await response.json();
 
-
-    renderAvailability(doctor);
-
-
-    /* -----------------------------
-       Booking button
-    ----------------------------- */
-
-    if (bookDoctorButton) {
-
-        if (!doctor.available) {
-
-            bookDoctorButton.disabled = true;
-            bookDoctorButton.classList.add("disabled");
-            bookDoctorButton.textContent =
-                "Currently unavailable";
-
-        } else {
-
-            bookDoctorButton.addEventListener("click", () => {
-
-                window.location.href =
-                    `book-appointment.html?doctorId=${doctor.id}`;
-
-            });
-
+        if (!response.ok || !result.success) {
+            throw new Error(
+                result.message || "Unable to fetch doctor details."
+            );
         }
+
+        return result.data;
     }
 
+    async function search(query = "") {
+        const url = new URL(API_URL);
 
-    /* -----------------------------
-       Weekly schedule
-    ----------------------------- */
+        if (query.trim()) {
+            url.searchParams.set("search", query.trim());
+        }
 
-    function renderAvailability(doctor) {
+        const response = await fetch(url);
 
-        if (!doctorAvailability) return;
+        const result = await response.json();
 
-        const schedule = [
-            {
-                day: "Monday",
-                time: "10:00 AM – 2:00 PM",
-                available: doctor.available
-            },
-            {
-                day: "Tuesday",
-                time: "10:00 AM – 2:00 PM",
-                available: true
-            },
-            {
-                day: "Wednesday",
-                time: "4:00 PM – 7:00 PM",
-                available: true
-            },
-            {
-                day: "Thursday",
-                time: "10:00 AM – 2:00 PM",
-                available: true
-            },
-            {
-                day: "Friday",
-                time: "4:00 PM – 7:00 PM",
-                available: doctor.available
-            },
-            {
-                day: "Saturday",
-                time: "10:00 AM – 1:00 PM",
-                available: true
-            },
-            {
-                day: "Sunday",
-                time: "Closed",
-                available: false
-            }
-        ];
+        if (!response.ok || !result.success) {
+            throw new Error(
+                result.message || "Unable to search doctors."
+            );
+        }
 
-
-        doctorAvailability.innerHTML = schedule
-            .map(item => `
-                <div class="doctor-schedule-row">
-
-                    <span class="doctor-schedule-day">
-                        ${item.day}
-                    </span>
-
-                    <span class="${
-                        item.available
-                            ? "schedule-available"
-                            : "schedule-unavailable"
-                    }">
-                        ${item.time}
-                    </span>
-
-                </div>
-            `)
-            .join("");
+        return result.data;
     }
 
+    async function filterBySpecialization(specialization) {
+        const url = new URL(API_URL);
 
-    /* -----------------------------
-       Doctor not found
-    ----------------------------- */
+        if (
+            specialization &&
+            specialization.toLowerCase() !== "all"
+        ) {
+            url.searchParams.set(
+                "specialization",
+                specialization
+            );
+        }
 
-    function showDoctorNotFound() {
+        const response = await fetch(url);
 
-        const page = document.querySelector(".doctor-details-page");
+        const result = await response.json();
 
-        if (!page) return;
+        if (!response.ok || !result.success) {
+            throw new Error(
+                result.message || "Unable to filter doctors."
+            );
+        }
 
-        page.innerHTML = `
-            <div class="doctor-empty-state">
-
-                <div class="doctor-empty-icon">
-                    <i class="bi bi-person-x"></i>
-                </div>
-
-                <h2>Doctor not found</h2>
-
-                <p>
-                    We couldn't find the doctor you're looking for.
-                </p>
-
-                <a
-                    href="doctors.html"
-                    class="btn btn-primary"
-                >
-                    Back to doctors
-                </a>
-
-            </div>
-        `;
+        return result.data;
     }
 
-});
+    async function searchAndFilter(query = "", specialization = "all") {
+        const url = new URL(API_URL);
+
+        if (query.trim()) {
+            url.searchParams.set("search", query.trim());
+        }
+
+        if (
+            specialization &&
+            specialization.toLowerCase() !== "all"
+        ) {
+            url.searchParams.set(
+                "specialization",
+                specialization
+            );
+        }
+
+        const response = await fetch(url);
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(
+                result.message || "Unable to fetch doctors."
+            );
+        }
+
+        return result.data;
+    }
+
+    async function getAvailable() {
+        const doctors = await getAll();
+
+        return doctors.filter(
+            doctor => doctor.isAvailable
+        );
+    }
+
+    return {
+        getAll,
+        getById,
+        search,
+        filterBySpecialization,
+        searchAndFilter,
+        getAvailable
+    };
+})();

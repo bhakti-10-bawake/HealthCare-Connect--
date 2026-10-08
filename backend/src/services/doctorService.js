@@ -1,11 +1,3 @@
-/* =========================================================
-   HEALTHCARE CONNECT
-   DOCTOR SERVICE
-
-   Temporary in-memory data.
-   This will later be replaced with MySQL queries.
-========================================================= */
-
 const doctors = [
 
     {
@@ -168,7 +160,7 @@ const doctors = [
 
 
 /* =========================================================
-   GET ALL DOCTORS
+   GET ALL
 ========================================================= */
 
 function getAllDoctors() {
@@ -178,72 +170,75 @@ function getAllDoctors() {
 
 
 /* =========================================================
-   GET DOCTOR BY ID
+   GET BY ID
 ========================================================= */
 
 function getDoctorById(id) {
 
+    const doctorId =
+        Number(id);
+
+
     return doctors.find(
-        doctor => doctor.id === Number(id)
+        doctor => doctor.id === doctorId
     ) || null;
 }
 
 
 /* =========================================================
-   SEARCH DOCTORS
+   SEARCH
 ========================================================= */
 
 function searchDoctors(query) {
 
-    const cleanQuery =
+    const value =
         String(query || "")
             .trim()
             .toLowerCase();
 
 
-    if (!cleanQuery) {
+    if (!value) {
 
         return doctors;
     }
 
 
-    return doctors.filter(doctor =>
+    return doctors.filter(
+        doctor =>
+            doctor.name
+                .toLowerCase()
+                .includes(value)
 
-        doctor.name
-            .toLowerCase()
-            .includes(cleanQuery)
+            ||
 
-        ||
+            doctor.specialization
+                .toLowerCase()
+                .includes(value)
 
-        doctor.specialization
-            .toLowerCase()
-            .includes(cleanQuery)
+            ||
 
-        ||
-
-        doctor.location
-            .toLowerCase()
-            .includes(cleanQuery)
-
+            doctor.location
+                .toLowerCase()
+                .includes(value)
     );
 }
 
 
 /* =========================================================
-   FILTER BY SPECIALIZATION
+   SPECIALIZATION
 ========================================================= */
 
 function getDoctorsBySpecialization(
     specialization
 ) {
 
-    const cleanSpecialization =
+    const value =
         String(specialization || "")
             .trim()
             .toLowerCase();
 
 
-    if (!cleanSpecialization) {
+    if (!value) {
 
         return doctors;
     }
@@ -252,20 +247,19 @@ function getDoctorsBySpecialization(
     return doctors.filter(
         doctor =>
             doctor.specialization
-                .toLowerCase() ===
-            cleanSpecialization
+                .toLowerCase() === value
     );
 }
 
 
 /* =========================================================
-   GET AVAILABLE DOCTORS
+   AVAILABLE
 ========================================================= */
 
 function getAvailableDoctors() {
 
     return doctors.filter(
-        doctor => doctor.available
+        doctor => doctor.available === true
     );
 }
 
@@ -276,14 +270,16 @@ function getAvailableDoctors() {
 
 module.exports = {
 
-    getAllDoctors,
+    getAllDoctors: getAllDoctors,
 
-    getDoctorById,
+    getDoctorById: getDoctorById,
 
-    searchDoctors,
+    searchDoctors: searchDoctors,
 
-    getDoctorsBySpecialization,
+    getDoctorsBySpecialization:
+        getDoctorsBySpecialization,
 
-    getAvailableDoctors
+    getAvailableDoctors:
+        getAvailableDoctors
 
 };

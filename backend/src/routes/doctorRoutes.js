@@ -7,10 +7,8 @@ const {
 
 const router = express.Router();
 
-// Get all doctors
 router.get("/", getDoctors);
 
-// Get doctor by ID
 router.get("/:id", getDoctorById);
 
 module.exports = router;

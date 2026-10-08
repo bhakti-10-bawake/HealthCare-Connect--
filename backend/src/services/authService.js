@@ -1,21 +1,13 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-
-/* =========================================================
-   TEMPORARY USER STORE
-   ---------------------------------------------------------
-   This is only for backend development/testing.
-
-   Later, this will be replaced by MySQL without changing
-   the controller/API structure.
-========================================================= */
-
-const users = [];
+const { pool } = require("../config/database");
 
 
 /* =========================================================
    REGISTER USER
+   ---------------------------------------------------------
+   Creates a real user in the MySQL users table.
 ========================================================= */
 
 async function registerUser({
@@ -25,32 +17,31 @@ async function registerUser({
     password
 }) {
 
-    const cleanName =
-        fullName.trim();
-
-    const cleanEmail =
-        email.trim().toLowerCase();
-
-    const cleanPhone =
-        phone.trim();
+    const cleanName = fullName.trim();
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPhone = phone.trim();
 
 
     /* -----------------------------------------
-       Check duplicate email
+       Check whether email already exists
     ----------------------------------------- */
 
-    const existingUser =
-        users.find(
-            user => user.email === cleanEmail
+    const [existingUsers] = await pool.execute(
+        `
+        SELECT id
+        FROM users
+        WHERE email = ?
+        LIMIT 1
+        `,
+        [cleanEmail]
+    );
+
+
+    if (existingUsers.length > 0) {
+
+        const error = new Error(
+            "An account with this email already exists."
         );
-
-
-    if (existingUser) {
-
-        const error =
-            new Error(
-                "An account with this email already exists."
-            );
 
         error.statusCode = 409;
 
@@ -62,47 +53,68 @@ async function registerUser({
        Hash password
     ----------------------------------------- */
 
-    const passwordHash =
-        await bcrypt.hash(
-            password,
-            10
-        );
+    const passwordHash = await bcrypt.hash(
+        password,
+        10
+    );
 
 
     /* -----------------------------------------
-       Create user
+       Insert user into MySQL
     ----------------------------------------- */
 
-    const user = {
-
-        id: users.length + 1,
-
-        fullName: cleanName,
-
-        email: cleanEmail,
-
-        phone: cleanPhone,
-
-        passwordHash,
-
-        role: "PATIENT",
-
-        isActive: true,
-
-        createdAt:
-            new Date().toISOString()
-    };
-
-
-    users.push(user);
+    const [result] = await pool.execute(
+        `
+        INSERT INTO users
+        (
+            full_name,
+            email,
+            phone,
+            password_hash,
+            role,
+            is_active
+        )
+        VALUES (?, ?, ?, ?, 'PATIENT', TRUE)
+        `,
+        [
+            cleanName,
+            cleanEmail,
+            cleanPhone,
+            passwordHash
+        ]
+    );
 
 
     /* -----------------------------------------
-       Create token
+       Get newly created user
     ----------------------------------------- */
 
-    const token =
-        createToken(user);
+    const [rows] = await pool.execute(
+        `
+        SELECT
+            id,
+            full_name,
+            email,
+            phone,
+            role,
+            is_active,
+            created_at
+        FROM users
+        WHERE id = ?
+        LIMIT 1
+        `,
+        [result.insertId]
+    );
+
+
+    const user = rows[0];
+
+
+    /* -----------------------------------------
+       Create JWT
+    ----------------------------------------- */
+
+    const token = createToken(user);
 
 
     return {
@@ -114,6 +126,8 @@ async function registerUser({
 
 /* =========================================================
    LOGIN USER
+   ---------------------------------------------------------
+   Finds the user in MySQL and verifies the bcrypt password.
 ========================================================= */
 
 async function loginUser({
@@ -121,27 +135,37 @@ async function loginUser({
     password
 }) {
 
-    const cleanEmail =
-        email.trim().toLowerCase();
+    const cleanEmail = email.trim().toLowerCase();
 
 
     /* -----------------------------------------
        Find user
     ----------------------------------------- */
 
-    const user =
-        users.find(
-            item =>
-                item.email === cleanEmail
+    const [rows] = await pool.execute(
+        `
+        SELECT
+            id,
+            full_name,
+            email,
+            phone,
+            password_hash,
+            role,
+            is_active,
+            created_at
+        FROM users
+        WHERE email = ?
+        LIMIT 1
+        `,
+        [cleanEmail]
+    );
+
+
+    if (rows.length === 0) {
+
+        const error = new Error(
+            "Invalid email or password."
         );
-
-
-    if (!user) {
-
-        const error =
-            new Error(
-                "Invalid email or password."
-            );
 
         error.statusCode = 401;
 
@@ -149,16 +173,18 @@ async function loginUser({
     }
 
 
+    const user = rows[0];
+
+
     /* -----------------------------------------
        Check account status
     ----------------------------------------- */
 
-    if (!user.isActive) {
+    if (!user.is_active) {
 
-        const error =
-            new Error(
-                "Your account has been deactivated."
-            );
+        const error = new Error(
+            "Your account has been deactivated."
+        );
 
         error.statusCode = 403;
 
@@ -170,19 +196,17 @@ async function loginUser({
        Compare password
     ----------------------------------------- */
 
-    const passwordMatch =
-        await bcrypt.compare(
-            password,
-            user.passwordHash
-        );
+    const passwordMatch = await bcrypt.compare(
+        password,
+        user.password_hash
+    );
 
 
     if (!passwordMatch) {
 
-        const error =
-            new Error(
-                "Invalid email or password."
-            );
+        const error = new Error(
+            "Invalid email or password."
+        );
 
         error.statusCode = 401;
 
@@ -191,11 +215,10 @@ async function loginUser({
 
 
     /* -----------------------------------------
-       Create token
+       Create JWT
     ----------------------------------------- */
 
-    const token =
-        createToken(user);
+    const token = createToken(user);
 
 
     return {
@@ -207,14 +230,36 @@ async function loginUser({
 
 /* =========================================================
    GET USER BY ID
+   ---------------------------------------------------------
+   Retrieves the authenticated user from MySQL.
 ========================================================= */
 
-function getUserById(userId) {
+async function getUserById(userId) {
 
-    return users.find(
-        user =>
-            user.id === Number(userId)
-    ) || null;
+    const [rows] = await pool.execute(
+        `
+        SELECT
+            id,
+            full_name,
+            email,
+            phone,
+            role,
+            is_active,
+            created_at
+        FROM users
+        WHERE id = ?
+        LIMIT 1
+        `,
+        [Number(userId)]
+    );
+
+
+    if (rows.length === 0) {
+        return null;
+    }
+
+
+    return rows[0];
 }
 
 
@@ -225,7 +270,6 @@ function getUserById(userId) {
 function createToken(user) {
 
     return jwt.sign(
-
         {
             userId: user.id,
             role: user.role
@@ -242,6 +286,8 @@ function createToken(user) {
 
 /* =========================================================
    REMOVE PRIVATE DATA
+   ---------------------------------------------------------
+   Never send password_hash to the frontend.
 ========================================================= */
 
 function sanitizeUser(user) {
@@ -250,7 +296,7 @@ function sanitizeUser(user) {
 
         id: user.id,
 
-        fullName: user.fullName,
+        fullName: user.full_name,
 
         email: user.email,
 
@@ -258,9 +304,9 @@ function sanitizeUser(user) {
 
         role: user.role,
 
-        isActive: user.isActive,
+        isActive: Boolean(user.is_active),
 
-        createdAt: user.createdAt
+        createdAt: user.created_at
     };
 }
 

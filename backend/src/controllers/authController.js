@@ -30,13 +30,11 @@ async function register(req, res) {
         ) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "Full name, email, phone and password are required."
-
             });
+
         }
 
 
@@ -50,13 +48,11 @@ async function register(req, res) {
         ) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "Please enter a valid full name."
-
             });
+
         }
 
 
@@ -74,13 +70,11 @@ async function register(req, res) {
         ) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "Please enter a valid email address."
-
             });
+
         }
 
 
@@ -98,13 +92,11 @@ async function register(req, res) {
         ) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "Please enter a valid 10-digit phone number."
-
             });
+
         }
 
 
@@ -118,13 +110,11 @@ async function register(req, res) {
         ) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "Password must contain at least 8 characters."
-
             });
+
         }
 
 
@@ -134,15 +124,10 @@ async function register(req, res) {
 
         const result =
             await authService.registerUser({
-
                 fullName,
-
                 email,
-
                 phone,
-
                 password
-
             });
 
 
@@ -184,7 +169,9 @@ async function register(req, res) {
                 "Unable to create account. Please try again."
 
         });
+
     }
+
 }
 
 
@@ -213,13 +200,11 @@ async function login(req, res) {
         ) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "Email and password are required."
-
             });
+
         }
 
 
@@ -237,27 +222,22 @@ async function login(req, res) {
         ) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "Please enter a valid email address."
-
             });
+
         }
 
 
         /* -----------------------------------------
-           Authenticate through service
+           Authenticate through MySQL service
         ----------------------------------------- */
 
         const result =
             await authService.loginUser({
-
                 email,
-
                 password
-
             });
 
 
@@ -299,7 +279,9 @@ async function login(req, res) {
                 "Unable to login. Please try again."
 
         });
+
     }
+
 }
 
 
@@ -316,10 +298,13 @@ async function getCurrentUser(req, res) {
     try {
 
         /* -----------------------------------------
-           req.user is created by authMiddleware
+           Check authentication
         ----------------------------------------- */
 
-        if (!req.user || !req.user.id) {
+        if (
+            !req.user ||
+            !req.user.id
+        ) {
 
             return res.status(401).json({
 
@@ -329,15 +314,16 @@ async function getCurrentUser(req, res) {
                     "Authentication required."
 
             });
+
         }
 
 
         /* -----------------------------------------
-           Find authenticated user
+           Find authenticated user in MySQL
         ----------------------------------------- */
 
         const user =
-            authService.getUserById(
+            await authService.getUserById(
                 req.user.id
             );
 
@@ -352,6 +338,7 @@ async function getCurrentUser(req, res) {
                     "User account not found."
 
             });
+
         }
 
 
@@ -369,36 +356,19 @@ async function getCurrentUser(req, res) {
                     "Your account has been deactivated."
 
             });
+
         }
 
 
         /* -----------------------------------------
            Return safe user information
-           
-           Never return passwordHash.
         ----------------------------------------- */
 
         return res.status(200).json({
 
             success: true,
 
-            user: {
-
-                id: user.id,
-
-                fullName: user.fullName,
-
-                email: user.email,
-
-                phone: user.phone,
-
-                role: user.role,
-
-                isActive: user.isActive,
-
-                createdAt: user.createdAt
-
-            }
+            user
 
         });
 
@@ -420,7 +390,9 @@ async function getCurrentUser(req, res) {
                 "Unable to retrieve user information."
 
         });
+
     }
+
 }
 
 
