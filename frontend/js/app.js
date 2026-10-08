@@ -1,18 +1,6 @@
-/**
- * Healthcare Connect
- * Global Frontend Utilities
- */
-
 const API_BASE_URL = "http://localhost:5000/api";
 
-/**
- * API helper
- *
- * All frontend API requests will eventually
- * go through this function.
- */
 async function apiRequest(endpoint, options = {}) {
-
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         headers: {
             "Content-Type": "application/json",
@@ -30,20 +18,13 @@ async function apiRequest(endpoint, options = {}) {
     }
 
     if (!response.ok) {
-        throw new Error(
-            data.message || "Something went wrong."
-        );
+        throw new Error(data.message || "Something went wrong.");
     }
 
     return data;
 }
 
-
-/**
- * Display a simple application message.
- */
 function showMessage(message, type = "info") {
-
     const existing = document.querySelector(".app-message");
 
     if (existing) {
@@ -70,12 +51,10 @@ function showMessage(message, type = "info") {
 }
 
 
-/**
- * Global login form handler.
- *
- * The actual authentication API will be connected
- * when we build the authentication module.
- */
+// ===============================
+// LOGIN
+// ===============================
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const loginForm = document.getElementById("loginForm");
@@ -85,17 +64,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     loginForm.addEventListener("submit", async (event) => {
-
         event.preventDefault();
 
-        const email = document
-            .getElementById("email")
-            .value
-            .trim();
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
 
-        const password = document
-            .getElementById("password")
-            .value;
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
 
         if (!email || !password) {
             showMessage(
@@ -106,16 +81,56 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        /*
-         * Authentication endpoint will be connected
-         * after the backend authentication module
-         * is implemented.
-         */
+        try {
+            showMessage("Signing you in...", "info");
 
-        showMessage(
-            "Login system is being connected to the backend.",
-            "info"
-        );
+            const data = await apiRequest("/auth/login", {
+                method: "POST",
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
+
+            // Store authentication information
+            localStorage.setItem("healthcareToken", data.token);
+
+            localStorage.setItem(
+                "healthcareUser",
+                JSON.stringify(data.user)
+            );
+
+            showMessage(
+                "Login successful. Redirecting...",
+                "success"
+            );
+
+            // Redirect based on user role
+            setTimeout(() => {
+
+                const role = data.user.role;
+
+                if (role === "DOCTOR") {
+                    window.location.href = "doctor-dashboard.html";
+                } else if (role === "PHARMACY") {
+                    window.location.href = "pharmacy-dashboard.html";
+                } else if (role === "ADMIN") {
+                    window.location.href = "admin-dashboard.html";
+                } else {
+                    window.location.href = "dashboard.html";
+                }
+
+            }, 800);
+
+        } catch (error) {
+
+            console.error("Login error:", error);
+
+            showMessage(
+                error.message || "Login failed.",
+                "danger"
+            );
+        }
     });
 
 });

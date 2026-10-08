@@ -2,14 +2,42 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+// ========================================
+// ROUTES
+// ========================================
+
+const routes = require("./routes/index");
+const authRoutes = require("./routes/authRoutes");
+const doctorRoutes = require("./routes/doctorRoutes");
+
+// ========================================
+// APP
+// ========================================
+
 const app = express();
+
+// ========================================
+// MIDDLEWARE
+// ========================================
 
 app.use(cors());
 app.use(express.json());
 
-/*
- * Basic API health check
- */
+// ========================================
+// ROUTE DIAGNOSTICS
+// ========================================
+
+console.log("========================================");
+console.log("Route diagnostics:");
+console.log("authRoutes:", typeof authRoutes);
+console.log("doctorRoutes:", typeof doctorRoutes);
+console.log("routes:", typeof routes);
+console.log("========================================");
+
+// ========================================
+// ROOT
+// ========================================
+
 app.get("/", (req, res) => {
     res.json({
         success: true,
@@ -17,17 +45,12 @@ app.get("/", (req, res) => {
     });
 });
 
+// ========================================
+// DATABASE HEALTH CHECK
+// ========================================
 
-/*
- * Database connection test
- *
- * This will be used once MySQL is installed
- * and the healthcare_connect database exists.
- */
 app.get("/api/health/database", async (req, res) => {
-
     try {
-
         const pool = require("./config/database");
 
         const connection = await pool.getConnection();
@@ -42,18 +65,58 @@ app.get("/api/health/database", async (req, res) => {
         });
 
     } catch (error) {
-
-        console.error("Database connection error:", error.message);
+        console.error(
+            "Database connection error:",
+            error.message
+        );
 
         res.status(500).json({
             success: false,
-            message: "Database connection failed",
-            error: error.message
+            message: "Database connection failed"
         });
-
     }
-
 });
 
+// ========================================
+// AUTHENTICATION
+// ========================================
+
+app.use("/api/auth", authRoutes);
+
+// ========================================
+// DOCTORS
+// ========================================
+
+app.use("/api/doctors", doctorRoutes);
+
+// ========================================
+// GENERAL API
+// ========================================
+
+app.use("/api", routes);
+
+// ========================================
+// 404
+// ========================================
+
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        message: "API endpoint not found."
+    });
+});
+
+// ========================================
+// ERROR HANDLER
+// ========================================
+
+app.use((error, req, res, next) => {
+    console.error("Server error:", error);
+
+    res.status(500).json({
+        success: false,
+        message: "Internal server error."
+    });
+});
 
 module.exports = app;
