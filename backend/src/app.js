@@ -1,3 +1,4 @@
+
 const express = require("express");
 const cors = require("cors");
 
@@ -5,14 +6,15 @@ const authRoutes = require("./routes/authRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const appointmentRoutes = require("./routes/appointmentRoutes");
 const medicineRoutes = require("./routes/medicineRoutes");
+const healthRecordRoutes = require("./routes/healthRecordRoutes");
+const reminderRoutes = require("./routes/reminderRoutes");
+const profileRoutes = require("./routes/profileRoutes");
+const emergencyRoutes = require("./routes/emergencyRoutes");
+const dailyQueueRoutes = require("./routes/dailyQueueRoutes");
 
 const app = express();
 
-
-// ============================================================
-// MIDDLEWARE
-// ============================================================
-
+// Middleware
 app.use(
     cors({
         origin: true,
@@ -23,28 +25,19 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-// ============================================================
-// API ROUTES
-// ============================================================
-
-// Authentication
+// API routes
 app.use("/api/auth", authRoutes);
-
-// Patient doctor discovery
 app.use("/api/doctors", doctorRoutes);
-
-// Patient appointments
 app.use("/api/appointments", appointmentRoutes);
-
-// Patient medicines
 app.use("/api/medicines", medicineRoutes);
+app.use("/api/health-records", healthRecordRoutes);
+app.use("/api/reminders", reminderRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api/emergency-contacts", emergencyRoutes);
+app.use("/api/daily-queue", dailyQueueRoutes);
+console.log("DAILY QUEUE ROUTES REGISTERED");
 
-
-// ============================================================
-// ROOT ROUTE
-// ============================================================
-
+// Root endpoint
 app.get("/", (req, res) => {
     res.json({
         success: true,
@@ -53,11 +46,7 @@ app.get("/", (req, res) => {
     });
 });
 
-
-// ============================================================
-// HEALTH CHECK
-// ============================================================
-
+// Health check endpoint
 app.get("/api/health", (req, res) => {
     res.json({
         success: true,
@@ -66,11 +55,7 @@ app.get("/api/health", (req, res) => {
     });
 });
 
-
-// ============================================================
-// 404 HANDLER
-// ============================================================
-
+// Handle unknown routes
 app.use((req, res) => {
     res.status(404).json({
         success: false,
@@ -78,25 +63,14 @@ app.use((req, res) => {
     });
 });
 
-
-// ============================================================
-// GLOBAL ERROR HANDLER
-// ============================================================
-
+// Global error handler
 app.use((error, req, res, next) => {
     console.error("Unhandled server error:", error);
 
     res.status(error.statusCode || 500).json({
         success: false,
-        message:
-            error.message ||
-            "An unexpected server error occurred."
+        message: error.message || "An unexpected server error occurred."
     });
 });
-
-
-// ============================================================
-// EXPORT
-// ============================================================
 
 module.exports = app;

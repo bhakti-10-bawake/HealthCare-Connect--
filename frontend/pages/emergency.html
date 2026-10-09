@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,368 +6,433 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Emergency Assistance | Healthcare Connect</title>
+    <meta name="description" content="Access emergency contact information and healthcare assistance.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/utilities.css">
     <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .emergency-page {
+            width: min(100% - 32px, 1000px);
+            margin: 0 auto;
+            padding: 28px 0 55px;
+        }
+
+        .emergency-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 28px;
+        }
+
+        .emergency-back {
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            border: 1px solid #e4edeb;
+            border-radius: 14px;
+            background: white;
+            color: #245457;
+            text-decoration: none;
+        }
+
+        .emergency-header h1 {
+            margin: 0 0 4px;
+            color: #173f43;
+            font-size: clamp(23px, 4vw, 30px);
+            font-weight: 700;
+        }
+
+        .emergency-header p {
+            margin: 0;
+            color: #7b9293;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .emergency-alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 17px;
+            margin-bottom: 24px;
+            border: 1px solid #f3d5d2;
+            border-radius: 18px;
+            background: #fff7f6;
+        }
+
+        .emergency-alert-icon {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            border-radius: 13px;
+            background: #fde7e5;
+            color: #b42318;
+            font-size: 20px;
+        }
+
+        .emergency-alert strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #98251e;
+            font-size: 14px;
+        }
+
+        .emergency-alert p {
+            margin: 0;
+            color: #805c58;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .emergency-primary-card {
+            padding: clamp(22px, 5vw, 36px);
+            margin-bottom: 26px;
+            border: 1px solid #f2d5d2;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #fff8f7, #ffffff);
+        }
+
+        .emergency-eyebrow {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: #b42318;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.3px;
+        }
+
+        .emergency-primary-card h2 {
+            margin: 0 0 10px;
+            color: #173f43;
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        .emergency-primary-card > p {
+            max-width: 650px;
+            margin: 0 0 22px;
+            color: #71898a;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .emergency-call-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 52px;
+            padding: 14px 22px;
+            border-radius: 14px;
+            background: #c92d28;
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 7px 18px rgba(201,45,40,.15);
+            transition: background .2s ease, transform .2s ease;
+        }
+
+        .emergency-call-button:hover {
+            background: #a9221e;
+            transform: translateY(-1px);
+        }
+
+        .emergency-call-note {
+            display: block;
+            margin-top: 12px;
+            color: #879999;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .emergency-section-heading {
+            margin: 0 0 7px;
+            color: #173f43;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .emergency-section-description {
+            margin: 0 0 20px;
+            color: #7b9293;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .emergency-contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+            margin-bottom: 28px;
+        }
+
+        .emergency-contact-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            min-width: 0;
+            padding: 20px;
+            border: 1px solid #e6efed;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 7px 25px rgba(31,79,77,.035);
+        }
+
+        .emergency-contact-icon {
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            border-radius: 14px;
+            background: #e7f8f5;
+            color: #10877d;
+            font-size: 21px;
+        }
+
+        .emergency-contact-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .emergency-contact-content h3 {
+            margin: 1px 0 5px;
+            color: #24484a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .emergency-contact-content p {
+            margin: 0 0 13px;
+            color: #7b9293;
+            font-size: 11px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .emergency-contact-content a {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: #087e78;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .emergency-loading,
+        .emergency-empty,
+        .emergency-error {
+            padding: 23px;
+            border: 1px solid #e6efed;
+            border-radius: 18px;
+            background: #fff;
+            color: #7b9293;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .emergency-loading i,
+        .emergency-empty i,
+        .emergency-error i {
+            margin-right: 7px;
+            color: #10877d;
+        }
+
+        .emergency-instructions {
+            padding: 24px;
+            border: 1px solid #e6efed;
+            border-radius: 22px;
+            background: #f9fcfb;
+        }
+
+        .emergency-instructions h2 {
+            margin: 0 0 17px;
+            color: #173f43;
+            font-size: 18px;
+        }
+
+        .emergency-instruction-list {
+            display: grid;
+            gap: 15px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .emergency-instruction-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            color: #647f80;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .emergency-instruction-list i {
+            margin-top: 2px;
+            color: #159b8f;
+            font-size: 16px;
+        }
+
+        .emergency-footer {
+            margin-top: 23px;
+            color: #8aa09f;
+            font-size: 11px;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .emergency-page {
+                width: calc(100% - 26px);
+                padding-top: 20px;
+            }
+
+            .emergency-contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .emergency-contact-card {
+                padding: 17px;
+            }
+
+            .emergency-primary-card {
+                border-radius: 21px;
+            }
+
+            .emergency-call-button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="app-shell">
-
-    <main class="emergency-page">
-
-        <!-- Header -->
-
-        <header class="emergency-header">
-
-            <a
-                href="dashboard.html"
-                class="emergency-back-link"
-            >
-                <i class="bi bi-arrow-left"></i>
-                Back to dashboard
-            </a>
-
-            <div class="emergency-header-content">
-
-                <div class="emergency-alert-icon">
-                    <i class="bi bi-plus-lg"></i>
-                </div>
-
-                <div>
-                    <span class="emergency-eyebrow">
-                        EMERGENCY ASSISTANCE
-                    </span>
-
-                    <h1>Need urgent medical help?</h1>
-
-                    <p>
-                        Get immediate assistance or contact a nearby
-                        healthcare centre.
-                    </p>
-                </div>
-
-            </div>
-
-        </header>
-
-
-        <!-- Emergency call -->
-
-        <section class="emergency-primary-card">
-
-            <div class="emergency-primary-content">
-
-                <span class="emergency-primary-label">
-                    <span class="emergency-live-dot"></span>
-                    EMERGENCY SERVICES
-                </span>
-
-                <h2>
-                    Call for immediate assistance
-                </h2>
-
-                <p>
-                    If you or someone around you is experiencing a
-                    life-threatening emergency, contact emergency
-                    services immediately.
-                </p>
-
-                <a
-                    href="tel:112"
-                    class="emergency-call-button"
-                    id="emergencyCallButton"
-                >
-                    <span class="emergency-call-icon">
-                        <i class="bi bi-telephone-fill"></i>
-                    </span>
-
-                    <span>
-                        <small>Call emergency services</small>
-                        <strong>112</strong>
-                    </span>
-
-                    <i class="bi bi-arrow-up-right"></i>
-                </a>
-
-            </div>
-
-
-            <div class="emergency-visual">
-
-                <div class="emergency-circle emergency-circle-one"></div>
-
-                <div class="emergency-circle emergency-circle-two"></div>
-
-                <div class="emergency-heart">
-                    <i class="bi bi-heart-pulse-fill"></i>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- Nearby help -->
-
-        <section class="emergency-section">
-
-            <div class="emergency-section-heading">
-
-                <div>
-                    <span class="section-eyebrow">
-                        GET HELP NEARBY
-                    </span>
-
-                    <h2>Healthcare support</h2>
-                </div>
-
-            </div>
-
-
-            <div class="emergency-support-grid">
-
-                <article class="emergency-support-card">
-
-                    <div class="emergency-support-icon centre-icon">
-                        <i class="bi bi-hospital"></i>
-                    </div>
-
-                    <div class="emergency-support-content">
-
-                        <h3>Nearby healthcare centre</h3>
-
-                        <p>
-                            Find a healthcare centre where you can
-                            seek immediate medical attention.
-                        </p>
-
-                        <button
-                            type="button"
-                            class="emergency-support-button"
-                            id="healthCentreButton"
-                        >
-                            Find healthcare centre
-                            <i class="bi bi-arrow-right"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-                <article class="emergency-support-card">
-
-                    <div class="emergency-support-icon doctor-icon">
-                        <i class="bi bi-person-plus"></i>
-                    </div>
-
-                    <div class="emergency-support-content">
-
-                        <h3>Talk to a doctor</h3>
-
-                        <p>
-                            Browse available doctors and find
-                            appropriate medical support.
-                        </p>
-
-                        <a
-                            href="doctors.html"
-                            class="emergency-support-button"
-                        >
-                            Find a doctor
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-
-                    </div>
-
-                </article>
-
-            </div>
-
-        </section>
-
-
-        <!-- Emergency information -->
-
-        <section class="emergency-section">
-
-            <div class="emergency-section-heading">
-
-                <div>
-                    <span class="section-eyebrow">
-                        IMPORTANT
-                    </span>
-
-                    <h2>When to seek emergency help</h2>
-                </div>
-
-            </div>
-
-
-            <div class="emergency-warning-grid">
-
-                <div class="emergency-warning-item">
-
-                    <div class="emergency-warning-icon">
-                        <i class="bi bi-heart-pulse"></i>
-                    </div>
-
-                    <div>
-                        <strong>Severe chest pain</strong>
-                        <span>
-                            Especially with difficulty breathing,
-                            sweating or dizziness.
-                        </span>
-                    </div>
-
-                </div>
-
-
-                <div class="emergency-warning-item">
-
-                    <div class="emergency-warning-icon">
-                        <i class="bi bi-lungs"></i>
-                    </div>
-
-                    <div>
-                        <strong>Difficulty breathing</strong>
-                        <span>
-                            Severe or sudden breathing problems
-                            require immediate attention.
-                        </span>
-                    </div>
-
-                </div>
-
-
-                <div class="emergency-warning-item">
-
-                    <div class="emergency-warning-icon">
-                        <i class="bi bi-person-exclamation"></i>
-                    </div>
-
-                    <div>
-                        <strong>Loss of consciousness</strong>
-                        <span>
-                            Seek urgent medical assistance if
-                            someone becomes unresponsive.
-                        </span>
-                    </div>
-
-                </div>
-
-
-                <div class="emergency-warning-item">
-
-                    <div class="emergency-warning-icon">
-                        <i class="bi bi-bandaid"></i>
-                    </div>
-
-                    <div>
-                        <strong>Severe injury or bleeding</strong>
-                        <span>
-                            Serious injuries or uncontrolled bleeding
-                            require emergency care.
-                        </span>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- Safety note -->
-
-        <section class="emergency-safety-note">
-
-            <div class="emergency-safety-icon">
-                <i class="bi bi-shield-exclamation"></i>
-            </div>
-
-            <div>
-                <strong>Emergency information</strong>
-
-                <p>
-                    Healthcare Connect provides quick access to
-                    emergency resources. It does not replace
-                    emergency medical services or professional
-                    medical care.
-                </p>
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- Bottom navigation -->
-
-    <nav class="bottom-nav">
-
-        <a
-            href="dashboard.html"
-            class="bottom-nav-item"
-        >
-            <i class="bi bi-house"></i>
-            <span>Home</span>
+<main class="emergency-page">
+
+    <!-- Page Header -->
+    <header class="emergency-header">
+        <a href="dashboard.html" class="emergency-back" aria-label="Back to dashboard">
+            <i class="bi bi-arrow-left"></i>
         </a>
 
-        <a
-            href="doctors.html"
-            class="bottom-nav-item"
-        >
-            <i class="bi bi-person-badge"></i>
-            <span>Doctors</span>
+        <div>
+            <h1>Emergency Assistance</h1>
+            <p>Find help when you need it most.</p>
+        </div>
+    </header>
+
+    <!-- Emergency Notice -->
+    <section class="emergency-alert" aria-label="Emergency information">
+        <div class="emergency-alert-icon">
+            <i class="bi bi-exclamation-triangle"></i>
+        </div>
+
+        <div>
+            <strong>Need urgent medical assistance?</strong>
+            <p>
+                If someone is in immediate danger, contact the appropriate
+                emergency service directly. Do not wait for this page to load
+                or rely on this application for emergency dispatch.
+            </p>
+        </div>
+    </section>
+
+    <!-- Primary Emergency Action -->
+    <section class="emergency-primary-card">
+        <span class="emergency-eyebrow">IMMEDIATE ASSISTANCE</span>
+
+        <h2>Get emergency medical help</h2>
+
+        <p>
+            In India, dial 112 for emergency assistance. For an ambulance,
+            you can also try the national ambulance number 108 where available.
+        </p>
+
+        <a class="emergency-call-button" href="tel:112">
+            <i class="bi bi-telephone-fill"></i>
+            Call Emergency Services — 112
         </a>
 
-        <a
-            href="appointments.html"
-            class="bottom-nav-item"
+        <span class="emergency-call-note">
+            Your device may ask you to confirm the call. This button does not
+            automatically contact emergency services.
+        </span>
+    </section>
+
+    <!-- Emergency Contacts -->
+    <section aria-labelledby="emergencyContactsHeading">
+        <h2 class="emergency-section-heading" id="emergencyContactsHeading">
+            Emergency contacts
+        </h2>
+
+        <p class="emergency-section-description">
+            Contact information available through Healthcare Connect.
+        </p>
+
+        <div
+            class="emergency-contact-grid"
+            id="emergencyContacts"
+            aria-live="polite"
         >
-            <i class="bi bi-calendar2-check"></i>
-            <span>Appointments</span>
-        </a>
+            <div class="emergency-loading">
+                <i class="bi bi-arrow-repeat"></i>
+                Loading emergency contacts...
+            </div>
+        </div>
+    </section>
 
-        <a
-            href="health-records.html"
-            class="bottom-nav-item"
-        >
-            <i class="bi bi-folder2-open"></i>
-            <span>Records</span>
-        </a>
+    <!-- Safety Instructions -->
+    <section class="emergency-instructions">
+        <h2>While waiting for help</h2>
 
-        <a
-            href="profile.html"
-            class="bottom-nav-item"
-        >
-            <i class="bi bi-person"></i>
-            <span>Profile</span>
-        </a>
+        <ul class="emergency-instruction-list">
+            <li>
+                <i class="bi bi-check-circle"></i>
+                <span>Share your exact location and a callback number with the emergency operator.</span>
+            </li>
 
-    </nav>
+            <li>
+                <i class="bi bi-check-circle"></i>
+                <span>Follow the instructions given by the emergency operator.</span>
+            </li>
 
-</div>
+            <li>
+                <i class="bi bi-check-circle"></i>
+                <span>If possible, have the patient's medicines, allergies and medical records ready.</span>
+            </li>
 
+            <li>
+                <i class="bi bi-check-circle"></i>
+                <span>Do not move someone with a suspected serious neck or spine injury unless there is immediate danger.</span>
+            </li>
+        </ul>
+    </section>
+
+    <footer class="emergency-footer">
+        Healthcare Connect · Emergency contact information may vary by location.
+        Always follow official emergency-service guidance.
+    </footer>
+
+</main>
 
 <script src="../js/app.js"></script>
 <script src="../js/emergency.js"></script>

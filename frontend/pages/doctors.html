@@ -1,351 +1,909 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#F7FAF9">
 
     <title>Find Doctors | Healthcare Connect</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utilities.css">
     <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        :root {
+            --doc-primary: #20B7A8;
+            --doc-primary-dark: #128E83;
+            --doc-primary-soft: #E9F9F6;
+            --doc-ink: #183B39;
+            --doc-muted: #7B908D;
+            --doc-border: #E5EEEC;
+            --doc-page: #F7FAF9;
+            --doc-white: #FFFFFF;
+            --doc-shadow: 0 8px 28px rgba(24, 70, 65, 0.045);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--doc-page);
+            color: var(--doc-ink);
+            font-family: "Poppins", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .app {
+            min-height: 100vh;
+        }
+
+        /* Top header */
+
+        .doctors-header {
+            position: relative;
+            overflow: hidden;
+            padding: 45px max(6%, calc((100% - 1260px) / 2));
+            background:
+                radial-gradient(circle at 88% 20%, rgba(32, 183, 168, .15), transparent 25%),
+                linear-gradient(120deg, #FFFFFF 0%, #F0FBF8 100%);
+            border-bottom: 1px solid #DDEFEA;
+        }
+
+        .doctors-header::after {
+            content: "+";
+            position: absolute;
+            top: 50%;
+            right: 10%;
+            display: grid;
+            place-items: center;
+            width: 125px;
+            height: 125px;
+            transform: translateY(-50%);
+            border: 1px solid rgba(32, 183, 168, .18);
+            border-radius: 34px;
+            color: rgba(18, 142, 131, .22);
+            font-size: 85px;
+            font-weight: 400;
+            pointer-events: none;
+        }
+
+        .doctors-header-copy {
+            position: relative;
+            z-index: 1;
+            max-width: 720px;
+        }
+
+        .doctors-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 17px;
+            color: var(--doc-primary-dark);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--doc-primary);
+            box-shadow: 0 0 0 4px rgba(32, 183, 168, .13);
+        }
+
+        .doctors-header h1 {
+            margin: 0;
+            color: var(--doc-ink);
+            font-size: clamp(30px, 3.5vw, 45px);
+            font-weight: 800;
+            line-height: 1.25;
+            letter-spacing: -1.7px;
+        }
+
+        .doctors-header h1 span {
+            display: block;
+            color: var(--doc-primary-dark);
+        }
+
+        .doctors-header p {
+            max-width: 560px;
+            margin: 15px 0 0;
+            color: var(--doc-muted);
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        /* Main content */
+
+        .doctors-page {
+            width: min(1260px, 100%);
+            margin: 0 auto;
+            padding: 35px 24px 130px;
+        }
+
+        /* Search */
+
+        .doctor-search-panel {
+            padding: 20px 22px 15px;
+            margin-bottom: 39px;
+            border: 1px solid var(--doc-border);
+            border-radius: 19px;
+            background: var(--doc-white);
+            box-shadow: var(--doc-shadow);
+        }
+
+        .doctor-search-main {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 0 16px;
+            border: 1px solid #E5EFED;
+            border-radius: 13px;
+            background: #FAFCFB;
+            color: var(--doc-primary-dark);
+            transition: border-color .2s, box-shadow .2s, background .2s;
+        }
+
+        .doctor-search-main:focus-within {
+            border-color: var(--doc-primary);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(32, 183, 168, .10);
+        }
+
+        .doctor-search-main > i {
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .doctor-search-main input {
+            width: 100%;
+            min-width: 0;
+            height: 54px;
+            padding: 0;
+            border: 0;
+            outline: none;
+            background: transparent;
+            color: var(--doc-ink);
+            font-size: 12px;
+        }
+
+        .doctor-search-main input::placeholder {
+            color: #98AAA7;
+        }
+
+        .doctor-search-hint {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 12px;
+            color: #8B9C99;
+            font-size: 10px;
+        }
+
+        .doctor-search-hint i {
+            color: var(--doc-primary-dark);
+        }
+
+        /* Section titles */
+
+        .doctor-section-heading,
+        .doctor-results-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .section-eyebrow {
+            display: inline-block;
+            margin-bottom: 8px;
+            color: var(--doc-primary-dark);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.6px;
+        }
+
+        .doctor-section-heading h2,
+        .doctor-results-header h2 {
+            margin: 0;
+            color: var(--doc-ink);
+            font-size: clamp(20px, 2vw, 25px);
+            font-weight: 700;
+            letter-spacing: -.8px;
+        }
+
+        /* Speciality filters */
+
+        .specialization-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 11px;
+            margin-bottom: 43px;
+        }
+
+        .specialization-chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 48px;
+            padding: 7px 16px 7px 8px;
+            border: 1px solid var(--doc-border);
+            border-radius: 999px;
+            background: #FFFFFF;
+            color: #5F7773;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform .2s, background .2s, border-color .2s,
+                        color .2s, box-shadow .2s;
+        }
+
+        .specialization-icon {
+            display: grid;
+            place-items: center;
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--doc-primary-soft);
+            color: var(--doc-primary-dark);
+            font-size: 14px;
+            transition: background .2s, color .2s;
+        }
+
+        .specialization-chip:hover {
+            transform: translateY(-2px);
+            border-color: #B9E9E1;
+            color: var(--doc-primary-dark);
+        }
+
+        .specialization-chip.active {
+            border-color: var(--doc-primary);
+            background: var(--doc-primary);
+            color: #FFFFFF;
+            box-shadow: 0 6px 16px rgba(32, 183, 168, .20);
+        }
+
+        .specialization-chip.active .specialization-icon {
+            background: rgba(255, 255, 255, .20);
+            color: #FFFFFF;
+        }
+
+        .specialization-chip:focus-visible,
+        .bottom-nav-item:focus-visible {
+            outline: 3px solid rgba(32, 183, 168, .45);
+            outline-offset: 3px;
+        }
+
+        /* Results */
+
+        .doctor-results-header {
+            align-items: flex-end;
+            margin-bottom: 22px;
+        }
+
+        .doctor-result-count {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            flex-shrink: 0;
+            color: var(--doc-muted);
+            font-size: 10px;
+        }
+
+        .doctor-result-count strong {
+            color: var(--doc-primary-dark);
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -.6px;
+        }
+
+        .doctor-results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            align-items: stretch;
+            gap: 20px;
+        }
+
+        /* Dynamic doctor card containers */
+
+        .doctor-results-grid > article,
+        .doctor-results-grid > .doctor-card,
+        .doctor-results-grid > .card {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            padding: 23px;
+            overflow: hidden;
+            border: 1px solid var(--doc-border);
+            border-radius: 21px;
+            background: #FFFFFF;
+            box-shadow: 0 5px 22px rgba(24, 70, 65, .035);
+            transition: transform .22s, box-shadow .22s, border-color .22s;
+        }
+
+        .doctor-results-grid > article:hover,
+        .doctor-results-grid > .doctor-card:hover,
+        .doctor-results-grid > .card:hover {
+            transform: translateY(-4px);
+            border-color: #BDEBE4;
+            box-shadow: 0 15px 32px rgba(24, 70, 65, .09);
+        }
+
+        .doctor-results-grid img {
+            max-width: 100%;
+        }
+
+        .doctor-results-grid .doctor-avatar,
+        .doctor-results-grid .doctor-image,
+        .doctor-results-grid .doctor-photo,
+        .doctor-results-grid .doctor-profile-image {
+            flex-shrink: 0;
+        }
+
+        .doctor-results-grid .doctor-avatar img,
+        .doctor-results-grid .doctor-image img,
+        .doctor-results-grid .doctor-photo img,
+        .doctor-results-grid .doctor-profile-image img {
+            display: block;
+            width: 76px;
+            height: 76px;
+            object-fit: cover;
+            border-radius: 19px;
+            background: linear-gradient(135deg, #DDF7F2, #EDF5FF);
+        }
+
+        .doctor-results-grid h3 {
+            color: var(--doc-ink);
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .doctor-results-grid p {
+            color: var(--doc-muted);
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .doctor-results-grid .specialization,
+        .doctor-results-grid .doctor-specialty,
+        .doctor-results-grid .doctor-specialization {
+            color: var(--doc-primary-dark);
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .doctor-results-grid .availability,
+        .doctor-results-grid .status-badge {
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #EAF8F0;
+            color: #27845A;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .doctor-results-grid .rating,
+        .doctor-results-grid .doctor-rating {
+            color: #C58B28;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .doctor-results-grid .fee,
+        .doctor-results-grid .consultation-fee,
+        .doctor-results-grid .doctor-fee {
+            color: var(--doc-ink);
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .doctor-results-grid a.btn-primary,
+        .doctor-results-grid .btn-primary,
+        .doctor-results-grid .view-profile-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 43px;
+            padding: 11px 15px;
+            border: 1px solid var(--doc-primary);
+            border-radius: 12px;
+            background: var(--doc-primary);
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: background .2s, border-color .2s;
+        }
+
+        .doctor-results-grid a.btn-primary:hover,
+        .doctor-results-grid .btn-primary:hover,
+        .doctor-results-grid .view-profile-btn:hover {
+            border-color: var(--doc-primary-dark);
+            background: var(--doc-primary-dark);
+        }
+
+        /* Loading state */
+
+        .doctor-loading {
+            display: flex;
+            grid-column: 1 / -1;
+            align-items: center;
+            justify-content: center;
+            gap: 17px;
+            min-height: 170px;
+            padding: 28px;
+            border: 1px dashed #D9E9E6;
+            border-radius: 20px;
+            background: #FFFFFF;
+        }
+
+        .doctor-loading-icon {
+            display: grid;
+            place-items: center;
+            width: 54px;
+            height: 54px;
+            flex-shrink: 0;
+            border-radius: 17px;
+            background: var(--doc-primary-soft);
+            color: var(--doc-primary-dark);
+            font-size: 24px;
+        }
+
+        .doctor-loading h3 {
+            margin: 0;
+            color: var(--doc-ink);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .doctor-loading p {
+            margin: 6px 0 0;
+            color: var(--doc-muted);
+            font-size: 11px;
+        }
+
+        /* Trust panel */
+
+        .doctor-trust-note {
+            display: flex;
+            align-items: center;
+            gap: 19px;
+            margin-top: 42px;
+            padding: 25px 28px;
+            border: 1px solid #DDEFEA;
+            border-radius: 20px;
+            background: linear-gradient(110deg, #FFFFFF, #EFFAF7);
+        }
+
+        .doctor-trust-icon {
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+            border-radius: 16px;
+            background: var(--doc-primary-soft);
+            color: var(--doc-primary-dark);
+            font-size: 24px;
+        }
+
+        .doctor-trust-content > span {
+            color: var(--doc-primary-dark);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        .doctor-trust-content h3 {
+            margin: 5px 0;
+            color: var(--doc-ink);
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .doctor-trust-content p {
+            margin: 0;
+            color: var(--doc-muted);
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        /* Bottom navigation */
+
+        .bottom-nav {
+            position: fixed;
+            z-index: 1000;
+            right: 50%;
+            bottom: 18px;
+            left: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            width: min(520px, calc(100% - 30px));
+            padding: 9px;
+            transform: translateX(50%);
+            border: 1px solid rgba(225, 237, 234, .95);
+            border-radius: 22px;
+            background: rgba(255, 255, 255, .96);
+            box-shadow: 0 12px 38px rgba(23, 59, 58, .13);
+            backdrop-filter: blur(18px);
+        }
+
+        .bottom-nav .bottom-nav-item {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            min-width: 0;
+            padding: 10px 4px;
+            border-radius: 14px;
+            color: #8A9E9B;
+            font-size: 9px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background .2s, color .2s;
+        }
+
+        .bottom-nav .bottom-nav-item i {
+            font-size: 18px;
+        }
+
+        .bottom-nav .bottom-nav-item.active {
+            background: var(--doc-primary-soft);
+            color: var(--doc-primary-dark);
+        }
+
+        .bottom-nav .bottom-nav-item:hover {
+            color: var(--doc-primary-dark);
+        }
+
+        /* Responsive layout */
+
+        @media (max-width: 1050px) {
+            .doctor-results-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .doctors-page {
+                padding-right: 4%;
+                padding-left: 4%;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .doctors-header {
+                padding: 28px 22px;
+            }
+
+            .doctors-header::after {
+                right: -28px;
+                opacity: .45;
+                transform: translateY(-50%) scale(.65);
+            }
+
+            .doctors-header h1 {
+                max-width: 420px;
+                font-size: 30px;
+                letter-spacing: -1px;
+            }
+
+            .doctors-header p {
+                max-width: 360px;
+                font-size: 12px;
+            }
+
+            .doctors-page {
+                padding: 23px 16px 105px;
+            }
+
+            .doctor-search-panel {
+                padding: 14px;
+                margin-bottom: 30px;
+                border-radius: 16px;
+            }
+
+            .doctor-search-main input {
+                height: 49px;
+                font-size: 11px;
+            }
+
+            .specialization-list {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding: 2px 1px 12px;
+                margin-bottom: 32px;
+                scrollbar-width: none;
+            }
+
+            .specialization-list::-webkit-scrollbar {
+                display: none;
+            }
+
+            .specialization-chip {
+                flex-shrink: 0;
+                min-height: 44px;
+                padding-right: 13px;
+                font-size: 10px;
+            }
+
+            .doctor-results-header h2 {
+                font-size: 20px;
+            }
+
+            .doctor-result-count strong {
+                font-size: 19px;
+            }
+
+            .doctor-results-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .doctor-results-grid > article,
+            .doctor-results-grid > .doctor-card,
+            .doctor-results-grid > .card {
+                padding: 20px;
+                border-radius: 19px;
+            }
+
+            .doctor-trust-note {
+                align-items: flex-start;
+                gap: 13px;
+                padding: 20px;
+                margin-top: 30px;
+            }
+
+            .doctor-trust-icon {
+                width: 43px;
+                height: 43px;
+                border-radius: 13px;
+                font-size: 20px;
+            }
+
+            .doctor-trust-content h3 {
+                font-size: 13px;
+            }
+
+            .doctor-trust-content p {
+                font-size: 10px;
+            }
+
+            .bottom-nav {
+                bottom: 9px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="app">
 
+    <header class="doctors-header">
+        <div class="doctors-header-copy">
+            <span class="doctors-eyebrow">
+                <span class="status-dot"></span>
+                Healthcare professionals
+            </span>
+
+            <h1>
+                Find the right doctor
+                <span>for your care.</span>
+            </h1>
+
+            <p>
+                Explore healthcare professionals by speciality
+                and find the care that fits your needs.
+            </p>
+        </div>
+    </header>
+
     <main class="doctors-page">
 
-        <!-- =================================================
-             HEADER
-             ================================================= -->
-
-        <header class="doctors-header">
-
-            <div class="doctors-header-copy">
-
-                <span class="doctors-eyebrow">
-                    <span class="status-dot"></span>
-                    Healthcare professionals
-                </span>
-
-                <h1>
-                    Find the right doctor
-                    <span>for your care.</span>
-                </h1>
-
-                <p>
-                    Explore healthcare professionals by speciality
-                    and find the care that fits your needs.
-                </p>
-
-            </div>
-
-        </header>
-
-
-        <!-- =================================================
-             SEARCH AREA
-             ================================================= -->
-
-        <section class="doctor-search-panel">
-
-            <div class="doctor-search-main">
-
-                <i class="bi bi-search"></i>
-
+        <section class="doctor-search-panel" aria-label="Search doctors">
+            <label class="doctor-search-main" for="doctorSearch">
+                <i class="bi bi-search" aria-hidden="true"></i>
                 <input
                     type="search"
                     id="doctorSearch"
                     placeholder="Search by doctor name or speciality..."
                     autocomplete="off"
+                    aria-label="Search by doctor name or speciality"
                 >
-
-            </div>
+            </label>
 
             <div class="doctor-search-hint">
-                <i class="bi bi-info-circle"></i>
+                <i class="bi bi-info-circle" aria-hidden="true"></i>
                 Search by name, speciality or healthcare professional
             </div>
-
         </section>
 
-
-        <!-- =================================================
-             SPECIALIZATIONS
-             ================================================= -->
-
         <section class="doctor-specializations">
-
             <div class="doctor-section-heading">
-
                 <div>
-                    <span class="section-eyebrow">
-                        EXPLORE
-                    </span>
-
-                    <h2>
-                        Browse by speciality
-                    </h2>
+                    <span class="section-eyebrow">EXPLORE</span>
+                    <h2>Browse by speciality</h2>
                 </div>
-
             </div>
 
+            <div id="specializationFilters" class="specialization-list">
 
-            <div
-                id="specializationFilters"
-                class="specialization-list"
-            >
-
-                <button
+                <button type="button"
                     class="specialization-chip active"
                     data-specialization="all"
-                >
-                    <span class="specialization-icon">
-                        <i class="bi bi-grid"></i>
-                    </span>
-
+                    aria-pressed="true">
+                    <span class="specialization-icon"><i class="bi bi-grid"></i></span>
                     <span>All doctors</span>
                 </button>
 
-
-                <button
+                <button type="button"
                     class="specialization-chip"
                     data-specialization="General Physician"
-                >
-                    <span class="specialization-icon">
-                        <i class="bi bi-heart-pulse"></i>
-                    </span>
-
+                    aria-pressed="false">
+                    <span class="specialization-icon"><i class="bi bi-heart-pulse"></i></span>
                     <span>General Physician</span>
                 </button>
 
-
-                <button
+                <button type="button"
                     class="specialization-chip"
                     data-specialization="Cardiologist"
-                >
-                    <span class="specialization-icon">
-                        <i class="bi bi-heart"></i>
-                    </span>
-
+                    aria-pressed="false">
+                    <span class="specialization-icon"><i class="bi bi-heart"></i></span>
                     <span>Cardiologist</span>
                 </button>
 
-
-                <button
+                <button type="button"
                     class="specialization-chip"
                     data-specialization="Pediatrician"
-                >
-                    <span class="specialization-icon">
-                        <i class="bi bi-person-hearts"></i>
-                    </span>
-
+                    aria-pressed="false">
+                    <span class="specialization-icon"><i class="bi bi-person-hearts"></i></span>
                     <span>Pediatrician</span>
                 </button>
 
-
-                <button
+                <button type="button"
                     class="specialization-chip"
                     data-specialization="Dermatologist"
-                >
-                    <span class="specialization-icon">
-                        <i class="bi bi-stars"></i>
-                    </span>
-
+                    aria-pressed="false">
+                    <span class="specialization-icon"><i class="bi bi-stars"></i></span>
                     <span>Dermatologist</span>
                 </button>
 
-
-                <button
+                <button type="button"
                     class="specialization-chip"
                     data-specialization="Gynecologist"
-                >
-                    <span class="specialization-icon">
-                        <i class="bi bi-gender-female"></i>
-                    </span>
-
+                    aria-pressed="false">
+                    <span class="specialization-icon"><i class="bi bi-gender-female"></i></span>
                     <span>Gynecologist</span>
                 </button>
 
             </div>
-
         </section>
 
-
-        <!-- =================================================
-             RESULTS
-             ================================================= -->
-
         <section class="doctor-results">
-
             <div class="doctor-results-header">
-
                 <div>
-
-                    <span class="section-eyebrow">
-                        AVAILABLE PROFESSIONALS
-                    </span>
-
-                    <h2>
-                        Doctors near you
-                    </h2>
-
+                    <span class="section-eyebrow">AVAILABLE PROFESSIONALS</span>
+                    <h2>Doctors near you</h2>
                 </div>
-
 
                 <div class="doctor-result-count">
-
-                    <strong id="doctorResultCount">
-                        —
-                    </strong>
-
-                    <span>
-                        professionals
-                    </span>
-
+                    <strong id="doctorResultCount">—</strong>
+                    <span>professionals</span>
                 </div>
-
             </div>
 
-
-            <div
-                id="doctorList"
-                class="doctor-results-grid"
-            >
-
-                <!-- Loading state -->
-
+            <div id="doctorList" class="doctor-results-grid" aria-live="polite">
                 <div class="doctor-loading">
-
                     <div class="doctor-loading-icon">
                         <i class="bi bi-person-badge"></i>
                     </div>
-
                     <div>
-
-                        <h3>
-                            Finding healthcare professionals
-                        </h3>
-
-                        <p>
-                            Doctors will appear here shortly.
-                        </p>
-
+                        <h3>Finding healthcare professionals</h3>
+                        <p>Doctors will appear here shortly.</p>
                     </div>
-
                 </div>
-
             </div>
-
         </section>
 
-
-        <!-- =================================================
-             TRUST NOTE
-             ================================================= -->
-
         <section class="doctor-trust-note">
-
             <div class="doctor-trust-icon">
                 <i class="bi bi-shield-check"></i>
             </div>
 
             <div class="doctor-trust-content">
-
-                <span>
-                    HEALTHCARE CONNECT
-                </span>
-
-                <h3>
-                    Choose care with confidence.
-                </h3>
-
+                <span>HEALTHCARE CONNECT</span>
+                <h3>Choose care with confidence.</h3>
                 <p>
                     Review a healthcare professional's speciality,
                     experience and consultation details before booking.
                 </p>
-
             </div>
-
         </section>
 
     </main>
 
-
-    <!-- =====================================================
-         BOTTOM NAVIGATION
-         ===================================================== -->
-
-    <nav
-        class="bottom-nav"
-        aria-label="Main navigation"
-    >
-
-        <a
-            href="dashboard.html"
-            class="bottom-nav-item"
-        >
+    <nav class="bottom-nav" aria-label="Main navigation">
+        <a href="dashboard.html" class="bottom-nav-item">
             <i class="bi bi-house"></i>
             <span>Home</span>
         </a>
 
-
-        <a
-            href="doctors.html"
+        <a href="doctors.html"
             class="bottom-nav-item active"
-        >
+            aria-current="page">
             <i class="bi bi-person-badge"></i>
             <span>Doctors</span>
         </a>
 
-
-        <a
-            href="appointments.html"
-            class="bottom-nav-item"
-        >
+        <a href="appointments.html" class="bottom-nav-item">
             <i class="bi bi-calendar2"></i>
             <span>Appointments</span>
         </a>
 
-
-        <a
-            href="medicines.html"
-            class="bottom-nav-item"
-        >
+        <a href="medicines.html" class="bottom-nav-item">
             <i class="bi bi-capsule"></i>
             <span>Medicines</span>
         </a>
 
-
-        <a
-            href="profile.html"
-            class="bottom-nav-item"
-        >
+        <a href="profile.html" class="bottom-nav-item">
             <i class="bi bi-person"></i>
             <span>Profile</span>
         </a>
-
     </nav>
 
 </div>
-
 
 <script src="../js/app.js"></script>
 <script src="../js/doctor-service.js"></script>
@@ -353,3 +911,4 @@
 
 </body>
 </html>
+```

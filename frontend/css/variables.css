@@ -1,86 +1,120 @@
+
 /* =========================================================
    HEALTHCARE CONNECT
-   DESIGN SYSTEM — FOUNDATION
+   PREMIUM DESIGN SYSTEM — FOUNDATION
    ========================================================= */
 
 :root {
 
     /* =====================================================
-       BRAND
+       1. BRAND COLORS
        ===================================================== */
 
-    --color-primary: #20B8A6;
-    --color-primary-dark: #168F82;
-    --color-primary-deep: #0E7168;
+    --color-primary: #19A995;
+    --color-primary-dark: #118778;
+    --color-primary-deep: #08665F;
 
-    --color-primary-light: #E8F9F6;
-    --color-primary-soft: #F3FCFA;
-    --color-primary-faint: #F8FEFD;
+    --color-primary-light: #DDF6EF;
+    --color-primary-soft: #EAF8F3;
+    --color-primary-faint: #F3FAF7;
+
+    --color-primary-gradient:
+        linear-gradient(135deg, #20BFA9 0%, #08796F 100%);
+
+    --color-primary-gradient-soft:
+        linear-gradient(135deg, #DDF6EF 0%, #F2F8F3 100%);
 
 
     /* =====================================================
-       PAGE BACKGROUNDS
+       2. PAGE BACKGROUNDS & SURFACES
        ===================================================== */
 
-    --color-background: #F6F9F9;
-    --color-background-soft: #F9FBFB;
+    --color-background: #EDF5F2;
+    --color-background-soft: #F4F8F6;
+
+    --color-background-gradient:
+        linear-gradient(145deg, #F4F8F6 0%, #E8F3EE 55%, #F3F7F2 100%);
 
     --color-surface: #FFFFFF;
-    --color-surface-soft: #F8FAFA;
-    --color-surface-muted: #F1F6F5;
+    --color-surface-soft: #F8FBF9;
+    --color-surface-muted: #E8F1ED;
 
-    --color-surface-hover: #F1FAF8;
+    --color-surface-hover: #EFF8F4;
+    --color-surface-active: #DDF3EB;
+    --color-surface-elevated: #FFFFFF;
 
 
     /* =====================================================
-       TEXT
+       3. TEXT COLORS
        ===================================================== */
 
-    --color-text-primary: #173534;
-    --color-text-secondary: #607674;
-    --color-text-muted: #8A9B99;
-    --color-text-subtle: #A7B5B3;
-
+    --color-text-primary: #173B37;
+    --color-text-secondary: #59736D;
+    --color-text-muted: #829590;
+    --color-text-subtle: #A3B2AD;
     --color-text-white: #FFFFFF;
 
-
-    /* =====================================================
-       BORDERS
-       ===================================================== */
-
-    --color-border: #DDE9E7;
-    --color-border-light: #EAF1F0;
-    --color-border-focus: #20B8A6;
+    --color-text-link: #118778;
+    --color-text-link-hover: #08665F;
 
 
     /* =====================================================
-       STATUS
+       4. BORDERS & FOCUS
        ===================================================== */
 
-    --color-success: #26966D;
-    --color-success-light: #E9F7F1;
+    --color-border: #D9E7E1;
+    --color-border-light: #E8F0EC;
+    --color-border-strong: #C3D8CF;
+    --color-border-hover: #A9DCCE;
+    --color-border-focus: #19A995;
 
-    --color-warning: #D59627;
-    --color-warning-light: #FFF6E5;
+    --focus-ring: 0 0 0 4px rgba(25, 169, 149, 0.15);
 
-    --color-danger: #D85B5B;
+
+    /* =====================================================
+       5. STATUS COLORS
+       ===================================================== */
+
+    /* Success */
+
+    --color-success: #21845F;
+    --color-success-light: #E7F6ED;
+    --color-success-border: #C4E9D2;
+
+    /* Warning */
+
+    --color-warning: #A96D12;
+    --color-warning-light: #FFF5DF;
+    --color-warning-border: #F1DDAE;
+
+    /* Danger */
+
+    --color-danger: #C7474F;
     --color-danger-light: #FFF0F0;
+    --color-danger-border: #F2CDCF;
 
-    --color-info: #4A82BA;
+    /* Information */
+
+    --color-info: #3976AD;
     --color-info-light: #EDF5FD;
+    --color-info-border: #D0E2F5;
 
 
     /* =====================================================
-       EMERGENCY
+       6. EMERGENCY COLORS
        ===================================================== */
 
-    --color-emergency: #D94C4C;
-    --color-emergency-dark: #B83A3A;
-    --color-emergency-light: #FFF1F1;
+    --color-emergency: #D94747;
+    --color-emergency-dark: #B72F35;
+    --color-emergency-light: #FFF0EF;
+    --color-emergency-border: #F2C8C7;
+
+    --shadow-emergency:
+        0 8px 22px rgba(201, 56, 61, 0.18);
 
 
     /* =====================================================
-       TYPOGRAPHY
+       7. TYPOGRAPHY
        ===================================================== */
 
     --font-family:
@@ -90,14 +124,14 @@
         "Segoe UI",
         sans-serif;
 
-    --font-size-xs: 0.72rem;
-    --font-size-sm: 0.82rem;
-    --font-size-md: 0.94rem;
-    --font-size-lg: 1.08rem;
-    --font-size-xl: 1.3rem;
-    --font-size-2xl: 1.65rem;
-    --font-size-3xl: 2.15rem;
-    --font-size-4xl: 2.7rem;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 0.95rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.375rem;
+    --font-size-2xl: 1.75rem;
+    --font-size-3xl: 2.25rem;
+    --font-size-4xl: 2.75rem;
 
     --font-weight-regular: 400;
     --font-weight-medium: 500;
@@ -108,9 +142,12 @@
     --line-height-normal: 1.55;
     --line-height-relaxed: 1.7;
 
+    --letter-spacing-tight: -0.035em;
+    --letter-spacing-wide: 0.06em;
+
 
     /* =====================================================
-       SPACING
+       8. SPACING
        ===================================================== */
 
     --space-1: 4px;
@@ -128,41 +165,43 @@
 
 
     /* =====================================================
-       RADIUS
+       9. BORDER RADIUS
        ===================================================== */
 
     --radius-xs: 6px;
-    --radius-sm: 9px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 20px;
-    --radius-2xl: 26px;
-
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+    --radius-xl: 22px;
+    --radius-2xl: 28px;
     --radius-full: 999px;
 
 
     /* =====================================================
-       SHADOWS
+       10. SHADOWS
        ===================================================== */
 
     --shadow-xs:
-        0 1px 3px rgba(23, 53, 52, 0.035);
+        0 1px 3px rgba(23, 59, 55, 0.035);
 
     --shadow-sm:
-        0 3px 12px rgba(23, 53, 52, 0.055);
+        0 4px 14px rgba(23, 59, 55, 0.045);
 
     --shadow-md:
-        0 8px 24px rgba(23, 53, 52, 0.075);
+        0 8px 24px rgba(23, 59, 55, 0.065);
 
     --shadow-lg:
-        0 16px 40px rgba(23, 53, 52, 0.10);
+        0 16px 38px rgba(23, 59, 55, 0.085);
+
+    --shadow-xl:
+        0 24px 60px rgba(23, 59, 55, 0.13);
 
     --shadow-primary:
-        0 10px 28px rgba(32, 184, 166, 0.18);
+        0 8px 24px rgba(25, 169, 149, 0.20);
 
 
     /* =====================================================
-       LAYOUT
+       11. LAYOUT
        ===================================================== */
 
     --container-width: 1240px;
@@ -175,7 +214,7 @@
 
 
     /* =====================================================
-       TRANSITIONS
+       12. TRANSITIONS
        ===================================================== */
 
     --transition-fast: 150ms ease;
@@ -184,7 +223,7 @@
 
 
     /* =====================================================
-       Z-INDEX
+       13. LAYERING
        ===================================================== */
 
     --z-base: 1;
@@ -193,4 +232,5 @@
     --z-overlay: 300;
     --z-modal: 500;
     --z-toast: 1000;
+
 }

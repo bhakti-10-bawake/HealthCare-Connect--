@@ -1,65 +1,44 @@
-document.addEventListener("DOMContentLoaded", () => {
 
-    const STORAGE_KEY = "healthcareReminders";
+document.addEventListener("DOMContentLoaded", () => {
+    const API_URL = "http://localhost:5000/api/reminders";
 
     const reminderList = document.getElementById("reminderList");
     const remindersEmpty = document.getElementById("remindersEmpty");
+    const reminderFormSection = document.getElementById("reminderFormSection");
+    const reminderForm = document.getElementById("reminderForm");
+    const todayReminderCount = document.getElementById("todayReminderCount");
+    const reminderCountLabel = document.getElementById("reminderCountLabel");
 
-    const reminderFormSection =
-        document.getElementById("reminderFormSection");
+    const addReminderButton = document.getElementById("addReminderButton");
+    const emptyAddReminderButton = document.getElementById("emptyAddReminderButton");
+    const closeReminderForm = document.getElementById("closeReminderForm");
+    const cancelReminderButton = document.getElementById("cancelReminderButton");
 
-    const reminderForm =
-        document.getElementById("reminderForm");
+    const medicineInput = document.getElementById("reminderMedicine");
+    const dosageInput = document.getElementById("reminderDosage");
+    const frequencyInput = document.getElementById("reminderFrequency");
+    const timeInput = document.getElementById("reminderTime");
+    const startDateInput = document.getElementById("reminderStartDate");
+    const notesInput = document.getElementById("reminderNotes");
 
-    const todayReminderCount =
-        document.getElementById("todayReminderCount");
-
-    const reminderCountLabel =
-        document.getElementById("reminderCountLabel");
-
-
-    const addReminderButton =
-        document.getElementById("addReminderButton");
-
-    const emptyAddReminderButton =
-        document.getElementById("emptyAddReminderButton");
-
-    const closeReminderForm =
-        document.getElementById("closeReminderForm");
-
-    const cancelReminderButton =
-        document.getElementById("cancelReminderButton");
-
-
-    const medicineInput =
-        document.getElementById("reminderMedicine");
-
-    const dosageInput =
-        document.getElementById("reminderDosage");
-
-    const frequencyInput =
-        document.getElementById("reminderFrequency");
-
-    const timeInput =
-        document.getElementById("reminderTime");
-
-    const startDateInput =
-        document.getElementById("reminderStartDate");
-
-    const notesInput =
-        document.getElementById("reminderNotes");
-
-
+    let reminders = [];
     let editingReminderId = null;
+    let isSaving = false;
 
+    function getToken() {
+        return localStorage.getItem("healthcareToken");
+    }
 
-    /* ---------------------------------------------------------
-       Helpers
-       --------------------------------------------------------- */
+    function getTodayDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    }
 
     function escapeHtml(value) {
-
-        return String(value)
+        return String(value ?? "")
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
@@ -67,22 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
             .replace(/'/g, "&#039;");
     }
 
-
-    function getTodayDate() {
-
-        const today = new Date();
-
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, "0");
-        const day = String(today.getDate()).padStart(2, "0");
-
-        return `${year}-${month}-${day}`;
-    }
-
-
     function formatDate(dateString) {
+        if (!dateString) return "Date unavailable";
 
-        const date = new Date(`${dateString}T00:00:00`);
+        const date = new Date(`${String(dateString).slice(0, 10)}T00:00:00`);
+
+        if (Number.isNaN(date.getTime())) return "Date unavailable";
 
         return date.toLocaleDateString("en-IN", {
             day: "numeric",
@@ -91,17 +60,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-
     function formatTime(time) {
-
         if (!time) return "";
 
-        const [hours, minutes] = time.split(":");
-
+        const [hours, minutes] = String(time).slice(0, 5).split(":");
         const date = new Date();
-
-        date.setHours(Number(hours));
-        date.setMinutes(Number(minutes));
+        date.setHours(Number(hours), Number(minutes), 0, 0);
 
         return date.toLocaleTimeString("en-IN", {
             hour: "numeric",
@@ -110,517 +74,290 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    async function apiRequest(path = "", options = {}) {
+        const token = getToken();
 
-    function getReminders() {
-
-        try {
-
-            const stored =
-                localStorage.getItem(STORAGE_KEY);
-
-            if (stored) {
-                return JSON.parse(stored);
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Unable to read reminders:",
-                error
-            );
-
+        if (!token) {
+            throw new Error("Please log in to manage your medicine reminders.");
         }
 
-        return null;
-    }
-
-
-    function saveReminders(reminders) {
-
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(reminders)
-        );
-
-    }
-
-
-    /* ---------------------------------------------------------
-       Initial synthetic reminders
-       --------------------------------------------------------- */
-
-    function createInitialReminders() {
-
-        return [
-
-            {
-                id: 1,
-                medicine: "Metformin 500 mg",
-                dosage: "1 tablet",
-                frequency: "Twice daily",
-                time: "08:00",
-                startDate: getTodayDate(),
-                notes: "Take after breakfast",
-                active: true
-            },
-
-            {
-                id: 2,
-                medicine: "Vitamin D3",
-                dosage: "1 tablet",
-                frequency: "Once daily",
-                time: "13:00",
-                startDate: getTodayDate(),
-                notes: "Take after lunch",
-                active: true
-            },
-
-            {
-                id: 3,
-                medicine: "Amlodipine 5 mg",
-                dosage: "1 tablet",
-                frequency: "Once daily",
-                time: "20:30",
-                startDate: getTodayDate(),
-                notes: "Take after dinner",
-                active: true
-            },
-
-            {
-                id: 4,
-                medicine: "Iron + Folic Acid",
-                dosage: "1 tablet",
-                frequency: "Once daily",
-                time: "21:00",
-                startDate: getTodayDate(),
-                notes: "Take with water",
-                active: true
+        const response = await fetch(`${API_URL}${path}`, {
+            ...options,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+                ...(options.headers || {})
             }
+        });
 
-        ];
+        const result = await response.json().catch(() => ({}));
 
+        if (response.status === 401) {
+            throw new Error("Your session has expired. Please log in again.");
+        }
+
+        if (!response.ok || result.success !== true) {
+            throw new Error(result.message || "The request could not be completed.");
+        }
+
+        return result;
     }
 
-
-    let reminders = getReminders();
-
-
-    if (!reminders) {
-
-        reminders = createInitialReminders();
-
-        saveReminders(reminders);
-
+    function showError(message) {
+        if (typeof window.showMessage === "function") {
+            window.showMessage(message, "error");
+        } else {
+            window.alert(message);
+        }
     }
-
-
-    /* ---------------------------------------------------------
-       Form visibility
-       --------------------------------------------------------- */
 
     function openForm() {
-
-        reminderFormSection.classList.add("visible");
-
-        setTimeout(() => {
-
-            medicineInput.focus();
-
-        }, 150);
-
-        reminderFormSection.scrollIntoView({
+        reminderFormSection?.classList.add("visible");
+        reminderFormSection?.scrollIntoView({
             behavior: "smooth",
             block: "start"
         });
 
+        medicineInput?.focus();
     }
-
 
     function closeForm() {
-
-        reminderFormSection.classList.remove("visible");
-
-        reminderForm.reset();
-
+        reminderFormSection?.classList.remove("visible");
+        reminderForm?.reset();
         editingReminderId = null;
 
-        startDateInput.value = getTodayDate();
-
+        if (startDateInput) {
+            startDateInput.value = getTodayDate();
+        }
     }
 
+    addReminderButton?.addEventListener("click", () => {
+        editingReminderId = null;
+        reminderForm?.reset();
+        startDateInput.value = getTodayDate();
+        openForm();
+    });
 
-    addReminderButton.addEventListener(
-        "click",
-        openForm
-    );
+    emptyAddReminderButton?.addEventListener("click", () => {
+        editingReminderId = null;
+        reminderForm?.reset();
+        startDateInput.value = getTodayDate();
+        openForm();
+    });
 
+    closeReminderForm?.addEventListener("click", closeForm);
+    cancelReminderButton?.addEventListener("click", closeForm);
 
-    emptyAddReminderButton.addEventListener(
-        "click",
-        openForm
-    );
-
-
-    closeReminderForm.addEventListener(
-        "click",
-        closeForm
-    );
-
-
-    cancelReminderButton.addEventListener(
-        "click",
-        closeForm
-    );
-
-
-    /* ---------------------------------------------------------
-       Render
-       --------------------------------------------------------- */
-
-    function renderReminders() {
-
-        const activeReminders =
-            reminders.filter(reminder => reminder.active !== false);
-
-
-        todayReminderCount.textContent =
-            activeReminders.length;
-
-
-        reminderCountLabel.textContent =
-            `${activeReminders.length} ${
-                activeReminders.length === 1
-                    ? "reminder"
-                    : "reminders"
-            }`;
-
-
-        if (!activeReminders.length) {
-
-            reminderList.innerHTML = "";
-
+    function renderEmptyState(message = "Your medicine reminders will appear here.") {
+        if (remindersEmpty) {
             remindersEmpty.classList.add("visible");
 
-            return;
-
+            const messageElement = remindersEmpty.querySelector("p");
+            if (messageElement) {
+                messageElement.textContent = message;
+            }
         }
 
-
-        remindersEmpty.classList.remove("visible");
-
-
-        activeReminders.sort((a, b) =>
-            a.time.localeCompare(b.time)
-        );
-
-
-        reminderList.innerHTML =
-            activeReminders.map(reminder => `
-
-                <article
-                    class="reminder-card"
-                    data-id="${reminder.id}"
-                >
-
-                    <div class="reminder-time-block">
-
-                        <span class="reminder-time">
-                            ${formatTime(reminder.time)}
-                        </span>
-
-                        <span class="reminder-time-label">
-                            reminder
-                        </span>
-
-                    </div>
-
-
-                    <div class="reminder-card-icon">
-                        <i class="bi bi-capsule"></i>
-                    </div>
-
-
-                    <div class="reminder-card-content">
-
-                        <div class="reminder-card-heading">
-
-                            <div>
-
-                                <span class="reminder-active-badge">
-                                    <span></span>
-                                    Active
-                                </span>
-
-                                <h3>
-                                    ${escapeHtml(reminder.medicine)}
-                                </h3>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="reminder-details">
-
-                            <span>
-                                <i class="bi bi-capsule"></i>
-                                ${escapeHtml(reminder.dosage)}
-                            </span>
-
-                            <span>
-                                <i class="bi bi-arrow-repeat"></i>
-                                ${escapeHtml(reminder.frequency)}
-                            </span>
-
-                            <span>
-                                <i class="bi bi-calendar3"></i>
-                                From ${formatDate(reminder.startDate)}
-                            </span>
-
-                        </div>
-
-
-                        ${
-                            reminder.notes
-                                ? `
-                                    <div class="reminder-note">
-                                        <i class="bi bi-info-circle"></i>
-                                        ${escapeHtml(reminder.notes)}
-                                    </div>
-                                `
-                                : ""
-                        }
-
-
-                        <div class="reminder-card-actions">
-
-                            <button
-                                class="reminder-edit-button"
-                                data-action="edit"
-                                data-id="${reminder.id}"
-                            >
-                                <i class="bi bi-pencil"></i>
-                                Edit
-                            </button>
-
-                            <button
-                                class="reminder-delete-button"
-                                data-action="delete"
-                                data-id="${reminder.id}"
-                            >
-                                <i class="bi bi-trash3"></i>
-                                Remove
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </article>
-
-            `).join("");
-
+        if (reminderList) {
+            reminderList.innerHTML = "";
+        }
     }
 
+    function renderReminders() {
+        if (!reminderList) return;
 
-    /* ---------------------------------------------------------
-       Add / Edit
-       --------------------------------------------------------- */
+        const activeReminders = reminders
+            .filter(reminder => reminder.active !== false)
+            .sort((a, b) => a.time.localeCompare(b.time));
 
-    reminderForm.addEventListener(
-        "submit",
-        event => {
+        if (todayReminderCount) {
+            todayReminderCount.textContent = activeReminders.length;
+        }
 
-            event.preventDefault();
+        if (reminderCountLabel) {
+            reminderCountLabel.textContent =
+                `${activeReminders.length} ${activeReminders.length === 1 ? "reminder" : "reminders"}`;
+        }
 
+        if (!activeReminders.length) {
+            renderEmptyState();
+            return;
+        }
 
-            const medicine =
-                medicineInput.value.trim();
+        remindersEmpty?.classList.remove("visible");
 
-            const dosage =
-                dosageInput.value.trim();
+        reminderList.innerHTML = activeReminders.map(reminder => `
+            <article class="reminder-card" data-id="${escapeHtml(reminder.id)}">
+                <div class="reminder-time-block">
+                    <span class="reminder-time">${escapeHtml(formatTime(reminder.time))}</span>
+                    <span class="reminder-time-label">reminder</span>
+                </div>
 
-            const frequency =
-                frequencyInput.value;
+                <div class="reminder-card-icon">
+                    <i class="bi bi-capsule"></i>
+                </div>
 
-            const time =
-                timeInput.value;
+                <div class="reminder-card-content">
+                    <div class="reminder-card-heading">
+                        <div>
+                            <span class="reminder-active-badge">
+                                <span></span>
+                                Active
+                            </span>
+                            <h3>${escapeHtml(reminder.medicine)}</h3>
+                        </div>
+                    </div>
 
-            const startDate =
-                startDateInput.value;
+                    <div class="reminder-details">
+                        <span><i class="bi bi-capsule"></i> ${escapeHtml(reminder.dosage)}</span>
+                        <span><i class="bi bi-arrow-repeat"></i> ${escapeHtml(reminder.frequency)}</span>
+                        <span><i class="bi bi-calendar3"></i> From ${formatDate(reminder.startDate)}</span>
+                    </div>
 
-            const notes =
-                notesInput.value.trim();
+                    ${reminder.notes ? `
+                        <div class="reminder-note">
+                            <i class="bi bi-info-circle"></i>
+                            ${escapeHtml(reminder.notes)}
+                        </div>
+                    ` : ""}
 
+                    <div class="reminder-card-actions">
+                        <button class="reminder-edit-button" type="button"
+                                data-action="edit" data-id="${escapeHtml(reminder.id)}">
+                            <i class="bi bi-pencil"></i> Edit
+                        </button>
 
-            if (
-                !medicine ||
-                !dosage ||
-                !frequency ||
-                !time ||
-                !startDate
-            ) {
+                        <button class="reminder-delete-button" type="button"
+                                data-action="delete" data-id="${escapeHtml(reminder.id)}">
+                            <i class="bi bi-trash3"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </article>
+        `).join("");
+    }
 
-                return;
+    async function loadReminders() {
+        if (!reminderList) return;
 
-            }
+        reminderList.innerHTML = `
+            <div class="doctor-loading">
+                <div class="loading-spinner"></div>
+                <p>Loading your reminders...</p>
+            </div>
+        `;
 
+        try {
+            const result = await apiRequest("/my");
+            reminders = Array.isArray(result.data) ? result.data : [];
+            renderReminders();
+        } catch (error) {
+            console.error("Load reminders error:", error);
+            renderEmptyState(error.message);
+            showError(error.message);
+        }
+    }
 
+    reminderForm?.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        if (isSaving) return;
+
+        const medicine = medicineInput.value.trim();
+        const dosage = dosageInput.value.trim();
+        const frequency = frequencyInput.value;
+        const time = timeInput.value;
+        const startDate = startDateInput.value;
+        const notes = notesInput.value.trim();
+
+        if (!medicine || !dosage || !frequency || !time || !startDate) {
+            showError("Please complete all required reminder fields.");
+            return;
+        }
+
+        const payload = { medicine, dosage, frequency, time, startDate, notes };
+        const submitButton = reminderForm.querySelector('[type="submit"]');
+
+        isSaving = true;
+        if (submitButton) submitButton.disabled = true;
+
+        try {
             if (editingReminderId !== null) {
+                const result = await apiRequest(`/${editingReminderId}`, {
+                    method: "PUT",
+                    body: JSON.stringify(payload)
+                });
 
-                reminders =
-                    reminders.map(reminder => {
-
-                        if (
-                            reminder.id !==
-                            editingReminderId
-                        ) {
-                            return reminder;
-                        }
-
-
-                        return {
-
-                            ...reminder,
-
-                            medicine,
-                            dosage,
-                            frequency,
-                            time,
-                            startDate,
-                            notes
-
-                        };
-
-                    });
-
+                reminders = reminders.map(reminder =>
+                    String(reminder.id) === String(editingReminderId)
+                        ? result.data
+                        : reminder
+                );
             } else {
+                const result = await apiRequest("", {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                });
 
-                const newReminder = {
-
-                    id: Date.now(),
-
-                    medicine,
-                    dosage,
-                    frequency,
-                    time,
-                    startDate,
-                    notes,
-
-                    active: true
-
-                };
-
-
-                reminders.push(newReminder);
-
+                reminders.push(result.data);
             }
-
-
-            saveReminders(reminders);
 
             closeForm();
-
             renderReminders();
-
+        } catch (error) {
+            console.error("Save reminder error:", error);
+            showError(error.message);
+        } finally {
+            isSaving = false;
+            if (submitButton) submitButton.disabled = false;
         }
-    );
+    });
 
+    reminderList?.addEventListener("click", async event => {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
 
-    /* ---------------------------------------------------------
-       Edit / Delete
-       --------------------------------------------------------- */
+        const id = button.dataset.id;
+        const reminder = reminders.find(item => String(item.id) === id);
+        if (!reminder) return;
 
-    reminderList.addEventListener(
-        "click",
-        event => {
-
-            const button =
-                event.target.closest("button[data-action]");
-
-            if (!button) return;
-
-
-            const id =
-                Number(button.dataset.id);
-
-            const action =
-                button.dataset.action;
-
-
-            const reminder =
-                reminders.find(
-                    item => item.id === id
-                );
-
-
-            if (!reminder) return;
-
-
-            if (action === "delete") {
-
-                const confirmed =
-                    window.confirm(
-                        `Remove the reminder for ${reminder.medicine}?`
-                    );
-
-
-                if (!confirmed) return;
-
-
-                reminders =
-                    reminders.filter(
-                        item => item.id !== id
-                    );
-
-
-                saveReminders(reminders);
-
-                renderReminders();
-
+        if (button.dataset.action === "delete") {
+            if (!window.confirm(`Remove the reminder for ${reminder.medicine}?`)) {
                 return;
-
             }
 
+            button.disabled = true;
 
-            if (action === "edit") {
-
-                editingReminderId = id;
-
-
-                medicineInput.value =
-                    reminder.medicine;
-
-                dosageInput.value =
-                    reminder.dosage;
-
-                frequencyInput.value =
-                    reminder.frequency;
-
-                timeInput.value =
-                    reminder.time;
-
-                startDateInput.value =
-                    reminder.startDate;
-
-                notesInput.value =
-                    reminder.notes || "";
-
-
-                openForm();
-
+            try {
+                await apiRequest(`/${id}`, { method: "DELETE" });
+                reminders = reminders.filter(item => String(item.id) !== id);
+                renderReminders();
+            } catch (error) {
+                console.error("Delete reminder error:", error);
+                showError(error.message);
+                button.disabled = false;
             }
 
+            return;
         }
-    );
 
+        if (button.dataset.action === "edit") {
+            editingReminderId = reminder.id;
 
-    /* ---------------------------------------------------------
-       Initial render
-       --------------------------------------------------------- */
+            medicineInput.value = reminder.medicine;
+            dosageInput.value = reminder.dosage;
+            frequencyInput.value = reminder.frequency;
+            timeInput.value = reminder.time;
+            startDateInput.value = String(reminder.startDate).slice(0, 10);
+            notesInput.value = reminder.notes || "";
 
-    startDateInput.value = getTodayDate();
+            openForm();
+        }
+    });
 
-    renderReminders();
+    if (startDateInput) {
+        startDateInput.value = getTodayDate();
+    }
 
+    loadReminders();
 });

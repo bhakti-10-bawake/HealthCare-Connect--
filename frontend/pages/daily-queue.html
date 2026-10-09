@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5fbfa">
+
+    <title>Daily Tokens | Healthcare Connect</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/daily-queue.css">
+</head>
+
+<body class="daily-queue-page">
+
+<header class="dq-header">
+    <a href="dashboard.html" class="dq-brand">
+        <span class="dq-brand-icon material-icons">health_and_safety</span>
+        <span>
+            <strong>Healthcare Connect</strong>
+            <small>Your health, connected.</small>
+        </span>
+    </a>
+
+    <a href="profile.html" class="dq-profile-link" aria-label="Profile">
+        <span class="material-icons">account_circle</span>
+    </a>
+</header>
+
+<main class="dq-container">
+
+    <section class="dq-intro">
+        <span class="dq-eyebrow">
+            <span class="material-icons">confirmation_number</span>
+            YOUR DAILY CARE
+        </span>
+
+        <h1>Care, without<br>the long wait.</h1>
+
+        <p>
+            Get a token for your routine checkup, track your queue,
+            and plan your visit to a healthcare centre.
+        </p>
+
+        <div class="dq-info-note">
+            <span class="material-icons">info</span>
+            <span>
+                Daily tokens are for routine consultations.
+                For a medical emergency, seek urgent medical assistance.
+            </span>
+        </div>
+    </section>
+
+    <section class="dq-tabs" aria-label="Daily queue sections">
+        <button class="dq-tab active" data-panel="bookPanel" type="button">
+            <span class="material-icons">add_circle_outline</span>
+            <span>Book token</span>
+        </button>
+
+        <button class="dq-tab" data-panel="myTokenPanel" type="button">
+            <span class="material-icons">confirmation_number</span>
+            <span>My token</span>
+        </button>
+
+        <button class="dq-tab" data-panel="queuePanel" type="button">
+            <span class="material-icons">groups</span>
+            <span>Live queue</span>
+        </button>
+
+        <button class="dq-tab" data-panel="historyPanel" type="button">
+            <span class="material-icons">history</span>
+            <span>History</span>
+        </button>
+    </section>
+
+    <div id="dqMessage" class="dq-message" role="status" aria-live="polite" hidden></div>
+
+    <!-- BOOK TOKEN -->
+    <section class="dq-panel" id="bookPanel">
+        <div class="dq-section-heading">
+            <div>
+                <span class="dq-kicker">GET STARTED</span>
+                <h2>Book your daily token</h2>
+                <p>Choose a centre and request your place in the queue.</p>
+            </div>
+            <span class="dq-heading-icon material-icons">event_available</span>
+        </div>
+
+        <form id="bookTokenForm" class="dq-card dq-book-form">
+            <label for="centreSelect">Healthcare centre</label>
+            <select id="centreSelect" name="centreId" required>
+                <option value="">Choose a healthcare centre</option>
+                <option value="1">Sahyadri Community Health Centre</option>
+                <option value="2">Jeevan Jyoti Rural Hospital</option>
+                <option value="3">Aarogya Primary Care Centre</option>
+                <option value="4">Aarogya Women's Centre</option>
+                <option value="5">Shree Sai Health Centre</option>
+                <option value="6">Gram Seva Hospital</option>
+                <option value="7">Sanjeevani Health Clinic</option>
+                <option value="8">Navjeevan Primary Health Centre</option>
+                <option value="9">Seva Rural Hospital</option>
+                <option value="10">Jeevanrekha Community Clinic</option>
+            </select>
+
+            <label for="serviceSelect">Type of visit</label>
+            <select id="serviceSelect" name="serviceType" required>
+                <option value="GENERAL_CHECKUP">General checkup</option>
+            </select>
+
+            <div class="dq-booking-summary">
+                <span class="material-icons">schedule</span>
+                <div>
+                    <strong>Routine consultation</strong>
+                    <p>Your token will be added to the selected centre's daily queue.</p>
+                </div>
+            </div>
+
+            <button type="submit" class="dq-primary-btn" id="bookTokenButton">
+                <span class="material-icons">confirmation_number</span>
+                <span>Get my token</span>
+            </button>
+
+            <p class="dq-form-footnote">
+                Your token request is subject to centre availability.
+            </p>
+        </form>
+
+        <div class="dq-secondary-tip">
+            <span class="material-icons">tips_and_updates</span>
+            <div>
+                <strong>Already booked?</strong>
+                <p>Open My Token to check your current queue status.</p>
+                <button type="button" class="dq-text-btn" data-go-panel="myTokenPanel">
+                    View my token →
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MY TOKEN -->
+    <section class="dq-panel" id="myTokenPanel" hidden>
+        <div class="dq-section-heading">
+            <div>
+                <span class="dq-kicker">YOUR VISIT</span>
+                <h2>My token</h2>
+                <p>Check the status of your daily token.</p>
+            </div>
+            <button type="button" class="dq-icon-btn" id="refreshMyTokens" aria-label="Refresh tokens">
+                <span class="material-icons">refresh</span>
+            </button>
+        </div>
+
+        <div id="myTokenContent" class="dq-token-list">
+            <div class="dq-loading">Loading your tokens…</div>
+        </div>
+    </section>
+
+    <!-- LIVE QUEUE -->
+    <section class="dq-panel" id="queuePanel" hidden>
+        <div class="dq-section-heading">
+            <div>
+                <span class="dq-kicker">CENTRE STATUS</span>
+                <h2>Live queue</h2>
+                <p>See the waiting tokens for a healthcare centre.</p>
+            </div>
+            <button type="button" class="dq-icon-btn" id="refreshQueue" aria-label="Refresh queue">
+                <span class="material-icons">refresh</span>
+            </button>
+        </div>
+
+        <div class="dq-card dq-queue-filter">
+            <label for="queueCentreSelect">Choose healthcare centre</label>
+            <select id="queueCentreSelect">
+                <option value="">Select a centre</option>
+                <option value="1">Sahyadri Community Health Centre</option>
+                <option value="2">Jeevan Jyoti Rural Hospital</option>
+                <option value="3">Aarogya Primary Care Centre</option>
+                <option value="4">Aarogya Women's Centre</option>
+                <option value="5">Shree Sai Health Centre</option>
+                <option value="6">Gram Seva Hospital</option>
+                <option value="7">Sanjeevani Health Clinic</option>
+                <option value="8">Navjeevan Primary Health Centre</option>
+                <option value="9">Seva Rural Hospital</option>
+                <option value="10">Jeevanrekha Community Clinic</option>
+            </select>
+            <button type="button" class="dq-primary-btn" id="loadQueueButton">
+                View queue
+            </button>
+        </div>
+
+        <div id="queueContent">
+            <div class="dq-empty-state">
+                <span class="material-icons">groups</span>
+                <h3>Choose a centre</h3>
+                <p>Select a healthcare centre to view its queue.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOKEN HISTORY -->
+    <section class="dq-panel" id="historyPanel" hidden>
+        <div class="dq-section-heading">
+            <div>
+                <span class="dq-kicker">YOUR ACTIVITY</span>
+                <h2>Token history</h2>
+                <p>Review the tokens available in your account.</p>
+            </div>
+            <button type="button" class="dq-icon-btn" id="refreshHistory" aria-label="Refresh history">
+                <span class="material-icons">refresh</span>
+            </button>
+        </div>
+
+        <div id="historyContent">
+            <div class="dq-loading">Loading token history…</div>
+        </div>
+    </section>
+
+    <section class="dq-help-card">
+        <span class="material-icons">volunteer_activism</span>
+        <div>
+            <h3>Your health comes first</h3>
+            <p>
+                Daily queue tokens are intended for routine visits.
+                Do not wait in a routine queue if you need emergency care.
+            </p>
+        </div>
+    </section>
+
+</main>
+
+<nav class="bottom-nav" aria-label="Main navigation">
+    <a href="dashboard.html" class="nav-item">
+        <span class="material-icons">home</span>
+        <span>Home</span>
+    </a>
+    <a href="doctors.html" class="nav-item">
+        <span class="material-icons">medical_services</span>
+        <span>Doctors</span>
+    </a>
+    <a href="appointments.html" class="nav-item">
+        <span class="material-icons">calendar_month</span>
+        <span>Visits</span>
+    </a>
+    <a href="daily-queue.html" class="nav-item active" aria-current="page">
+        <span class="material-icons">confirmation_number</span>
+        <span>Tokens</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+        <span class="material-icons">person</span>
+        <span>Profile</span>
+    </a>
+</nav>
+
+<script src="../js/app.js"></script>
+<script src="../js/daily-queue.js"></script>
+</body>
+</html>

@@ -1,602 +1,862 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="theme-color" content="#2EC1B1">
     <title>Dashboard | Healthcare Connect</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        :root {
+            --hc-primary: #2EC1B1;
+            --hc-primary-dark: #159E91;
+            --hc-primary-soft: #EAFBF8;
+            --hc-ink: #173B3A;
+            --hc-muted: #788C8B;
+            --hc-border: #E7EFEE;
+            --hc-background: #F7FAFA;
+            --hc-white: #FFFFFF;
+            --hc-radius: 20px;
+            --hc-shadow: 0 8px 28px rgba(24, 77, 73, 0.055);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--hc-background);
+            color: var(--hc-ink);
+            font-family: "DM Sans", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .dashboard-shell {
+            width: min(1440px, 100%);
+            margin: 0 auto;
+            min-height: 100vh;
+            padding: 0 36px 40px;
+        }
+
+        .topbar {
+            min-height: 84px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            border-bottom: 1px solid var(--hc-border);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: var(--hc-primary);
+            color: white;
+            font-size: 23px;
+        }
+
+        .brand-name {
+            display: block;
+            font-size: 17px;
+            line-height: 1.3;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-caption {
+            display: block;
+            margin-top: 3px;
+            font-size: 11px;
+            color: var(--hc-muted);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .topbar-link {
+            color: #607775;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .topbar-link:hover { color: var(--hc-primary-dark); }
+
+        .profile-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 12px 7px 7px;
+            background: white;
+            border: 1px solid var(--hc-border);
+            border-radius: 15px;
+        }
+
+        .profile-avatar {
+            display: grid;
+            place-items: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 11px;
+            background: var(--hc-primary-soft);
+            color: var(--hc-primary-dark);
+            font-size: 17px;
+        }
+
+        .profile-name {
+            display: block;
+            max-width: 130px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .profile-subtitle {
+            display: block;
+            margin-top: 2px;
+            color: var(--hc-muted);
+            font-size: 10px;
+        }
+
+        .dashboard-main { padding-top: 35px; }
+
+        .welcome-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 29px;
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            color: var(--hc-primary-dark);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--hc-primary);
+        }
+
+        .welcome-title {
+            margin: 0;
+            font-size: clamp(28px, 3vw, 38px);
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+        }
+
+        .welcome-title span { color: var(--hc-primary-dark); }
+
+        .welcome-description {
+            margin: 10px 0 0;
+            color: var(--hc-muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .date-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 12px 15px;
+            border: 1px solid var(--hc-border);
+            border-radius: 13px;
+            background: white;
+            color: #526D6A;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .date-chip i { color: var(--hc-primary-dark); }
+
+        .health-banner {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            min-height: 174px;
+            overflow: hidden;
+            margin-bottom: 29px;
+            padding: 29px 34px;
+            border-radius: 24px;
+            background: linear-gradient(112deg, #DDF8F3, #EAFBF8 53%, #F3FCFA);
+            border: 1px solid #D6F2ED;
+        }
+
+        .banner-content { position: relative; z-index: 1; max-width: 620px; }
+
+        .banner-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 12px;
+            color: #178F82;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .banner-title {
+            margin: 0;
+            font-size: clamp(20px, 2vw, 26px);
+            font-weight: 800;
+            line-height: 1.35;
+        }
+
+        .banner-description {
+            max-width: 470px;
+            margin: 9px 0 0;
+            color: #547774;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .banner-action, .small-primary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-radius: 13px;
+            background: var(--hc-primary-dark);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            transition: background .2s ease, transform .2s ease;
+        }
+
+        .banner-action {
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+            padding: 14px 19px;
+        }
+
+        .banner-action:hover, .small-primary-button:hover {
+            background: #117F75;
+            transform: translateY(-2px);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 17px;
+        }
+
+        .section-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .section-description {
+            margin: 5px 0 0;
+            color: var(--hc-muted);
+            font-size: 12px;
+        }
+
+        .section-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--hc-primary-dark);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            min-width: 0;
+            padding: 23px;
+            border: 1px solid var(--hc-border);
+            border-radius: var(--hc-radius);
+            background: white;
+            box-shadow: var(--hc-shadow);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(24, 77, 73, .08);
+        }
+
+        .stat-icon, .dashboard-quick-icon, .panel-heading-icon, .empty-icon {
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
+            font-size: 21px;
+        }
+
+        .stat-icon.teal, .quick-teal { background: #E5F9F5; color: #159E91; }
+        .stat-icon.blue, .quick-blue { background: #ECF3FF; color: #527ED0; }
+        .stat-icon.purple, .quick-purple { background: #F3EEFF; color: #8A6BD0; }
+        .quick-orange { background: #FFF4E8; color: #C77B2B; }
+        .quick-red { background: #FFF0EF; color: #C92D28; }
+
+        .stat-info { min-width: 0; }
+
+        .stat-label {
+            margin: 2px 0 9px;
+            color: var(--hc-muted);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .stat-note {
+            margin-top: 8px;
+            color: #91A3A1;
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        .dashboard-content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+            align-items: start;
+            gap: 24px;
+        }
+
+        .content-panel {
+            min-width: 0;
+            padding: 25px;
+            border: 1px solid var(--hc-border);
+            border-radius: var(--hc-radius);
+            background: white;
+            box-shadow: var(--hc-shadow);
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 21px;
+        }
+
+        .panel-title { margin: 0; font-size: 16px; font-weight: 800; }
+
+        .panel-subtitle {
+            margin: 5px 0 0;
+            color: var(--hc-muted);
+            font-size: 11px;
+        }
+
+        .panel-heading-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 13px;
+            background: var(--hc-primary-soft);
+            color: var(--hc-primary-dark);
+            font-size: 18px;
+        }
+
+        .appointment-container, .appointment-empty { min-height: 170px; }
+
+        .appointment-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 22px;
+            border: 1px dashed #DCEAE8;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 12px;
+            border-radius: 15px;
+            background: #F0FAF8;
+            color: var(--hc-primary-dark);
+            font-size: 21px;
+        }
+
+        .empty-title { margin: 0; font-size: 13px; font-weight: 700; }
+
+        .empty-description {
+            max-width: 260px;
+            margin: 7px 0 14px;
+            color: var(--hc-muted);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .small-primary-button { padding: 10px 13px; }
+
+        .quick-access-list { display: grid; gap: 10px; }
+
+        .dashboard-quick-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            min-width: 0;
+            padding: 13px;
+            border: 1px solid transparent;
+            border-radius: 14px;
+            background: #FAFCFC;
+            transition: border-color .2s ease, background .2s ease, transform .2s ease;
+        }
+
+        .dashboard-quick-link:hover {
+            border-color: #D7F1EC;
+            background: #F4FCFA;
+            transform: translateX(3px);
+        }
+
+        .dashboard-quick-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 13px;
+            font-size: 19px;
+        }
+
+        .quick-link-text { min-width: 0; flex: 1; }
+
+        .quick-link-text strong {
+            display: block;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .quick-link-text small {
+            display: block;
+            margin-top: 4px;
+            color: var(--hc-muted);
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        .quick-arrow { flex-shrink: 0; color: #9CAFAE; font-size: 14px; }
+
+        .emergency-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 16px;
+            padding: 13px;
+            border-radius: 12px;
+            background: #FFF7F6;
+            color: #8F4844;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        .emergency-note i { color: #C92D28; }
+
+        .dashboard-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 34px;
+            padding-top: 20px;
+            border-top: 1px solid var(--hc-border);
+            color: #91A3A1;
+            font-size: 10px;
+        }
+
+        .footer-brand { color: #607775; font-weight: 700; }
+        .mobile-nav { display: none; }
+        .loading-text { color: var(--hc-muted); font-size: 12px; text-align: center; }
+
+        @media (max-width: 1000px) {
+            .dashboard-shell { padding-right: 24px; padding-left: 24px; }
+            .dashboard-content-grid { grid-template-columns: 1fr; }
+            .quick-access-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .emergency-note { grid-column: 1 / -1; }
+            .topbar-link { display: none; }
+        }
+
+        @media (max-width: 650px) {
+            .dashboard-shell { padding: 0 16px 90px; }
+            .topbar { min-height: 72px; }
+            .brand-mark { width: 40px; height: 40px; border-radius: 12px; }
+            .brand-name { font-size: 15px; }
+            .brand-caption { font-size: 10px; }
+            .topbar-right { gap: 8px; }
+            .profile-link { padding: 5px; border: none; background: transparent; }
+            .profile-avatar { width: 38px; height: 38px; }
+            .profile-details, .profile-chevron { display: none; }
+            .dashboard-main { padding-top: 26px; }
+            .welcome-row { align-items: flex-start; flex-direction: column; gap: 15px; margin-bottom: 22px; }
+            .welcome-title { font-size: 29px; }
+            .welcome-description { font-size: 12px; }
+            .date-chip { padding: 9px 12px; font-size: 11px; }
+            .health-banner { align-items: flex-start; flex-direction: column; gap: 20px; padding: 23px; border-radius: 20px; }
+            .banner-title { font-size: 21px; }
+            .banner-description { font-size: 12px; }
+            .banner-action { padding: 12px 15px; font-size: 11px; }
+            .section-title { font-size: 16px; }
+            .section-description { font-size: 11px; }
+            .stats-grid { grid-template-columns: 1fr; gap: 11px; margin-bottom: 28px; }
+            .stat-card { align-items: center; padding: 17px; border-radius: 17px; }
+            .stat-icon { width: 44px; height: 44px; }
+            .stat-info { flex: 1; }
+            .stat-label { margin-bottom: 5px; }
+            .stat-value { font-size: 25px; }
+            .stat-note { margin-top: 4px; }
+            .content-panel { padding: 18px; border-radius: 18px; }
+            .quick-access-list { grid-template-columns: 1fr; gap: 8px; }
+            .dashboard-quick-link { padding: 12px; }
+            .dashboard-footer { align-items: flex-start; flex-direction: column; gap: 8px; font-size: 9px; }
+
+            .mobile-nav {
+                position: fixed;
+                z-index: 1000;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                display: grid;
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+                gap: 0;
+                padding: 10px 5px calc(10px + env(safe-area-inset-bottom));
+                border-top: 1px solid var(--hc-border);
+                background: rgba(255, 255, 255, .97);
+                backdrop-filter: blur(15px);
+            }
+
+            .mobile-nav a {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                justify-content: center;
+                gap: 5px;
+                padding: 4px 0;
+                color: #91A3A1;
+                font-size: 9px;
+                font-weight: 600;
+            }
+
+            .mobile-nav a i { font-size: 19px; }
+            .mobile-nav a.active { color: var(--hc-primary-dark); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+        }
+    </style>
 </head>
 
 <body>
+<div class="dashboard-shell">
+    <header class="topbar">
+        <a class="brand" href="dashboard.html" aria-label="Healthcare Connect home">
+            <span class="brand-mark"><i class="bi bi-heart-pulse-fill"></i></span>
+            <span>
+                <span class="brand-name">Healthcare Connect</span>
+                <span class="brand-caption">Your health, connected.</span>
+            </span>
+        </a>
 
-<div class="app">
-
-    <main class="dashboard-page">
-
-        <!-- =================================================
-             HEADER
-             ================================================= -->
-
-        <header class="dashboard-header">
-
-            <div class="dashboard-heading">
-
-                <span class="dashboard-eyebrow">
-                    <span class="status-dot"></span>
-                    Healthcare Connect
+        <div class="topbar-right">
+            <a class="topbar-link" href="doctors.html">Find a doctor</a>
+            <a class="topbar-link" href="health-records.html">Health records</a>
+            <a class="profile-link" href="profile.html" aria-label="Open your profile">
+                <span class="profile-avatar"><i class="bi bi-person-fill"></i></span>
+                <span class="profile-details">
+                    <span class="profile-name" id="patientName">Patient</span>
+                    <span class="profile-subtitle">My account</span>
                 </span>
+                <i class="bi bi-chevron-down profile-chevron" style="font-size:11px;color:#8CA09E"></i>
+            </a>
+        </div>
+    </header>
 
-                <p class="dashboard-greeting">
-                    Good morning
-                </p>
-
-                <h1 id="patientName">
-                    Welcome back
+    <main class="dashboard-main">
+        <section class="welcome-row">
+            <div>
+                <div class="eyebrow"><span class="eyebrow-dot"></span> YOUR PERSONAL HEALTH SPACE</div>
+                <h1 class="welcome-title">
+                    <span id="greetingText">Welcome back,</span>
+                    <span id="welcomeName">there</span>
                 </h1>
+                <p class="welcome-description">Keep track of your health, appointments and daily care — all in one place.</p>
+            </div>
+            <div class="date-chip">
+                <i class="bi bi-calendar3"></i>
+                <span id="currentDate">Today</span>
+            </div>
+        </section>
 
-                <p class="dashboard-intro">
-                    Here's a simple overview of your health today.
-                </p>
+        <section class="health-banner">
+            <div class="banner-content">
+                <div class="banner-label"><i class="bi bi-stars"></i> A LITTLE REMINDER</div>
+                <h2 class="banner-title">Your health deserves attention.</h2>
+                <p class="banner-description">Whether it is a routine check-up or a health concern, take the next step towards feeling better.</p>
+            </div>
+            <a href="doctors.html" class="banner-action">Find a doctor <i class="bi bi-arrow-up-right"></i></a>
+        </section>
 
+        <section aria-labelledby="overviewTitle">
+            <div class="section-heading">
+                <div>
+                    <h2 class="section-title" id="overviewTitle">Your health overview</h2>
+                    <p class="section-description">A quick look at your healthcare activity.</p>
+                </div>
+                <a href="profile.html" class="section-link">My profile <i class="bi bi-arrow-right"></i></a>
             </div>
 
-
-            <a
-                href="profile.html"
-                class="dashboard-profile"
-                aria-label="Open profile"
-            >
-                <img
-                    src="../assets/images/default-avatar.png"
-                    alt="Profile"
-                    onerror="this.style.display='none'"
-                >
-
-                <span class="profile-status"></span>
-            </a>
-
-        </header>
-
-
-        <!-- =================================================
-             MAIN FEATURE AREA
-             ================================================= -->
-
-        <section class="dashboard-feature-grid">
-
-            <!-- Health Hero -->
-
-            <div class="dashboard-hero">
-
-                <div class="hero-copy">
-
-                    <span class="hero-label">
-                        <i class="bi bi-heart-pulse"></i>
-                        Your health, connected
+            <div class="stats-grid">
+                <a href="appointments.html" class="stat-card">
+                    <span class="stat-icon teal"><i class="bi bi-calendar2-check"></i></span>
+                    <span class="stat-info">
+                        <span class="stat-label">Appointments</span>
+                        <span class="stat-value" id="appointmentCount">—</span>
+                        <span class="stat-note">View your scheduled visits</span>
                     </span>
+                </a>
 
-                    <h2>
-                        Take care of your health,
-                        <span>one step at a time.</span>
-                    </h2>
+                <a href="health-records.html" class="stat-card">
+                    <span class="stat-icon blue"><i class="bi bi-file-earmark-medical"></i></span>
+                    <span class="stat-info">
+                        <span class="stat-label">Health records</span>
+                        <span class="stat-value" id="recordCount">—</span>
+                        <span class="stat-note">Your personal medical history</span>
+                    </span>
+                </a>
 
-                    <p>
-                        Find doctors, manage appointments, keep your
-                        health records organised and stay on track
-                        with your medicines.
-                    </p>
-
-                    <div class="hero-actions">
-
-                        <a
-                            href="doctors.html"
-                            class="btn btn-primary"
-                        >
-                            <i class="bi bi-search"></i>
-                            Find a doctor
-                        </a>
-
-                        <a
-                            href="book-appointment.html"
-                            class="btn btn-white"
-                        >
-                            <i class="bi bi-calendar-plus"></i>
-                            Book appointment
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Decorative health visual -->
-
-                <div class="hero-visual">
-
-                    <div class="hero-orbit hero-orbit-one"></div>
-                    <div class="hero-orbit hero-orbit-two"></div>
-
-                    <div class="hero-health-icon">
-                        <i class="bi bi-heart-pulse"></i>
-                    </div>
-
-                    <div class="hero-floating-card hero-card-top">
-                        <i class="bi bi-shield-check"></i>
-                        <span>Health records</span>
-                    </div>
-
-                    <div class="hero-floating-card hero-card-bottom">
-                        <i class="bi bi-calendar-check"></i>
-                        <span>Appointments</span>
-                    </div>
-
-                </div>
-
+                <a href="reminders.html" class="stat-card">
+                    <span class="stat-icon purple"><i class="bi bi-alarm"></i></span>
+                    <span class="stat-info">
+                        <span class="stat-label">Active reminders</span>
+                        <span class="stat-value" id="reminderCount">—</span>
+                        <span class="stat-note">Stay on track with your care</span>
+                    </span>
+                </a>
             </div>
+        </section>
 
-
-            <!-- Upcoming Appointment -->
-
-            <div class="dashboard-appointment-panel">
-
+        <div class="dashboard-content-grid">
+            <section class="content-panel" aria-labelledby="appointmentsTitle">
                 <div class="panel-heading">
-
                     <div>
-                        <span class="panel-eyebrow">
-                            NEXT VISIT
-                        </span>
-
-                        <h2>
-                            Upcoming appointment
-                        </h2>
+                        <h2 class="panel-title" id="appointmentsTitle">Upcoming appointment</h2>
+                        <p class="panel-subtitle">Stay prepared for your next visit.</p>
                     </div>
-
-                    <a
-                        href="appointments.html"
-                        class="panel-link"
-                    >
-                        View all
-                        <i class="bi bi-arrow-up-right"></i>
-                    </a>
-
+                    <span class="panel-heading-icon"><i class="bi bi-calendar-heart"></i></span>
                 </div>
 
-
-                <div id="upcomingAppointment">
-
+                <div class="appointment-container" id="upcomingAppointment">
                     <div class="appointment-empty">
-
-                        <div class="appointment-empty-icon">
-                            <i class="bi bi-calendar-heart"></i>
-                        </div>
-
-                        <div>
-                            <h3>
-                                No upcoming appointment
-                            </h3>
-
-                            <p>
-                                Schedule your next visit when you need care.
-                            </p>
-                        </div>
-
+                        <span class="empty-icon"><i class="bi bi-calendar2-plus"></i></span>
+                        <h3 class="empty-title">Loading appointments...</h3>
+                        <p class="empty-description">Please wait while we retrieve your appointment details.</p>
                     </div>
+                </div>
 
-                    <a
-                        href="book-appointment.html"
-                        class="appointment-book-link"
-                    >
-                        Book an appointment
-                        <i class="bi bi-arrow-right"></i>
+                <div style="margin-top:16px">
+                    <a href="appointments.html" class="section-link">View all appointments <i class="bi bi-arrow-right"></i></a>
+                </div>
+            </section>
+
+            <section class="content-panel" aria-labelledby="quickAccessTitle">
+                <div class="panel-heading">
+                    <div>
+                        <h2 class="panel-title" id="quickAccessTitle">Quick access</h2>
+                        <p class="panel-subtitle">Everything you need, just a tap away.</p>
+                    </div>
+                    <span class="panel-heading-icon"><i class="bi bi-grid"></i></span>
+                </div>
+
+                <div class="quick-access-list">
+                    <!-- NEW: Daily Queue link -->
+                    <a href="daily-queue.html" class="dashboard-quick-link">
+                        <span class="dashboard-quick-icon quick-teal"><i class="bi bi-people"></i></span>
+                        <span class="quick-link-text">
+                            <strong>Daily Queue</strong>
+                            <small>Book a token and track your health centre queue</small>
+                        </span>
+                        <i class="bi bi-chevron-right quick-arrow"></i>
                     </a>
 
+                    <a href="doctors.html" class="dashboard-quick-link">
+                        <span class="dashboard-quick-icon quick-teal"><i class="bi bi-person-vcard"></i></span>
+                        <span class="quick-link-text">
+                            <strong>Find a doctor</strong>
+                            <small>Explore doctors and specialities</small>
+                        </span>
+                        <i class="bi bi-chevron-right quick-arrow"></i>
+                    </a>
+
+                    <a href="health-records.html" class="dashboard-quick-link">
+                        <span class="dashboard-quick-icon quick-blue"><i class="bi bi-folder2-open"></i></span>
+                        <span class="quick-link-text">
+                            <strong>Health records</strong>
+                            <small>Access your medical information</small>
+                        </span>
+                        <i class="bi bi-chevron-right quick-arrow"></i>
+                    </a>
+
+                    <a href="medicines.html" class="dashboard-quick-link">
+                        <span class="dashboard-quick-icon quick-purple"><i class="bi bi-capsule"></i></span>
+                        <span class="quick-link-text">
+                            <strong>Medicines</strong>
+                            <small>Explore available medicines</small>
+                        </span>
+                        <i class="bi bi-chevron-right quick-arrow"></i>
+                    </a>
+
+                    <a href="reminders.html" class="dashboard-quick-link">
+                        <span class="dashboard-quick-icon quick-orange"><i class="bi bi-bell"></i></span>
+                        <span class="quick-link-text">
+                            <strong>Medicine reminders</strong>
+                            <small>Manage your medication schedule</small>
+                        </span>
+                        <i class="bi bi-chevron-right quick-arrow"></i>
+                    </a>
+
+                    <a href="emergency.html" class="dashboard-quick-link">
+                        <span class="dashboard-quick-icon quick-red"><i class="bi bi-telephone-forward"></i></span>
+                        <span class="quick-link-text">
+                            <strong>Emergency assistance</strong>
+                            <small>Find urgent healthcare contacts</small>
+                        </span>
+                        <i class="bi bi-chevron-right quick-arrow"></i>
+                    </a>
                 </div>
 
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             HEALTH SNAPSHOT
-             ================================================= -->
-
-        <section class="dashboard-section">
-
-            <div class="dashboard-section-heading">
-
-                <div>
-                    <span class="section-eyebrow">
-                        AT A GLANCE
-                    </span>
-
-                    <h2>
-                        Your health snapshot
-                    </h2>
+                <div class="emergency-note">
+                    <i class="bi bi-exclamation-circle-fill"></i>
+                    <span>In a medical emergency in India, call <strong>112</strong> for emergency assistance. Do not wait for this website if immediate help is needed.</span>
                 </div>
-
-            </div>
-
-
-            <div class="health-snapshot-grid">
-
-                <a
-                    href="appointments.html"
-                    class="snapshot-item"
-                >
-
-                    <div class="snapshot-icon">
-                        <i class="bi bi-calendar2-check"></i>
-                    </div>
-
-                    <div class="snapshot-info">
-
-                        <span>
-                            Appointments
-                        </span>
-
-                        <strong id="appointmentCount">
-                            —
-                        </strong>
-
-                    </div>
-
-                    <i class="bi bi-arrow-up-right snapshot-arrow"></i>
-
-                </a>
-
-
-                <a
-                    href="health-records.html"
-                    class="snapshot-item"
-                >
-
-                    <div class="snapshot-icon">
-                        <i class="bi bi-file-medical"></i>
-                    </div>
-
-                    <div class="snapshot-info">
-
-                        <span>
-                            Health records
-                        </span>
-
-                        <strong id="recordCount">
-                            —
-                        </strong>
-
-                    </div>
-
-                    <i class="bi bi-arrow-up-right snapshot-arrow"></i>
-
-                </a>
-
-
-                <a
-                    href="medicines.html"
-                    class="snapshot-item"
-                >
-
-                    <div class="snapshot-icon">
-                        <i class="bi bi-capsule"></i>
-                    </div>
-
-                    <div class="snapshot-info">
-
-                        <span>
-                            Medicines
-                        </span>
-
-                        <strong id="medicineCount">
-                            —
-                        </strong>
-
-                    </div>
-
-                    <i class="bi bi-arrow-up-right snapshot-arrow"></i>
-
-                </a>
-
-
-                <a
-                    href="reminders.html"
-                    class="snapshot-item"
-                >
-
-                    <div class="snapshot-icon">
-                        <i class="bi bi-bell"></i>
-                    </div>
-
-                    <div class="snapshot-info">
-
-                        <span>
-                            Active reminders
-                        </span>
-
-                        <strong id="reminderCount">
-                            —
-                        </strong>
-
-                    </div>
-
-                    <i class="bi bi-arrow-up-right snapshot-arrow"></i>
-
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             QUICK SERVICES
-             ================================================= -->
-
-        <section class="dashboard-section">
-
-            <div class="dashboard-section-heading">
-
-                <div>
-                    <span class="section-eyebrow">
-                        SERVICES
-                    </span>
-
-                    <h2>
-                        What do you need today?
-                    </h2>
-
-                    <p>
-                        Quickly access the healthcare services you use most.
-                    </p>
-                </div>
-
-            </div>
-
-
-            <div class="service-grid">
-
-                <a
-                    href="doctors.html"
-                    class="service-tile service-primary"
-                >
-
-                    <div class="service-tile-icon">
-                        <i class="bi bi-person-badge"></i>
-                    </div>
-
-                    <div class="service-tile-content">
-                        <h3>Find a doctor</h3>
-
-                        <p>
-                            Discover doctors and healthcare professionals
-                            by speciality.
-                        </p>
-                    </div>
-
-                    <span class="service-tile-arrow">
-                        <i class="bi bi-arrow-up-right"></i>
-                    </span>
-
-                </a>
-
-
-                <a
-                    href="health-records.html"
-                    class="service-tile"
-                >
-
-                    <div class="service-tile-icon">
-                        <i class="bi bi-folder2-open"></i>
-                    </div>
-
-                    <div class="service-tile-content">
-                        <h3>Health records</h3>
-
-                        <p>
-                            Keep your medical history and reports together.
-                        </p>
-                    </div>
-
-                    <span class="service-tile-arrow">
-                        <i class="bi bi-arrow-up-right"></i>
-                    </span>
-
-                </a>
-
-
-                <a
-                    href="medicines.html"
-                    class="service-tile"
-                >
-
-                    <div class="service-tile-icon">
-                        <i class="bi bi-capsule"></i>
-                    </div>
-
-                    <div class="service-tile-content">
-                        <h3>Medicines</h3>
-
-                        <p>
-                            Search medicines and explore medicine information.
-                        </p>
-                    </div>
-
-                    <span class="service-tile-arrow">
-                        <i class="bi bi-arrow-up-right"></i>
-                    </span>
-
-                </a>
-
-
-                <a
-                    href="reminders.html"
-                    class="service-tile"
-                >
-
-                    <div class="service-tile-icon">
-                        <i class="bi bi-alarm"></i>
-                    </div>
-
-                    <div class="service-tile-content">
-                        <h3>Medicine reminders</h3>
-
-                        <p>
-                            Stay consistent with your daily medicine schedule.
-                        </p>
-                    </div>
-
-                    <span class="service-tile-arrow">
-                        <i class="bi bi-arrow-up-right"></i>
-                    </span>
-
-                </a>
-
-
-                <a
-                    href="emergency.html"
-                    class="service-tile service-emergency"
-                >
-
-                    <div class="service-tile-icon">
-                        <i class="bi bi-telephone"></i>
-                    </div>
-
-                    <div class="service-tile-content">
-                        <h3>Emergency assistance</h3>
-
-                        <p>
-                            Quickly reach emergency support when every
-                            second matters.
-                        </p>
-                    </div>
-
-                    <span class="service-tile-arrow">
-                        <i class="bi bi-arrow-up-right"></i>
-                    </span>
-
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             HEALTH NOTE
-             ================================================= -->
-
-        <section class="dashboard-health-note">
-
-            <div class="health-note-icon">
-                <i class="bi bi-shield-check"></i>
-            </div>
-
-            <div class="health-note-content">
-
-                <span>
-                    HEALTH TIP
-                </span>
-
-                <h3>
-                    Keep your health information up to date.
-                </h3>
-
-                <p>
-                    Accurate medical information helps healthcare
-                    professionals understand your history and provide
-                    better care.
-                </p>
-
-            </div>
-
-            <a
-                href="profile.html"
-                class="health-note-action"
-            >
-                Update profile
-                <i class="bi bi-arrow-right"></i>
-            </a>
-
-        </section>
-
+            </section>
+        </div>
     </main>
 
-
-    <!-- =====================================================
-         BOTTOM NAVIGATION
-         ===================================================== -->
-
-    <nav
-        class="bottom-nav"
-        aria-label="Main navigation"
-    >
-
-        <a
-            href="dashboard.html"
-            class="bottom-nav-item active"
-        >
-            <i class="bi bi-house"></i>
-            <span>Home</span>
-        </a>
-
-        <a
-            href="doctors.html"
-            class="bottom-nav-item"
-        >
-            <i class="bi bi-person-badge"></i>
-            <span>Doctors</span>
-        </a>
-
-        <a
-            href="appointments.html"
-            class="bottom-nav-item"
-        >
-            <i class="bi bi-calendar2"></i>
-            <span>Appointments</span>
-        </a>
-
-        <a
-            href="medicines.html"
-            class="bottom-nav-item"
-        >
-            <i class="bi bi-capsule"></i>
-            <span>Medicines</span>
-        </a>
-
-        <a
-            href="profile.html"
-            class="bottom-nav-item"
-        >
-            <i class="bi bi-person"></i>
-            <span>Profile</span>
-        </a>
-
-    </nav>
-
+    <footer class="dashboard-footer">
+        <span class="footer-brand"><i class="bi bi-heart-pulse-fill" style="color:#2EC1B1;margin-right:5px"></i>Healthcare Connect</span>
+        <span>Connecting communities to better healthcare.</span>
+        <span>© <span id="currentYear"></span> Healthcare Connect</span>
+    </footer>
 </div>
 
+<nav class="mobile-nav" aria-label="Main navigation">
+    <a href="dashboard.html" class="active"><i class="bi bi-house-door"></i><span>Home</span></a>
+    <a href="doctors.html"><i class="bi bi-person-vcard"></i><span>Doctors</span></a>
+    <a href="appointments.html"><i class="bi bi-calendar2-check"></i><span>Visits</span></a>
+    <a href="medicines.html"><i class="bi bi-capsule"></i><span>Medicines</span></a>
+    <a href="profile.html"><i class="bi bi-person"></i><span>Profile</span></a>
+</nav>
 
 <script src="../js/app.js"></script>
 <script src="../js/dashboard.js"></script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const greetingText = document.getElementById("greetingText");
+    const currentDate = document.getElementById("currentDate");
+    const currentYear = document.getElementById("currentYear");
+    const hour = new Date().getHours();
+
+    if (greetingText) {
+        greetingText.textContent =
+            hour < 12 ? "Good morning," :
+            hour < 17 ? "Good afternoon," :
+            "Good evening,";
+    }
+
+    if (currentDate) {
+        currentDate.textContent = new Date().toLocaleDateString("en-IN", {
+            weekday: "short",
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        });
+    }
+
+    if (currentYear) currentYear.textContent = new Date().getFullYear();
+
+    try {
+        const savedUser = JSON.parse(localStorage.getItem("healthcareUser") || "null");
+        const savedProfile = JSON.parse(localStorage.getItem("healthcareProfile") || "null");
+
+        const name =
+            savedProfile?.full_name ||
+            savedProfile?.fullName ||
+            savedUser?.full_name ||
+            savedUser?.fullName ||
+            savedUser?.name ||
+            "";
+
+        if (name) {
+            const firstName = name.trim().split(/\s+/)[0];
+            const welcomeName = document.getElementById("welcomeName");
+            const patientName = document.getElementById("patientName");
+
+            if (welcomeName) welcomeName.textContent = firstName;
+            if (patientName) patientName.textContent = name;
+        }
+    } catch (error) {
+        console.warn("Could not read saved profile details.");
+    }
+});
+</script>
 </body>
 </html>
