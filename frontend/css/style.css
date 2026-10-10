@@ -9832,8 +9832,8 @@
 
 /* Healthcare Connect logo */
 .auth-brand-logo {
-    width: 52px;
-    height: 52px;
+    width: 100px;
+    height: 100px;
     object-fit: contain;
     display: block;
     flex-shrink: 0;
