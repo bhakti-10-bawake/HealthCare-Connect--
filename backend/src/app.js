@@ -11,6 +11,7 @@ const reminderRoutes = require("./routes/reminderRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const emergencyRoutes = require("./routes/emergencyRoutes");
 const dailyQueueRoutes = require("./routes/dailyQueueRoutes");
+const pharmacyRoutes = require("./routes/pharmacyRoutes");
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/emergency-contacts", emergencyRoutes);
 app.use("/api/daily-queue", dailyQueueRoutes);
 console.log("DAILY QUEUE ROUTES REGISTERED");
+app.use("/api/pharmacies", pharmacyRoutes);
 
 // Root endpoint
 app.get("/", (req, res) => {

@@ -71,15 +71,13 @@
             flex-shrink: 0;
         }
 
-        .brand-mark {
-            display: grid;
-            place-items: center;
+        /* Healthcare Connect logo */
+        .brand-logo {
+            display: block;
             width: 44px;
             height: 44px;
-            border-radius: 14px;
-            background: var(--hc-primary);
-            color: white;
-            font-size: 23px;
+            object-fit: contain;
+            flex-shrink: 0;
         }
 
         .brand-name {
@@ -537,7 +535,12 @@
         @media (max-width: 650px) {
             .dashboard-shell { padding: 0 16px 90px; }
             .topbar { min-height: 72px; }
-            .brand-mark { width: 40px; height: 40px; border-radius: 12px; }
+
+            .brand-logo {
+                width: 40px;
+                height: 40px;
+            }
+
             .brand-name { font-size: 15px; }
             .brand-caption { font-size: 10px; }
             .topbar-right { gap: 8px; }
@@ -599,16 +602,25 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+            }
         }
     </style>
 </head>
 
 <body>
 <div class="dashboard-shell">
+
     <header class="topbar">
+        <!-- Updated brand: uses the existing Healthcare Connect logo -->
         <a class="brand" href="dashboard.html" aria-label="Healthcare Connect home">
-            <span class="brand-mark"><i class="bi bi-heart-pulse-fill"></i></span>
+            <img
+                src="../assets/images/healthcare-connect-logo.png"
+                alt="Healthcare Connect logo"
+                class="brand-logo"
+            >
             <span>
                 <span class="brand-name">Healthcare Connect</span>
                 <span class="brand-caption">Your health, connected.</span>
@@ -618,6 +630,7 @@
         <div class="topbar-right">
             <a class="topbar-link" href="doctors.html">Find a doctor</a>
             <a class="topbar-link" href="health-records.html">Health records</a>
+
             <a class="profile-link" href="profile.html" aria-label="Open your profile">
                 <span class="profile-avatar"><i class="bi bi-person-fill"></i></span>
                 <span class="profile-details">
@@ -639,6 +652,7 @@
                 </h1>
                 <p class="welcome-description">Keep track of your health, appointments and daily care — all in one place.</p>
             </div>
+
             <div class="date-chip">
                 <i class="bi bi-calendar3"></i>
                 <span id="currentDate">Today</span>
@@ -726,7 +740,6 @@
                 </div>
 
                 <div class="quick-access-list">
-                    <!-- NEW: Daily Queue link -->
                     <a href="daily-queue.html" class="dashboard-quick-link">
                         <span class="dashboard-quick-icon quick-teal"><i class="bi bi-people"></i></span>
                         <span class="quick-link-text">
@@ -831,7 +844,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    if (currentYear) currentYear.textContent = new Date().getFullYear();
+    if (currentYear) {
+        currentYear.textContent = new Date().getFullYear();
+    }
 
     try {
         const savedUser = JSON.parse(localStorage.getItem("healthcareUser") || "null");
@@ -858,5 +873,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 </script>
+
 </body>
 </html>

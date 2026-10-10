@@ -336,6 +336,113 @@ async function getMedicineById(req, res) {
     }
 }
 
+async function searchMedicinePharmacies(req, res) {
+    try {
+        const { search = "", category = "all" } = req.query;
+
+        let query = `
+            SELECT
+                m.id AS medicine_id,
+                m.name,
+                m.generic_name,
+                m.category,
+                m.dosage_form,
+                m.strength,
+                m.prescription_required,
+
+                p.id AS pharmacy_id,
+                p.name AS pharmacy_name,
+                p.address,
+                p.city,
+                p.state,
+                p.phone,
+
+                mi.price,
+                mi.pack_size,
+                mi.quantity,
+                mi.is_available,
+                mi.updated_at
+
+            FROM medicine_inventory mi
+
+            INNER JOIN medicines m
+                ON m.id = mi.medicine_id
+
+            INNER JOIN pharmacies p
+                ON p.id = mi.pharmacy_id
+
+            WHERE m.is_active = 1
+              AND p.is_active = 1
+              AND mi.is_available = 1
+              AND mi.quantity > 0
+        `;
+
+        const params = [];
+
+        if (search.trim()) {
+            query += `
+                AND (
+                    m.name LIKE ?
+                    OR m.generic_name LIKE ?
+                    OR m.category LIKE ?
+                    OR m.strength LIKE ?
+                    OR m.dosage_form LIKE ?
+                    OR p.name LIKE ?
+                    OR p.city LIKE ?
+                )
+            `;
+
+            const term = `%${search.trim()}%`;
+            params.push(term, term, term, term, term, term, term);
+        }
+
+        if (category.trim().toLowerCase() !== "all") {
+            query += ` AND m.category = ?`;
+            params.push(category.trim());
+        }
+
+        query += `
+            ORDER BY m.name ASC, p.name ASC
+        `;
+
+        const [rows] = await pool.execute(query, params);
+
+        res.json({
+            success: true,
+            data: rows.map(row => ({
+                medicineId: row.medicine_id,
+                name: row.name,
+                generic: row.generic_name,
+                category: row.category,
+                form: row.dosage_form,
+                strength: row.strength,
+                prescriptionRequired: Boolean(row.prescription_required),
+
+                pharmacyId: row.pharmacy_id,
+                pharmacyName: row.pharmacy_name,
+                address: row.address,
+                city: row.city,
+                state: row.state,
+                phone: row.phone,
+
+                price: Number(row.price),
+                packSize: row.pack_size,
+                quantity: row.quantity,
+                available: Boolean(row.is_available),
+                updatedAt: row.updated_at
+            }))
+        });
+    } catch (error) {
+        console.error("Pharmacy medicine search error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to search pharmacy inventory."
+        });
+    }
+}
+
+
 
 // ============================================================
 // EXPORT
@@ -344,4 +451,10 @@ async function getMedicineById(req, res) {
 module.exports = {
     getMedicines,
     getMedicineById
+};
+
+module.exports = {
+    getMedicines,
+    getMedicineById,
+    searchMedicinePharmacies
 };

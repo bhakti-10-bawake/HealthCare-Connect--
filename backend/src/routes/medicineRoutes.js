@@ -1,8 +1,10 @@
+
 const express = require("express");
 
 const {
     getMedicines,
-    getMedicineById
+    getMedicineById,
+    searchMedicinePharmacies
 } = require("../controllers/medicineController");
 
 const {
@@ -12,9 +14,7 @@ const {
 
 const router = express.Router();
 
-
 // Patient medicine discovery
-
 router.get(
     "/",
     authenticateToken,
@@ -22,13 +22,21 @@ router.get(
     getMedicines
 );
 
+// Search pharmacies that stock a medicine.
+// IMPORTANT: Keep this route before "/:id".
+router.get(
+    "/pharmacy-search",
+    authenticateToken,
+    authorizeRoles("PATIENT"),
+    searchMedicinePharmacies
+);
 
+// Get details of a specific medicine
 router.get(
     "/:id",
     authenticateToken,
     authorizeRoles("PATIENT"),
     getMedicineById
 );
-
 
 module.exports = router;
