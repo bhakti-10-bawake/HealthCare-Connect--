@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    const API_URL = "http://localhost:5000/api/profile/me";
+    const API_URL = "https://healthcare-connect-api.onrender.com/api/profile/me";
 
     let profile = null;
     let originalProfile = null;

@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // CONFIGURATION & STATE
     // ============================================================
 
-    const API_URL = "http://localhost:5000/api/medicines/pharmacy-search";
+    const API_URL = "https://healthcare-connect-api.onrender.com/api/medicines/pharmacy-search";
 
     let currentCategory = "all";
     let searchTimeout = null;

@@ -1,5 +1,5 @@
 const doctorService = (() => {
-    const API_URL = "http://localhost:5000/api/doctors";
+    const API_URL = "https://healthcare-connect-api.onrender.com/api/doctors";
 
     async function getAll() {
         const response = await fetch(API_URL);

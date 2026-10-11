@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    const API = "http://localhost:5000/api/daily-queue";
+    const API = "https://healthcare-connect-api.onrender.com/api/daily-queue";
 
     const panels = document.querySelectorAll(".dq-panel");
     const tabs = document.querySelectorAll(".dq-tab");

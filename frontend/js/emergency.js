@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    const API_URL = "http://localhost:5000/api/emergency-contacts";
+    const API_URL = "https://healthcare-connect-api.onrender.com/api/emergency-contacts";
     const container = document.getElementById("emergencyContacts");
 
     if (!container) return;

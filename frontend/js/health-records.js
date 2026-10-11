@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let records = [];
     let currentFilter = "all";
 
-    const API_URL = "http://localhost:5000/api/health-records/my";
+   const API_URL = "https://healthcare-connect-api.onrender.com/api/health-records/my";
 
     const typeMap = {
         LAB_REPORT: "Lab Report",

@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    const API_URL = "http://localhost:5000/api/reminders";
+    const API_URL = "https://healthcare-connect-api.onrender.com/api/reminders";
 
     const reminderList = document.getElementById("reminderList");
     const remindersEmpty = document.getElementById("remindersEmpty");
