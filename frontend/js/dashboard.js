@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    const API_BASE_URL = "http://localhost:5000/api";
+    const API_BASE_URL = "https://healthcare-connect-api.onrender.com/api";
 
     const patientName = document.getElementById("patientName");
     const appointmentCount = document.getElementById("appointmentCount");
