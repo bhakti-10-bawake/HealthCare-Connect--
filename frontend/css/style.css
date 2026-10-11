@@ -9838,3 +9838,94 @@
     display: block;
     flex-shrink: 0;
 }
+
+/* ========================================
+   MOBILE LOGIN BRANDING FIX
+======================================== */
+
+@media (max-width: 900px) {
+    .auth-page {
+        grid-template-columns: 1fr;
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+
+    .auth-visual {
+        display: none;
+    }
+
+    .auth-content {
+        width: 100%;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding: 24px 20px 30px;
+        box-sizing: border-box;
+        align-items: flex-start;
+    }
+
+    .auth-form-wrapper {
+        width: 100%;
+        max-width: 440px;
+        margin: 0 auto;
+    }
+
+    .auth-mobile-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        margin: 0 auto 24px;
+        text-align: center;
+    }
+
+    .auth-mobile-brand .auth-brand-logo {
+        width: 78px;
+        height: 78px;
+        object-fit: contain;
+        display: block;
+    }
+
+    .auth-mobile-brand > span {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.4;
+    }
+
+    .auth-heading {
+        margin-top: 0;
+        margin-bottom: 22px;
+    }
+
+    .auth-heading h2 {
+        font-size: 1.55rem;
+        line-height: 1.3;
+    }
+
+    .auth-heading p {
+        line-height: 1.6;
+    }
+
+    .auth-security-note {
+        margin-top: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-content {
+        padding: 22px 18px 28px;
+    }
+
+    .auth-mobile-brand {
+        margin-bottom: 22px;
+    }
+
+    .auth-mobile-brand .auth-brand-logo {
+        width: 72px;
+        height: 72px;
+    }
+
+    .auth-heading h2 {
+        font-size: 1.45rem;
+    }
+}
