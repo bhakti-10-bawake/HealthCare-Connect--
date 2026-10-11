@@ -9929,3 +9929,31 @@
         font-size: 1.45rem;
     }
 }
+
+/* Fix Healthcare Connect logo on phones and tablets */
+@media screen and (max-width: 900px) {
+    .auth-mobile-brand {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 100%;
+        margin: 0 auto 24px;
+        text-align: center;
+    }
+
+    .auth-mobile-brand img.auth-brand-logo {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 82px !important;
+        height: 82px !important;
+        object-fit: contain;
+    }
+
+    .auth-mobile-brand > span {
+        display: block !important;
+    }
+}
