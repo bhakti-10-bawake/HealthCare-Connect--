@@ -27,7 +27,6 @@
     <link rel="stylesheet" href="../css/style.css">
 
     <style>
-        /* Desktop logo and branding */
         .auth-brand {
             display: flex;
             align-items: center;
@@ -43,12 +42,12 @@
             border-radius: 12px;
         }
 
-        .auth-brand > span {
+        .auth-brand > span,
+        .auth-mobile-brand > span {
             font-size: 20px;
             font-weight: 700;
         }
 
-        /* Mobile logo and branding */
         .auth-mobile-brand {
             display: none;
             align-items: center;
@@ -66,7 +65,8 @@
                 height: 90px;
             }
 
-            .auth-brand > span {
+            .auth-brand > span,
+            .auth-mobile-brand > span {
                 font-size: 18px;
             }
         }
@@ -82,7 +82,7 @@
 
         <div class="auth-brand">
             <img
-                src="/frontend/assests/images/healthcare-connect-logo.png"
+                src="../assests/images/healthcare-connect-logo.png"
                 alt="Healthcare Connect logo"
                 class="auth-brand-logo"
             >
@@ -136,9 +136,7 @@
             <div class="auth-mobile-brand">
 
                 <img
-                    
-                  src="../assests/healthcare-connect-logo.png"
-
+                    src="../assests/images/healthcare-connect-logo.png"
                     alt="Healthcare Connect logo"
                     class="auth-brand-logo"
                 >
@@ -218,13 +216,9 @@
                 <div class="auth-form-options">
 
                     <label class="auth-checkbox">
-
                         <input type="checkbox" id="rememberMe">
-
                         <span></span>
-
                         Remember me
-
                     </label>
 
                     <a href="#" id="forgotPassword">
