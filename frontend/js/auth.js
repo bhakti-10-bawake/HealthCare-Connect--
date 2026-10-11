@@ -3,7 +3,9 @@
    AUTHENTICATION
 ========================================================= */
 
-const AUTH_API_BASE_URL = "http://localhost:5000/api/auth";
+
+const AUTH_API_BASE_URL = "https://healthcare-connect-api.onrender.com/api/auth";
+
 
 
 /* =========================================================
